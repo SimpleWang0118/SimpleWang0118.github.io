@@ -281,26 +281,21 @@
     </item>
     
     <item>
-      <title>Images</title>
-      <link>http://singlewang.top/2013/12/26/images/</link>
-      <guid>http://singlewang.top/2013/12/26/images/</guid>
-      <pubDate>Thu, 26 Dec 2013 14:46:49 GMT</pubDate>
+      <title>Excerpts</title>
+      <link>http://singlewang.top/2013/12/25/excerpts/</link>
+      <guid>http://singlewang.top/2013/12/25/excerpts/</guid>
+      <pubDate>Tue, 24 Dec 2013 16:23:23 GMT</pubDate>
       
-        
-        
-      <description>&lt;p&gt;This is a image test post.&lt;/p&gt;
-&lt;p&gt;&lt;img data-src=&quot;/assets/wallpaper-2572384.jpg&quot;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img data-src=&quot;/assets/wallpaper-2311325.jpg&quot; alt</description>
-        
+      <description>&lt;p&gt;The following contents should be invisible in home&amp;#x2F;archive page.&lt;/p&gt;</description>
       
       
       
-      <content:encoded><![CDATA[<p>This is a image test post.</p><p><img data-src="/assets/wallpaper-2572384.jpg"></p><p><img data-src="/assets/wallpaper-2311325.jpg" alt="Caption"></p><p><img data-src="/assets/wallpaper-878514.jpg"></p><p><img data-src="https://placehold.it/350x150.jpg" alt="Small Picture"></p>]]></content:encoded>
+      <content:encoded><![CDATA[<p>The following contents should be invisible in home&#x2F;archive page.</p><span id="more"></span><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce eget urna vitae velit eleifend interdum at ac nisi. In nec ligula lacus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed eu cursus erat, ut dapibus quam. Aliquam eleifend dolor vitae libero pharetra adipiscing. Etiam adipiscing dolor a quam tempor, eu convallis nulla varius. Aliquam sollicitudin risus a porta aliquam. Ut nec velit dolor. Proin eget leo lobortis, aliquam est sed, mollis mauris. Fusce vitae leo pretium massa accumsan condimentum. Fusce malesuada gravida lectus vel vulputate. Donec bibendum porta nibh ut aliquam.</p><p>Sed lorem felis, congue non fringilla eu, aliquam eu eros. Curabitur orci libero, mollis sed semper vitae, adipiscing in lectus. Aenean non egestas odio. Donec sollicitudin nisi quis lorem gravida, in pharetra mauris fringilla. Duis sit amet faucibus dolor, id aliquam neque. In egestas, odio gravida tempor dictum, mauris felis faucibus purus, sit amet commodo lacus diam vitae est. Ut ut quam eget massa semper sodales. Aenean non ipsum cursus, blandit lectus in, ornare odio. Curabitur ultrices porttitor vulputate.</p>]]></content:encoded>
       
       
       
       
-      <comments>http://singlewang.top/2013/12/26/images/#disqus_thread</comments>
+      <comments>http://singlewang.top/2013/12/25/excerpts/#disqus_thread</comments>
       
     </item>
     
