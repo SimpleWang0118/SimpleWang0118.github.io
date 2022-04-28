@@ -2950,16 +2950,16 @@ main >.inner {
   color: #55acd5;
 }
 .social .item.QQ::before {
-  background-color: ;
+  background-color: #e60026;
 }
 .social .item.QQ i {
-  color: ;
+  color: #e60026;
 }
 .social .item.WeChat::before {
-  background-color: eixi;
+  background-color: #1e88e5;
 }
 .social .item.WeChat i {
-  color: eixi;
+  color: #1e88e5;
 }
 .social .item:focus i,
 .social .item:hover i {
