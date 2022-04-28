@@ -2961,6 +2961,12 @@ main >.inner {
 .social .item.WeChat i {
   color: #1e88e5;
 }
+.social .item.music::before {
+  background-color: #e60026;
+}
+.social .item.music i {
+  color: #e60026;
+}
 .social .item:focus i,
 .social .item:hover i {
   color: var(--grey-0);
