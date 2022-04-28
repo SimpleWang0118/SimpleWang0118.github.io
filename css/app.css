@@ -2937,11 +2937,29 @@ main >.inner {
   top: -10%;
   left: -10%;
 }
-.social .item.::before {
+.social .item.github::before {
+  background-color: #191717;
+}
+.social .item.github i {
+  color: #191717;
+}
+.social .item.email::before {
+  background-color: #55acd5;
+}
+.social .item.email i {
+  color: #55acd5;
+}
+.social .item.QQ::before {
   background-color: ;
 }
-.social .item. i {
+.social .item.QQ i {
   color: ;
+}
+.social .item.WeChat::before {
+  background-color: eixi;
+}
+.social .item.WeChat i {
+  color: eixi;
 }
 .social .item:focus i,
 .social .item:hover i {
