@@ -47,37 +47,6 @@
     
     <item>
       <title>少年啊，前路漫漫</title>
-      <link>http://singlewang.top/2022/04/29/informal-essay/start/</link>
-      <guid>http://singlewang.top/2022/04/29/informal-essay/start/</guid>
-      <pubDate>Fri, 29 Apr 2022 03:06:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;p&gt;先随便写点&lt;/p&gt;
-</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<p>先随便写点</p>]]></content:encoded>
-      
-      
-      <category domain="http://singlewang.top/categories/informal-essay/">随笔</category>
-      
-      <category domain="http://singlewang.top/categories/informal-essay/life/">生活感悟</category>
-      
-      
-      <category domain="http://singlewang.top/tags/%E5%BF%83%E5%BE%97/">心得</category>
-      
-      <category domain="http://singlewang.top/tags/%E7%94%9F%E6%B4%BB%E6%84%9F%E6%82%9F/">生活感悟</category>
-      
-      
-      <comments>http://singlewang.top/2022/04/29/informal-essay/start/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>少年啊，前路漫漫</title>
       <link>http://singlewang.top/2022/04/29/informal-essay/life/start/</link>
       <guid>http://singlewang.top/2022/04/29/informal-essay/life/start/</guid>
       <pubDate>Fri, 29 Apr 2022 03:06:00 GMT</pubDate>
@@ -93,7 +62,7 @@
       <content:encoded><![CDATA[<p>先随便写点</p>]]></content:encoded>
       
       
-      <category domain="http://singlewang.top/categories/informal-essay/">随笔</category>
+      <category domain="http://singlewang.top/categories/%E9%9A%8F%E7%AC%94%EF%BC%8C%E7%94%9F%E6%B4%BB%E6%84%9F%E6%82%9F/">随笔，生活感悟</category>
       
       
       <category domain="http://singlewang.top/tags/%E5%BF%83%E5%BE%97/">心得</category>
@@ -124,6 +93,8 @@
       
       
       <category domain="http://singlewang.top/categories/markdown/">Markdown</category>
+      
+      <category domain="http://singlewang.top/categories/markdown/markdown-base/">Markdown基础</category>
       
       
       <category domain="http://singlewang.top/tags/Markdown/">Markdown</category>
