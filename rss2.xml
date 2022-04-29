@@ -9,7 +9,7 @@
     <atom:link href="http://singlewang.top/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>智者不入爱河，愚者重蹈覆辙</description>
-    <pubDate>Fri, 29 Apr 2022 02:31:37 GMT</pubDate>
+    <pubDate>Fri, 29 Apr 2022 02:34:26 GMT</pubDate>
     <generator>http://hexo.io/</generator>
     
     <item>
@@ -29,11 +29,11 @@
       <content:encoded><![CDATA[<p>先随便写点</p>]]></content:encoded>
       
       
-      <category domain="http://singlewang.top/categories/computer-science/">计算机科学</category>
+      <category domain="http://singlewang.top/categories/infomal-essay/">随笔</category>
       
-      <category domain="http://singlewang.top/categories/computer-science/note/">二进制杂谈</category>
+      <category domain="http://singlewang.top/categories/infomal-essay/life/">生活感悟</category>
       
-      <category domain="http://singlewang.top/categories/computer-science/note/%E5%B0%91%E5%B9%B4/">少年</category>
+      <category domain="http://singlewang.top/categories/infomal-essay/life/%E5%B0%91%E5%B9%B4/">少年</category>
       
       
       <category domain="http://singlewang.top/tags/%E5%BF%83%E5%BE%97/">心得</category>
@@ -42,6 +42,39 @@
       
       
       <comments>http://singlewang.top/2022/04/28/informal-essay/life-thinking/start/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>少年啊，前路漫漫</title>
+      <link>http://singlewang.top/2022/04/28/informal-essay/life/start/</link>
+      <guid>http://singlewang.top/2022/04/28/informal-essay/life/start/</guid>
+      <pubDate>Thu, 28 Apr 2022 13:59:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;p&gt;先随便写点&lt;/p&gt;
+</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<p>先随便写点</p>]]></content:encoded>
+      
+      
+      <category domain="http://singlewang.top/categories/infomal-essay/">随笔</category>
+      
+      <category domain="http://singlewang.top/categories/infomal-essay/life/">生活感悟</category>
+      
+      <category domain="http://singlewang.top/categories/infomal-essay/life/%E5%B0%91%E5%B9%B4/">少年</category>
+      
+      
+      <category domain="http://singlewang.top/tags/%E5%BF%83%E5%BE%97/">心得</category>
+      
+      <category domain="http://singlewang.top/tags/%E7%94%9F%E6%B4%BB%E6%84%9F%E6%82%9F/">生活感悟</category>
+      
+      
+      <comments>http://singlewang.top/2022/04/28/informal-essay/life/start/#disqus_thread</comments>
       
     </item>
     
