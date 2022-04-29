@@ -62,7 +62,9 @@
       <content:encoded><![CDATA[<p>先随便写点</p>]]></content:encoded>
       
       
-      <category domain="http://singlewang.top/categories/infomal-essay/">随笔</category>
+      <category domain="http://singlewang.top/categories/informal-essay/">随笔</category>
+      
+      <category domain="http://singlewang.top/categories/informal-essay/life/">生活感悟</category>
       
       
       <category domain="http://singlewang.top/tags/%E5%BF%83%E5%BE%97/">心得</category>
@@ -75,9 +77,38 @@
     </item>
     
     <item>
+      <title>少年啊，前路漫漫</title>
+      <link>http://singlewang.top/2022/04/29/informal-essay/life/start/</link>
+      <guid>http://singlewang.top/2022/04/29/informal-essay/life/start/</guid>
+      <pubDate>Fri, 29 Apr 2022 03:06:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;p&gt;先随便写点&lt;/p&gt;
+</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<p>先随便写点</p>]]></content:encoded>
+      
+      
+      <category domain="http://singlewang.top/categories/informal-essay/">随笔</category>
+      
+      
+      <category domain="http://singlewang.top/tags/%E5%BF%83%E5%BE%97/">心得</category>
+      
+      <category domain="http://singlewang.top/tags/%E7%94%9F%E6%B4%BB%E6%84%9F%E6%82%9F/">生活感悟</category>
+      
+      
+      <comments>http://singlewang.top/2022/04/29/informal-essay/life/start/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
       <title>Markdown教程</title>
-      <link>http://singlewang.top/2022/04/29/markdown/markdownlearn/</link>
-      <guid>http://singlewang.top/2022/04/29/markdown/markdownlearn/</guid>
+      <link>http://singlewang.top/2022/04/29/markdown/markdown-base/markdownlearn/</link>
+      <guid>http://singlewang.top/2022/04/29/markdown/markdown-base/markdownlearn/</guid>
       <pubDate>Fri, 29 Apr 2022 03:00:00 GMT</pubDate>
       
         
@@ -100,7 +131,7 @@
       <category domain="http://singlewang.top/tags/%E6%95%99%E7%A8%8B/">教程</category>
       
       
-      <comments>http://singlewang.top/2022/04/29/markdown/markdownlearn/#disqus_thread</comments>
+      <comments>http://singlewang.top/2022/04/29/markdown/markdown-base/markdownlearn/#disqus_thread</comments>
       
     </item>
     
