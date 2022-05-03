@@ -24,15 +24,15 @@
 <link rel="stylesheet" href="/css/app.css?v=0.2.5">
 
   
-  <meta name="keywords" content="Linux,Linux命令" />
+  <meta name="keywords" content="kernal,linux,内核" />
 
 
-<link rel="canonical" href="http://singlewang.top/2022/05/03/linux/linux-command/linux%E5%91%BD%E4%BB%A4/">
+<link rel="canonical" href="http://singlewang.top/2022/05/03/linux/linux-kernal/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp1/">
 
 
 
   <title>
-Linux命令 |
+Linux内核协议栈 - Linux内核协议栈 - Linux |
 智者不入爱河 = Single Wang's Blog = 建设美丽中国</title>
 <meta name="generator" content="Hexo 6.1.0"></head>
 <body itemscope itemtype="http://schema.org/WebPage">
@@ -60,23 +60,23 @@ Linux命令 |
         <div id="brand">
           <div class="pjax">
           
-  <h1 itemprop="name headline">Linux命令
+  <h1 itemprop="name headline">Linux内核协议栈
   </h1>
   
 <div class="meta">
-  <span class="item" title="创建时间：2022-05-03 11:24:00">
+  <span class="item" title="创建时间：2022-05-03 15:55:00">
     <span class="icon">
       <i class="ic i-calendar"></i>
     </span>
     <span class="text">发表于</span>
-    <time itemprop="dateCreated datePublished" datetime="2022-05-03T11:24:00+08:00">2022-05-03</time>
+    <time itemprop="dateCreated datePublished" datetime="2022-05-03T15:55:00+08:00">2022-05-03</time>
   </span>
   <span class="item" title="本文字数">
     <span class="icon">
       <i class="ic i-pen"></i>
     </span>
     <span class="text">本文字数</span>
-    <span>1.6k</span>
+    <span>1.4k</span>
     <span class="text">字</span>
   </span>
   <span class="item" title="阅读时长">
@@ -117,12 +117,12 @@ Linux命令 |
       </div>
       <div id="imgs" class="pjax">
         <ul>
-          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipev1x5e4j20zk0m8b29.jpg"></li>
-          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicm0n457cj20zk0m8e81.jpg"></li>
-          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipeu7txpzj20zk0m81kx.jpg"></li>
-          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipeyhsblkj20zk0m81kx.jpg"></li>
-          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipetlbztpj20zk0m84qp.jpg"></li>
-          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giclhpw3lwj20zk0m8gvw.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giclize41wj20zk0m87gk.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipeun65urj20zk0m81ii.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giclh0m9pdj20zk0m8hdt.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicitspjpbj20zk0m81ky.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipex2cdtbj20zk0m8x6p.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giph4baakhj20zk0m8h5q.jpg"></li>
         </ul>
       </div>
     </header>
@@ -147,11 +147,16 @@ Linux命令 |
     
 <div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
 <i class="ic i-home"></i>
-<span><a href="/">首页</a></span>
+<span><a href="/">首页</a></span><i class="ic i-angle-right"></i>
+<span  itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/categories/linux/" itemprop="item" rel="index" title="分类于 Linux"><span itemprop="name">Linux</span></a>
+<meta itemprop="position" content="1" /></span>
+<i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/categories/linux/linux-kernal/" itemprop="item" rel="index" title="分类于 Linux内核协议栈"><span itemprop="name">Linux内核协议栈</span></a>
+<meta itemprop="position" content="2" /></span>
 </div>
 
     <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
-  <link itemprop="mainEntityOfPage" href="http://singlewang.top/2022/05/03/linux/linux-command/linux%E5%91%BD%E4%BB%A4/">
+  <link itemprop="mainEntityOfPage" href="http://singlewang.top/2022/05/03/linux/linux-kernal/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp1/">
 
   <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="image" content="/images/taizaizhi.jpg">
@@ -166,68 +171,38 @@ Linux命令 |
   <div class="body md" itemprop="articleBody">
     
 
-    <blockquote>
-<p>.    #当前文件夹<br>..   #上一级文件夹</p>
-</blockquote>
-<hr>
-<p><em><strong>tar</strong></em><br>tar -zxvf             解压缩<br>tar -zcvf             压缩</p>
-<blockquote>
-<p>解压tar.xz文件时<br>xz -d xxx.tar.xz 之后会得到xxx.tar文件<br>再执行tar -xvf xxx.tar即可</p>
-</blockquote>
-<p><em>~&#x2F;.bash_history 记录了所有的历史命令</em><br>执行history中的某一句，只需用！加行号<br><code>!1322</code></p>
-<hr>
-<p><em><strong>find</strong></em></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">find ./home/wang -name test.txt  在/home/wang路径下寻找test.txt文件</span><br><span class="line"></span><br><span class="line">find ./home/wang -name <span class="string">&quot;*.c&quot;</span> 在/home/wang路径下寻找所有后缀为.c的文件</span><br></pre></td></tr></table></figure>
-<hr>
-<p><em><strong>grep</strong></em></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">grep -i -n &quot;hello&quot; ./*.cpp 在当前文件夹下所有的.cpp文件中查找hello字符串，-n 并且打印行号，-i 不区分大小写</span><br><span class="line">grep -r &quot;include&quot; ./*.cpp 在当前文件夹下所有的.cpp文件中查找include字符串，-r 并且打印文件路径</span><br><span class="line">ls | grep -n &#x27;.c$&#x27;  列出所有的.c文件</span><br><span class="line">grep shell ed.md 在文件ed.md中查找所有的单词shell</span><br></pre></td></tr></table></figure>
-<hr>
-<p><em><strong>环境变量</strong></em><br>查看全局变量 <code>env</code> 或者 <code>printenv</code><br><code>export PATH=$PATH:/home/wang</code>        将某个路径添加到环境变量中，只能生效一次，待重启之后依然需要重新添加<br><code>echo</code> 显示变量的值<br><code>echo $PATH</code> 取出变量PATH的内容</p>
-<hr>
-<p><em><strong>vim</strong></em><br>vim常用命令：<br><code>yy</code> 复制光标所指的当前行<br><code>nyy</code> 复制光标所指的一行往下n行<br><code>p</code> 粘贴在光标以下<br><code>P</code> 粘贴在光标以上<br><code>dd</code> 删除光标所指的一行<br><code>ndd</code> 删除光标所指的往下n行<br><code>set nu</code> 显示行号</p>
-<hr>
-<blockquote>
-<p>反单引号&#96;&#96;&#96;这个符号代表的意义为何？<br>在一串指令中，在”&#96;”之内的指令会被先执行，而其执行出来的结果将作为外部的输入信息</p>
-</blockquote>
-<hr>
-<p><code>uname -a</code> 查看当前内核版本</p>
-<p><code>?</code>代表一个字符<br><code>*</code> 代表零个或多个字符</p>
-<hr>
-<p><em><strong>进程</strong></em><br><code>ps</code>                查看进程<br><code>top</code>               显示实时进程<br><code>kill 3445</code>(端口号)  结束进程 </p>
-<p><code>ctrl+c</code>             中断进程<br><code>ctrl+z</code>              暂停进程 </p>
-<hr>
-<p><code>rmdir</code> 删除目录<br><code>rm -rf</code> 强制删除目录，即使目录下面有文件<br>要想同时创建多个目录和子目录，需要加入-p参数<br><code>mkdir -p new_dir/sub_dir/under_dir</code><br><code>tree</code> 目录以树的形式列出目录中的所有文件<br><code>file</code>  查看文件类型<br><code>cat file1</code> 显示文件内容<br><code>cat -n file1</code> 给显示的文件内容加上行号<br><code>cat -b file</code>   只给文件中有内容的加上行号</p>
-<p><code>du</code>显示当前目录下所有的文件、目录、子目录的磁盘使用情况:</p>
+    <h1 id="linux内核协议栈"><a href="#linux内核协议栈" class="headerlink" title="linux内核协议栈"></a>linux内核协议栈</h1><hr>
+<h2 id="1-协议栈概述"><a href="#1-协议栈概述" class="headerlink" title="1.协议栈概述"></a>1.协议栈概述</h2><hr>
+<h3 id="1-1操作系统及网络协议介绍"><a href="#1-1操作系统及网络协议介绍" class="headerlink" title="1.1操作系统及网络协议介绍"></a>1.1操作系统及网络协议介绍</h3><hr>
+<h4 id="1-1-1linux操作系统架构简介"><a href="#1-1-1linux操作系统架构简介" class="headerlink" title="1.1.1linux操作系统架构简介"></a>1.1.1linux操作系统架构简介</h4><p>linux是一款大内核操作系统。</p>
+<p>操作系统内核可能是微内核，也可能是大内核（后者有时称之为宏内核Macrokernel）。按照类似封装 的形式，这些术语定义如下:</p>
 <ul>
-<li>-c  显示所有已列出文件的大小</li>
-<li>-h 以易读形式显示</li>
-<li>-s 显示每个输出参数的总计</li>
+<li>微内核（Microkernel kernel）――在微内核中，大部分内核都作为独立的进程在特权状态下运行， 它们通过消息传递进行通讯。微内核设计的一个优点是在不影响系统其它部分的情况下，用更高效的实现代替现有文件系统 模块的工作将会更加容易。我们甚至可以在系统运行时将开发出的新系统模块或者需要替换现有模块的 模块直接而且迅速的加入系统。另外一个优点是不需要的模块将不会被加载到内存中，因此微内核就可<br>以更有效的利用内存。</li>
+<li>大内核（Monolithic kernel）――大内核是一个很大的进程。它的内部又可以被分为若干模块（或者是层次或其它）。但是在运行的时候，它是一个独立的二进制大映象。其模块间的通讯是通过直接调用其它模块中的函数实现的，而不是消息传递。</li>
 </ul>
-<hr>
-<p><em><strong>挂载</strong></em><br>要手动在虚拟目录中挂载设备，需要以root用户身份登录，或是以root用户身份运行sudo命<br>令。下面是手动挂载媒体设备的基本命令：<br><code>mount -t type device directory</code></p>
 <blockquote>
-<p>&#x3D;&#x3D;文件类型&#x3D;&#x3D;：<br><em>vfat</em>：Windows长文件系统。<br><em>ntfs</em>：Windows NT、XP、Vista以及Windows 7中广泛使用的高级文件系统。<br><em>iso9660</em>：标准CD-ROM文件系统。</p>
+<p>除了嵌入式，没有一款商用的操作系统是以真正学术上的微内核形式存在。</p>
 </blockquote>
-<p>手动将U盘&#x2F;dev&#x2F;sdb1挂载到&#x2F;media&#x2F;disk，可用下面的命令：<br><code>mount -t vfat /dev/sdb1 /media/disk</code></p>
-<ul>
-<li>从Linux系统上移除一个可移动设备时，不能直接从系统上移除，而应该先卸载。</li>
-<li>Linux上不能直接弹出已挂载的CD。如果你在从光驱中移除CD时遇到麻烦，通常是因为该CD还挂载在虚拟目录里。先卸载它，然后再去尝试弹出。</li>
+<h4 id="1-1-2网络协议发展介绍"><a href="#1-1-2网络协议发展介绍" class="headerlink" title="1.1.2网络协议发展介绍"></a>1.1.2网络协议发展介绍</h4><p>IP网络的优点，简单，IP协议栈的中心在于，使用IP协议将数据包发送到任何网络，数据包到达的时间可以不同。</p>
+<p>事实上的网络协议栈实现基本采用TCP&#x2F;IP的4层架构，从底往上分别是：链路层，网络层，传输层，应用层。<br>但是在实际开发人员的眼中，却是五层，即在链路层之下还有一个物理层。</p>
+<p>将链路层简称为2层或L2，网络层简称为3层或L3，而传输层即为4层或L4。</p>
+<p>应用程序是可以绕过TCP层而直接与IP层协作，比如我们常用的 ping 命令。</p>
+<h4 id="1-1-3基本的数据结构和计算机术语"><a href="#1-1-3基本的数据结构和计算机术语" class="headerlink" title="1.1.3基本的数据结构和计算机术语"></a>1.1.3基本的数据结构和计算机术语</h4><ul>
+<li><p>链表结构</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> &#123;</span> </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> *<span class="title">next</span>, *<span class="title">prev</span>;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>ist_head 结构包含两个指向list_head结构的指针prev和next，通常它都组织成双循环链表。在 Linux内核链表中，不是在链表结构中包含数据，而是在数据结构中包含链表节点。</p>
+</li>
+<li><p>由链表节点到数据项变量<br>如何通过这个 list_head 成员访问到它的所有者呢？Linux 为此提供了一个 list_entry(ptr, type, member)宏，<br>ptr 是指向该数据中 list_head 成员的指针<br>type 是数据项的类型<br>member 则是数据项</p>
+</li>
+<li><p>hlist<br>hlist 是 hash list的简称，即用拉链法实现的 hash 数据结构。它由 2 部分组成：hash 数组和冲突链。当节点第一次要插入 hash 表的时候，它必定是先插入 hash 数组中，而以后要插入的节点如果发生了冲突，则可以挂在数组后面，形成一条链表。当然也可以插入数组，原先在数组中的节点被挤出来形成一条链表。</p>
+</li>
 </ul>
-<p><code>df -h</code> 查看所有已挂载磁盘的使用情况，-h把磁盘空间以易读的形式显示</p>
-<hr>
-<p><em><strong>sort</strong></em><br><code>sort</code> 按指定的默认语言的排序规则对文件中的数据进行排序</p>
-<ul>
-<li>-d 仅考虑空白和字母</li>
-<li>-n 按字符串数值排序</li>
-<li>-u 消除输出中重复的行</li>
-<li>-r 逆序排列</li>
-<li>-o 指定输出文件</li>
-</ul>
-<hr>
-
+<p>也许Linux链表设计者认为双头（next、prev）的双链表对于HASH表来说”过于浪费”，因而另行设计了一套用于HASH表应用的 hlist 数据结构——单指针表头双循环链表</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">hlist_head</span> &#123;</span> </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">hlist_node</span> *<span class="title">first</span>;</span></span><br><span class="line">&#125;; </span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">hlist_node</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">hlist_node</span> *<span class="title">next</span>, **<span class="title">pprev</span>;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
       <div class="tags">
-          <a href="/tags/Linux/" rel="tag"><i class="ic i-tag"></i> Linux</a>
-          <a href="/tags/Linux%E5%91%BD%E4%BB%A4/" rel="tag"><i class="ic i-tag"></i> Linux命令</a>
+          <a href="/tags/kernal/" rel="tag"><i class="ic i-tag"></i> kernal</a>
+          <a href="/tags/linux/" rel="tag"><i class="ic i-tag"></i> linux</a>
+          <a href="/tags/%E5%86%85%E6%A0%B8/" rel="tag"><i class="ic i-tag"></i> 内核</a>
       </div>
   </div>
 
@@ -239,9 +214,9 @@ Linux命令 |
       <i class="ic i-calendar-check"></i>
     </span>
     <span class="text">更新于</span>
-    <time title="修改时间：2022-05-03 14:55:09" itemprop="dateModified" datetime="2022-05-03T14:55:09+08:00">2022-05-03</time>
+    <time title="修改时间：2022-05-03 16:22:24" itemprop="dateModified" datetime="2022-05-03T16:22:24+08:00">2022-05-03</time>
   </span>
-  <span id="2022/05/03/linux/linux-command/linux命令/" class="item leancloud_visitors" data-flag-title="Linux命令" title="阅读次数">
+  <span id="2022/05/03/linux/linux-kernal/linux内核协议栈-cp1/" class="item leancloud_visitors" data-flag-title="Linux内核协议栈" title="阅读次数">
       <span class="icon">
         <i class="ic i-eye"></i>
       </span>
@@ -278,7 +253,7 @@ Linux命令 |
   </li>
   <li class="link">
     <strong>本文链接：</strong>
-    <a href="http://singlewang.top/2022/05/03/linux/linux-command/linux%E5%91%BD%E4%BB%A4/" title="Linux命令">http://singlewang.top/2022/05/03/linux/linux-command/linux命令/</a>
+    <a href="http://singlewang.top/2022/05/03/linux/linux-kernal/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp1/" title="Linux内核协议栈">http://singlewang.top/2022/05/03/linux/linux-kernal/linux内核协议栈-cp1/</a>
   </li>
   <li class="license">
     <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
@@ -297,22 +272,14 @@ Linux命令 |
     <div class="item left">
       
 
-  <a href="/2022/04/29/dpdk/dpdk-base/dpdk/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1gipeudstjqj20zk0m8k3r.jpg" title="DPDK基础">
+  <a href="/2022/05/03/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1gicm07ih54j20zk0m84qp.jpg" title="深入浅出dpdk">
   <span class="type">上一篇</span>
-  <span class="category"><i class="ic i-flag"></i> DPDK基础</span>
-  <h3>DPDK基础</h3>
-  </a>
-
-    </div>
-    <div class="item right">
-      
-
-  <a href="/2022/05/03/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giclwuom7cj20zk0m8dvn.jpg" title="深入浅出dpdk">
-  <span class="type">下一篇</span>
   <span class="category"><i class="ic i-flag"></i> DPDK进阶</span>
   <h3>深入浅出dpdk</h3>
   </a>
 
+    </div>
+    <div class="item right">
     </div>
 </div>
 
@@ -329,8 +296,12 @@ Linux命令 |
   <div class="panels">
     <div class="inner">
       <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88"><span class="toc-number">1.</span> <span class="toc-text">linux内核协议栈</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%8D%8F%E8%AE%AE%E6%A0%88%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.</span> <span class="toc-text">1.协议栈概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%8F%8A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1操作系统及网络协议介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-1linux%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E7%AE%80%E4%BB%8B"><span class="toc-number">1.1.1.1.</span> <span class="toc-text">1.1.1linux操作系统架构简介</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-2%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E5%8F%91%E5%B1%95%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.1.1.2.</span> <span class="toc-text">1.1.2网络协议发展介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-3%E5%9F%BA%E6%9C%AC%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%9C%AF%E8%AF%AD"><span class="toc-number">1.1.1.3.</span> <span class="toc-text">1.1.3基本的数据结构和计算机术语</span></a></li></ol></li></ol></li></ol></li></ol>
       </div>
       <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li class="active"><a href="/2022/05/03/linux/linux-kernal/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp1/" rel="bookmark" title="Linux内核协议栈">Linux内核协议栈</a></li>
+        </ul>
       </div>
       <div class="overview panel" data-title="站点概览">
         <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -406,12 +377,10 @@ Linux命令 |
 
   <ul id="quick">
     <li class="prev pjax">
-        <a href="/2022/04/29/dpdk/dpdk-base/dpdk/" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
     </li>
     <li class="up"><i class="ic i-arrow-up"></i></li>
     <li class="down"><i class="ic i-arrow-down"></i></li>
     <li class="next pjax">
-        <a href="/2022/05/03/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6/" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
     </li>
     <li class="percent"></li>
   </ul>
@@ -433,45 +402,12 @@ Linux命令 |
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
-<i class="ic i-angle-right"></i>
-<a href="/categories/dpdk/dpdk-base/" title="分类于 DPDK基础">DPDK基础</a>
-</div>
-
-    <span><a href="/2022/04/29/dpdk/dpdk-base/dpdk/" title="DPDK基础">DPDK基础</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
 <a href="/categories/informal-essay/" title="分类于 随笔">随笔</a>
 <i class="ic i-angle-right"></i>
 <a href="/categories/informal-essay/life/" title="分类于 生活感悟">生活感悟</a>
 </div>
 
     <span><a href="/2022/04/29/informal-essay/life/start/" title="少年啊，前路漫漫">少年啊，前路漫漫</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/markdown/" title="分类于 Markdown">Markdown</a>
-<i class="ic i-angle-right"></i>
-<a href="/categories/markdown/markdown-base/" title="分类于 Markdown基础">Markdown基础</a>
-</div>
-
-    <span><a href="/2022/04/29/markdown/markdown-base/markdownlearn/" title="Markdown教程">Markdown教程</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-</div>
-
-    <span><a href="/2022/05/03/linux/linux-command/linux%E5%91%BD%E4%BB%A4/" title="Linux命令">Linux命令</a></span>
   </li>
 
       
@@ -490,12 +426,45 @@ Linux命令 |
   <li class="item">
     
 <div class="breadcrumb">
+<a href="/categories/markdown/" title="分类于 Markdown">Markdown</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/markdown/markdown-base/" title="分类于 Markdown基础">Markdown基础</a>
+</div>
+
+    <span><a href="/2022/04/29/markdown/markdown-base/markdownlearn/" title="Markdown教程">Markdown教程</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
 <a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
 <i class="ic i-angle-right"></i>
 <a href="/categories/dpdk/dpdk-advanced/" title="分类于 DPDK进阶">DPDK进阶</a>
 </div>
 
     <span><a href="/2022/05/03/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6/" title="深入浅出dpdk">深入浅出dpdk</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2022/05/03/linux/linux-command/linux%E5%91%BD%E4%BB%A4/" title="Linux命令">Linux命令</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/dpdk/dpdk-base/" title="分类于 DPDK基础">DPDK基础</a>
+</div>
+
+    <span><a href="/2022/04/29/dpdk/dpdk-base/dpdk/" title="DPDK基础">DPDK基础</a></span>
   </li>
 
   </ul>
@@ -538,7 +507,7 @@ Linux命令 |
   </div>
 <script data-config type="text/javascript">
   var LOCAL = {
-    path: '2022/05/03/linux/linux-command/linux命令/',
+    path: '2022/05/03/linux/linux-kernal/linux内核协议栈-cp1/',
     favicon: {
       show: "（●´3｀●）やれやれだぜ",
       hide: "(´Д｀)大変だ！"
