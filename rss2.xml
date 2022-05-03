@@ -9,8 +9,94 @@
     <atom:link href="http://singlewang.top/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>智者不入爱河，愚者重蹈覆辙</description>
-    <pubDate>Tue, 03 May 2022 12:42:33 GMT</pubDate>
+    <pubDate>Tue, 03 May 2022 12:57:20 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>c++遇到的bug-1</title>
+      <link>http://singlewang.top/2022/05/03/cpp/cpp-bug/c++bug-1/</link>
+      <guid>http://singlewang.top/2022/05/03/cpp/cpp-bug/c++bug-1/</guid>
+      <pubDate>Tue, 03 May 2022 12:54:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;reference to local variable ‘c’ returned [-Wreturn-local-addr]&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;函数的返回值为函数内部定义变量的引用，但函数在调用完毕后，函数内部定义的变量空间被</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<ol><li><code>reference to local variable ‘c’ returned [-Wreturn-local-addr]</code></li></ol><p>函数的返回值为函数内部定义变量的引用，但函数在调用完毕后，函数内部定义的变量空间被释放，无法访问，从而造成的错误。</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Matrix&amp; Matrix::<span class="keyword">operator</span>+(<span class="type">const</span> Matrix&amp; rhs)</span><br><span class="line">&#123;</span><br><span class="line">    Matrix result;</span><br><span class="line"><span class="comment">//其他操作</span></span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p><em><strong>改正方法一</strong></em>：给返回变量定义加上static限定符，保证在函数调用完后不释放空间<br>Matrix&amp; Matrix::operator+(const Matrix&amp; rhs)<br>{<br>    static Matrix result;<br>    &#x2F;&#x2F;其他操作<br>    return result;<br>}</p><p><em><strong>改正方法二</strong></em>：去掉返回值的引用，保证函数外部无法访问返回值的空间，只能得到其内容<br>Matrix Matrix::operator+(const Matrix&amp; rhs)<br>{<br>    static Matrix result;<br>    &#x2F;&#x2F;其他操作<br>    return result;<br>}</p><ol start="2"><li><p>LNK2019<br>即使包含了头文件依然会报无法解析的命令,原因可能是没添加相应的.lib文件</p></li><li><p>不允许指针指向不完整的类类型<br>一般是没有包含相应的头文件</p></li></ol>]]></content:encoded>
+      
+      
+      <category domain="http://singlewang.top/categories/cpp/">C++</category>
+      
+      <category domain="http://singlewang.top/categories/cpp/cpp-bug/">C++BUG</category>
+      
+      
+      <category domain="http://singlewang.top/tags/cpp/">cpp</category>
+      
+      <category domain="http://singlewang.top/tags/bug/">bug</category>
+      
+      
+      <comments>http://singlewang.top/2022/05/03/cpp/cpp-bug/c++bug-1/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>git学习</title>
+      <link>http://singlewang.top/2022/05/03/git%E5%AD%A6%E4%B9%A0/</link>
+      <guid>http://singlewang.top/2022/05/03/git%E5%AD%A6%E4%B9%A0/</guid>
+      <pubDate>Tue, 03 May 2022 12:51:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;ol&gt;
+&lt;li&gt;初始化一个git目录    &lt;code&gt;git init&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;添加文件到Git仓库，分两步：&lt;br&gt; 使用命令&lt;code&gt;git add &amp;lt;file&amp;gt;&lt;/code&gt;，注意，可反复多次使用，添加多个文件；&lt;br&gt; 使用命令&lt;</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<ol><li>初始化一个git目录    <code>git init</code></li><li>添加文件到Git仓库，分两步：<br> 使用命令<code>git add &lt;file&gt;</code>，注意，可反复多次使用，添加多个文件；<br> 使用命令<code>git commit -m &lt;message&gt;</code>提交完成。-m后面输入的是本次提交的说明</li><li>要随时掌握工作区的状态，使用<code>git status</code>命令。<br> 如果<code>git status</code>告诉你有文件被修改过，用<code>git diff</code>可以查看修改内容。</li><li>添加远程库<code>git remote add origin git@github.com:SimpleWang0118/C-Game.git</code><br> 添加后，远程库的名字就是<code>origin</code><br> 把本地库的所有内容推送到远程库上（第一次）<code>git push -u origin master</code><br> 只要本地作了提交，就可以通过命令 <code>git push origin master</code>推送至远程库上</li><li>查看远程库信息<code>git remote -v</code></li><li>删除远程库<code>eg git remote rm origin</code></li><li><code>git commit</code>提示<code>Your branch is up-to-date with &#39;origin/master&#39;</code><br> 首先建立一个分支：<code>git branch new branch</code><br> 然后检查分支是否创建成功: <code>git branch</code> *代表的是当前你所在的工作分支<br> 然后切换到你的新分支: <code>git checkout newbranch</code><br> 然后将你的改动提交到新分支上: git add .     git commit -m “18.03.01”<br> 然后切换到主分支:<code>git checkout master</code><br> 然后将新分支提交的改动合并到主分支上:<code>git merge newbranch</code><br> 然后就可以push代码了:<code>git push -u origin master</code><br> 最后还可以删除这个分支:<code>git branch -D newbranch</code></li></ol>]]></content:encoded>
+      
+      
+      
+      <category domain="http://singlewang.top/tags/git/">git</category>
+      
+      <category domain="http://singlewang.top/tags/github/">github</category>
+      
+      
+      <comments>http://singlewang.top/2022/05/03/git%E5%AD%A6%E4%B9%A0/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>刷机教程</title>
+      <link>http://singlewang.top/2022/05/03/%E5%88%B7%E6%9C%BA%E6%95%99%E7%A8%8B/</link>
+      <guid>http://singlewang.top/2022/05/03/%E5%88%B7%E6%9C%BA%E6%95%99%E7%A8%8B/</guid>
+      <pubDate>Tue, 03 May 2022 08:34:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;p&gt;1、首先解锁手机BL锁，进入开发者选项，然后需要到相应的手机官网下载解锁工具。&lt;br&gt;2、安装对应手机的rec软件，之后进入rec，先双清，即首先清除数据，再格式化&lt;br&gt;3、下载对应的系统压缩包&lt;br&gt;4、在rec软件中安装压缩包即可。&lt;/p&gt;
+</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<p>1、首先解锁手机BL锁，进入开发者选项，然后需要到相应的手机官网下载解锁工具。<br>2、安装对应手机的rec软件，之后进入rec，先双清，即首先清除数据，再格式化<br>3、下载对应的系统压缩包<br>4、在rec软件中安装压缩包即可。</p>]]></content:encoded>
+      
+      
+      
+      <category domain="http://singlewang.top/tags/%E5%88%B7%E6%9C%BA/">刷机</category>
+      
+      
+      <comments>http://singlewang.top/2022/05/03/%E5%88%B7%E6%9C%BA%E6%95%99%E7%A8%8B/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>Linux内核协议栈-cp2</title>
