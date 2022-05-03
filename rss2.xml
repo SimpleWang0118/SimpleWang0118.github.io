@@ -9,8 +9,40 @@
     <atom:link href="http://singlewang.top/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>智者不入爱河，愚者重蹈覆辙</description>
-    <pubDate>Tue, 03 May 2022 08:25:49 GMT</pubDate>
+    <pubDate>Tue, 03 May 2022 09:35:08 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>Linux内核协议栈-cp2</title>
+      <link>http://singlewang.top/2022/05/03/linux/linux-kernal/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp2/</link>
+      <guid>http://singlewang.top/2022/05/03/linux/linux-kernal/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp2/</guid>
+      <pubDate>Tue, 03 May 2022 08:34:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;2-系统初始化&quot;&gt;&lt;a href=&quot;#2-系统初始化&quot; class=&quot;headerlink&quot; title=&quot;2.系统初始化&quot;&gt;&lt;/a&gt;2.系统初始化&lt;/h2&gt;&lt;h3 id=&quot;2-1-系统初始化流程简介&quot;&gt;&lt;a href=&quot;#2-1-系统初始化流程简介&quot; class</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="2-系统初始化"><a href="#2-系统初始化" class="headerlink" title="2.系统初始化"></a>2.系统初始化</h2><h3 id="2-1-系统初始化流程简介"><a href="#2-1-系统初始化流程简介" class="headerlink" title="2.1 系统初始化流程简介"></a>2.1 系统初始化流程简介</h3><p>在系统启动过程中，我们要关注这几个方面： </p><ol><li>中断系统及调度系统 </li><li>文件系统的初始化 </li><li>设备管理系统的初始化</li><li>网络协议的初始化</li></ol><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">kernel_thread</span><span class="params">(<span class="type">int</span> (*fn)(<span class="type">void</span> *), <span class="type">void</span> * arg, <span class="type">unsigned</span> <span class="type">long</span> flags)</span></span><br></pre></td></tr></table></figure><p><code>kernel_thread</code>创建一个线程，定义在arch&#x2F;i386&#x2F;kernel&#x2F;process.c中，Linux 的内核线程是没有虚拟存储空间的进程，它们运行在内核中，直接使用物理地址空间。</p><h3 id="2-2内核文件解读"><a href="#2-2内核文件解读" class="headerlink" title="2.2内核文件解读"></a>2.2内核文件解读</h3><h4 id="2-2-1ELF文件格式"><a href="#2-2-1ELF文件格式" class="headerlink" title="2.2.1ELF文件格式"></a>2.2.1ELF文件格式</h4><p>ELF 是*nix 系统上可执行文件的标准格式，它取代了out格式的可执行文件，原因在于它的可扩展性。<br>ELF文件有三种不同的形式：</p><ol><li>Relocatable：由编译器和汇编器生成，由 linker 处理它。 </li><li>Executable：所有的重定位和符号解析都完成了，也许共享库的符号要在运行时刻解析。</li><li>Shared Object：包含 linker 需要的符号信息和运行时刻所需的代码。</li></ol><p>ELF 文件有双重性质：一方面，编译器、汇编器、连接器都把它看作是逻辑段（sections）的集合， 另一方面 loader 把它看作段（segments）的集合。Section 是给 linker 做进一步处理的，而 segments 是被映射到内存中去的。</p><p>一个 segment 可以由几个 sections 组成。为了定位不同 segment&#x2F;section，可执行文件用一个 table 来记录各个 segment&#x2F;section 的位置和描述</p><h4 id="2-2-2Link-Scripts知识"><a href="#2-2-2Link-Scripts知识" class="headerlink" title="2.2.2Link Scripts知识"></a>2.2.2Link Scripts知识</h4><p>为什么我们编出来的代码肯定是在用户地址空间运行，而内核编出来的代码 却一定是运行在内核空间？<br>主要是因为链接器的作用。不能简单地认为链接器仅仅完成将各 obj 文件拼在一起的任务，而且它还指定每个段被装入内存的真正地址。</p><p>可以用<code>ld -verbose</code>查看ld script</p><h3 id="2-3中断及任务调度管理"><a href="#2-3中断及任务调度管理" class="headerlink" title="2.3中断及任务调度管理"></a>2.3中断及任务调度管理</h3><h4 id="2-3-1中断及软中断模型"><a href="#2-3-1中断及软中断模型" class="headerlink" title="2.3.1中断及软中断模型"></a>2.3.1中断及软中断模型</h4><p>Linux 支持 CPU 的外部硬件中断和内部中断。&#x3D;&#x3D;内部中断包含系统调用陷入和异常&#x3D;&#x3D;，在一般的嵌入式操作系统（比如 VxWorks）中是没有系统调用这个概念的。</p><ul><li>&#x3D;&#x3D;系统调用&#x3D;&#x3D;就是软件有计划地调用 CPU 提供的特殊指令，触发 CPU 内部产生一个中断，于是完成一次核内核外运行空间的切换，具体可以参考许多书籍。</li><li>&#x3D;&#x3D;异常&#x3D;&#x3D;就是软件无意的执行了一个非法指令（比如除 0）从而造成 CPU 内部引发一次中断。</li></ul><p>&#x3D;&#x3D;外部中断&#x3D;&#x3D;特指外部设备发出的中断信号。但这几种中断的 CPU 处理过程基本相同，即：在执行完当 前指令后，或在执行当前指令期间，根据中断源所提供的“中断向量”，在内存中找到相应的 ISR（中断<br>服务例程）然后调用之。</p><h5 id="2-3-1-1中断系统和软中断"><a href="#2-3-1-1中断系统和软中断" class="headerlink" title="2.3.1.1中断系统和软中断"></a>2.3.1.1中断系统和软中断</h5><p>IRQ 是设备相关的号码，一般生产厂商都会使自己的设备分配到一个合适的号码。<br>&#x3D;&#x3D;中断向量&#x3D;&#x3D;就是操作系统中关于如何处理中断的内存组织结构，它们之间存在某种映射关系，这种关系是由CPU体系结构以及操作系统决定的。</p><blockquote><p>中断向量号0x80是系统调用号</p></blockquote><p>软中断是在处理完所有的中断之后才会处理的。目前linux内核中定义了6种软中断。在<code>start_kernel</code>函数中调用的<code>softirp_init</code>只初始化了两个。</p><p>Tasklet机制是一种比较特殊的软中断。指一小段可以执行的代码。通常以函数的形式出现。从某种程度上讲tasklet机制是linux内核对BH机制的一种扩展。它呈现出以下两个特点:</p><ol><li>与一般的软中断不同，某一段 tasklet 代码在某个时刻只能在一个 CPU 上运行，而不像一般的软 中断服务函数（即 softirq_action 结构中的 action 函数指针）那样在同一时刻可以被多个 CPU 并发地执行。</li><li>与BH机制不同，不同的 tasklet 代码在同一时刻可以在多个 CPU上并发地执行，而不像BH机制 那样必须严格地串行化执行（也即在同一时刻系统中只能有一个 CPU 执行BH函数）。</li></ol><h3 id="2-4虚拟文件系统"><a href="#2-4虚拟文件系统" class="headerlink" title="2.4虚拟文件系统"></a>2.4虚拟文件系统</h3><p>VFS（虚拟文件系统）在 Linux 及Unix 家族中是非常重要的概念，可以说它是操作系统的骨架。VFS 只存在与内存中，它在系统启动时被创建，系统关闭时注销。<br>&#x3D;&#x3D;VFS 的作用就是屏蔽各类文件系统的差异， 给用户、应用程序、甚至 Linux 其他管理模块提供统一的接口集合。&#x3D;&#x3D;</p><p>VFS 描述文件系统使用超级块和 inode 的方式，所谓超级块就是对所有文件系统的管理机构，每种 文件系统都要把自己的信息挂到 <code>super_blocks</code> 这么一个全局链表上。内核中是分成 2 个步骤完成：首先 每个文件系统必须通过 <code>register_filesystem</code> 函数将自己的 <code>file_system_type</code> 挂接到 <code>file_systems</code> 这个全局变量上，然后调用 <code>kern_mount</code> 函数把自己的文件相关操作函数集合表挂到 <code>super_blocks</code> 上。</p><h3 id="2-5网络协议栈各部分初始化"><a href="#2-5网络协议栈各部分初始化" class="headerlink" title="2.5网络协议栈各部分初始化"></a>2.5网络协议栈各部分初始化</h3><p>初始化大致的顺序：</p><ol><li>core_initcall:sock_init()</li><li>fs_initcall:inet_init()</li><li>subsys_initcall:net_dev_init()</li><li>device_initcall:设备驱动初始化</li></ol><h4 id="2-5-1网络基础系统初始化"><a href="#2-5-1网络基础系统初始化" class="headerlink" title="2.5.1网络基础系统初始化"></a>2.5.1网络基础系统初始化</h4><p>第一个步骤使用<code>core_initcall</code>初始化宏修饰<code>sock_init</code>函数，此函数知识分配一些内存空间，以及创建一个sock_fs_type的二年间系统。</p><blockquote><p>基本的socket初始化必须在每一个TCP&#x2F;IP成员协议能注册到socket层之前完成。</p></blockquote><p>当执行<code>do_initcalls</code>时才是真正初始化那些特定协议。</p><h4 id="2-5-2网络内存管理"><a href="#2-5-2网络内存管理" class="headerlink" title="2.5.2网络内存管理"></a>2.5.2网络内存管理</h4><h5 id="2-5-2-1-sk-buff结构"><a href="#2-5-2-1-sk-buff结构" class="headerlink" title="2.5.2.1 sk_buff结构"></a>2.5.2.1 sk_buff结构</h5><p>数据包在应用层称为data，在TCP层成为segment，在IP层称为packet，在数据链路层称为frame。</p>]]></content:encoded>
+      
+      
+      <category domain="http://singlewang.top/categories/linux/">Linux</category>
+      
+      <category domain="http://singlewang.top/categories/linux/linux-kernal/">Linux内核协议栈</category>
+      
+      
+      <category domain="http://singlewang.top/tags/kernal/">kernal</category>
+      
+      <category domain="http://singlewang.top/tags/linux/">linux</category>
+      
+      <category domain="http://singlewang.top/tags/%E5%86%85%E6%A0%B8/">内核</category>
+      
+      
+      <comments>http://singlewang.top/2022/05/03/linux/linux-kernal/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp2/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>Linux内核协议栈-cp1</title>
