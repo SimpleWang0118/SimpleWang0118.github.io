@@ -9,8 +9,42 @@
     <atom:link href="http://singlewang.top/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>智者不入爱河，愚者重蹈覆辙</description>
-    <pubDate>Fri, 29 Apr 2022 03:12:58 GMT</pubDate>
+    <pubDate>Tue, 03 May 2022 03:45:58 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>Linux命令</title>
+      <link>http://singlewang.top/2022/05/03/linux/linux-command/linux%E5%91%BD%E4%BB%A4/</link>
+      <guid>http://singlewang.top/2022/05/03/linux/linux-command/linux%E5%91%BD%E4%BB%A4/</guid>
+      <pubDate>Tue, 03 May 2022 03:24:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;blockquote&gt;
+&lt;p&gt;.    #当前文件夹&lt;br&gt;..   #上一级文件夹&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;tar&lt;/strong&gt;&lt;/em&gt;&lt;br&gt;tar -zxvf             解压缩&lt;br&gt;tar -zcv</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<blockquote><p>.    #当前文件夹<br>..   #上一级文件夹</p></blockquote><hr><p><em><strong>tar</strong></em><br>tar -zxvf             解压缩<br>tar -zcvf             压缩</p><blockquote><p>解压tar.xz文件时<br>xz -d xxx.tar.xz 之后会得到xxx.tar文件<br>再执行tar -xvf xxx.tar即可</p></blockquote><p><em>~&#x2F;.bash_history 记录了所有的历史命令</em><br>执行history中的某一句，只需用！加行号<br><code>!1322</code></p><hr><p><em><strong>find</strong></em></p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">find ./home/wang -name test.txt  在/home/wang路径下寻找test.txt文件</span><br><span class="line"></span><br><span class="line">find ./home/wang -name <span class="string">&quot;*.c&quot;</span> 在/home/wang路径下寻找所有后缀为.c的文件</span><br></pre></td></tr></table></figure><hr><p><em><strong>grep</strong></em></p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">grep -i -n &quot;hello&quot; ./*.cpp 在当前文件夹下所有的.cpp文件中查找hello字符串，-n 并且打印行号，-i 不区分大小写</span><br><span class="line">grep -r &quot;include&quot; ./*.cpp 在当前文件夹下所有的.cpp文件中查找include字符串，-r 并且打印文件路径</span><br><span class="line">ls | grep -n &#x27;.c$&#x27;  列出所有的.c文件</span><br><span class="line">grep shell ed.md 在文件ed.md中查找所有的单词shell</span><br></pre></td></tr></table></figure><hr><p><em><strong>环境变量</strong></em><br>查看全局变量 <code>env</code> 或者 <code>printenv</code><br><code>export PATH=$PATH:/home/wang</code>        将某个路径添加到环境变量中，只能生效一次，待重启之后依然需要重新添加<br><code>echo</code> 显示变量的值<br><code>echo $PATH</code> 取出变量PATH的内容</p><hr><p><em><strong>vim</strong></em><br>vim常用命令：<br><code>yy</code> 复制光标所指的当前行<br><code>nyy</code> 复制光标所指的一行往下n行<br><code>p</code> 粘贴在光标以下<br><code>P</code> 粘贴在光标以上<br><code>dd</code> 删除光标所指的一行<br><code>ndd</code> 删除光标所指的往下n行<br><code>set nu</code> 显示行号</p><hr><blockquote><p>反单引号&#96;&#96;&#96;这个符号代表的意义为何？<br>在一串指令中，在”&#96;”之内的指令会被先执行，而其执行出来的结果将作为外部的输入信息</p></blockquote><hr><p><code>uname -a</code> 查看当前内核版本</p><p><code>?</code>代表一个字符<br><code>*</code> 代表零个或多个字符</p><hr><p><em><strong>进程</strong></em><br><code>ps</code>                查看进程<br><code>top</code>               显示实时进程<br><code>kill 3445</code>(端口号)  结束进程 </p><p><code>ctrl+c</code>             中断进程<br><code>ctrl+z</code>              暂停进程 </p><hr><p><code>rmdir</code> 删除目录<br><code>rm -rf</code> 强制删除目录，即使目录下面有文件<br>要想同时创建多个目录和子目录，需要加入-p参数<br><code>mkdir -p new_dir/sub_dir/under_dir</code><br><code>tree</code> 目录以树的形式列出目录中的所有文件<br><code>file</code>  查看文件类型<br><code>cat file1</code> 显示文件内容<br><code>cat -n file1</code> 给显示的文件内容加上行号<br><code>cat -b file</code>   只给文件中有内容的加上行号</p><p><code>du</code>显示当前目录下所有的文件、目录、子目录的磁盘使用情况:</p><ul><li>-c  显示所有已列出文件的大小</li><li>-h 以易读形式显示</li><li>-s 显示每个输出参数的总计</li></ul><hr><p><em><strong>挂载</strong></em><br>要手动在虚拟目录中挂载设备，需要以root用户身份登录，或是以root用户身份运行sudo命<br>令。下面是手动挂载媒体设备的基本命令：<br><code>mount -t type device directory</code></p><blockquote><p>&#x3D;&#x3D;文件类型&#x3D;&#x3D;：<br><em>vfat</em>：Windows长文件系统。<br><em>ntfs</em>：Windows NT、XP、Vista以及Windows 7中广泛使用的高级文件系统。<br><em>iso9660</em>：标准CD-ROM文件系统。</p></blockquote><p>手动将U盘&#x2F;dev&#x2F;sdb1挂载到&#x2F;media&#x2F;disk，可用下面的命令：<br><code>mount -t vfat /dev/sdb1 /media/disk</code></p><ul><li>从Linux系统上移除一个可移动设备时，不能直接从系统上移除，而应该先卸载。</li><li>Linux上不能直接弹出已挂载的CD。如果你在从光驱中移除CD时遇到麻烦，通常是因为该CD还挂载在虚拟目录里。先卸载它，然后再去尝试弹出。</li></ul><p><code>df -h</code> 查看所有已挂载磁盘的使用情况，-h把磁盘空间以易读的形式显示</p><hr><p><em><strong>sort</strong></em><br><code>sort</code> 按指定的默认语言的排序规则对文件中的数据进行排序</p><ul><li>-d 仅考虑空白和字母</li><li>-n 按字符串数值排序</li><li>-u 消除输出中重复的行</li><li>-r 逆序排列</li><li>-o 指定输出文件</li></ul><hr>]]></content:encoded>
+      
+      
+      <category domain="http://singlewang.top/categories/linux/">Linux</category>
+      
+      <category domain="http://singlewang.top/categories/linux/linux-command/">Linux命令</category>
+      
+      
+      <category domain="http://singlewang.top/tags/Linux/">Linux</category>
+      
+      <category domain="http://singlewang.top/tags/Linux%E5%91%BD%E4%BB%A4/">Linux命令</category>
+      
+      
+      <comments>http://singlewang.top/2022/05/03/linux/linux-command/linux%E5%91%BD%E4%BB%A4/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>DPDK基础</title>
