@@ -1,0 +1,643 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="Single Wang's Blog" href="http://singlewang.top/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="Single Wang's Blog" href="http://singlewang.top/atom.xml" />
+<link rel="alternate" type="application/json" title="Single Wang's Blog" href="http://singlewang.top/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/css/app.css?v=0.2.5">
+
+  
+  <meta name="keywords" content="dpdk,cache,内存" />
+
+
+<link rel="canonical" href="http://singlewang.top/2022/05/03/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch2/">
+
+
+
+  <title>
+深入浅出dpdk-ch2 - DPDK进阶 - DPDK |
+智者不入爱河 = Single Wang's Blog = 建设美丽中国</title>
+<meta name="generator" content="Hexo 6.1.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">深入浅出dpdk-ch2
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="创建时间：2022-05-03 15:00:00">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="dateCreated datePublished" datetime="2022-05-03T15:00:00+08:00">2022-05-03</time>
+  </span>
+  <span class="item" title="本文字数">
+    <span class="icon">
+      <i class="ic i-pen"></i>
+    </span>
+    <span class="text">本文字数</span>
+    <span>4.1k</span>
+    <span class="text">字</span>
+  </span>
+  <span class="item" title="阅读时长">
+    <span class="icon">
+      <i class="ic i-clock"></i>
+    </span>
+    <span class="text">阅读时长</span>
+    <span>4 分钟</span>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/" rel="start">智者不入爱河</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gipewkhf1zj20zk0m81kx.jpg"></li>
+          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gipet4bz0yj20zk0m8e81.jpg"></li>
+          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gipeun65urj20zk0m81ii.jpg"></li>
+          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1giclxxcb6rj20zk0m8b29.jpg"></li>
+          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gipexj2jgzj20zk0m8b09.jpg"></li>
+          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gipesx5fdwj20zk0m81kx.jpg"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/">首页</a></span><i class="ic i-angle-right"></i>
+<span  itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/categories/dpdk/" itemprop="item" rel="index" title="分类于 DPDK"><span itemprop="name">DPDK</span></a>
+<meta itemprop="position" content="1" /></span>
+<i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/categories/dpdk/dpdk-advanced/" itemprop="item" rel="index" title="分类于 DPDK进阶"><span itemprop="name">DPDK进阶</span></a>
+<meta itemprop="position" content="2" /></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+  <link itemprop="mainEntityOfPage" href="http://singlewang.top/2022/05/03/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch2/">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/images/taizaizhi.jpg">
+    <meta itemprop="name" content="Single Wang">
+    <meta itemprop="description" content="建设美丽中国, 智者不入爱河，愚者重蹈覆辙">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Single Wang's Blog">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <p>传统网络设备驱动包处理的流程可以概括如下:</p>
+<ul>
+<li>数据包到达网卡设备</li>
+<li>网卡设备依据配置进行DMA操作</li>
+<li>网卡发送中断，唤醒处理器</li>
+<li>驱动软件填充读写缓冲区数据结构</li>
+<li>数据报文到达内核协议栈，进行高层处理</li>
+<li>如果最终应用在用户态，数据从内核搬移到用户态</li>
+<li>如果最终应用在内核态，在内核继续进行</li>
+</ul>
+<h2 id="2-cache和内存"><a href="#2-cache和内存" class="headerlink" title="2.cache和内存"></a>2.cache和内存</h2><h3 id="2-1存储系统简介"><a href="#2-1存储系统简介" class="headerlink" title="2.1存储系统简介"></a>2.1存储系统简介</h3><h4 id="2-1-1系统架构的演进"><a href="#2-1-1系统架构的演进" class="headerlink" title="2.1.1系统架构的演进"></a>2.1.1系统架构的演进</h4><p>在经典计算机系统中一般有两个标准化的部分:<em><strong>北桥</strong></em>和<em><strong>南桥</strong></em></p>
+<ul>
+<li>北桥也称为主桥，主要用来处理高速信号，通常负责与处理器的联系，并控制内存AGP、PCI数据在北桥内部传输。</li>
+<li>南桥也称为I&#x2F;O桥，负责I&#x2F;O总线之间的通信，比如:PCI总线，SATA,USB等。</li>
+</ul>
+<p>在这种系统中，所有的数据交换都需要通过北桥:</p>
+<ol>
+<li>处理器访问内存需要通过北桥</li>
+<li>处理器方位所有的外设</li>
+<li>处理器之间的数据交换</li>
+<li>挂在南桥的设备访问内存</li>
+</ol>
+<p>因此可以看出，这种系统的瓶颈就在北桥中。为了解决这个瓶颈，于是产生了NUMA(Non-Uniform Memory Architecture 非一致性内存架构)。在这种架构下，在一个拥有四核的机器中，不需要一个复杂的北桥就能将内存宽带增加到以前的四倍</p>
+<h3 id="2-2-cache系统简介"><a href="#2-2-cache系统简介" class="headerlink" title="2.2 cache系统简介"></a>2.2 cache系统简介</h3><blockquote>
+<p>为什么要提出cache的概念？<br>虽然随着DDR4，DDR5技术的不断推出，内存的吞吐率得到了很大提升，但是相对于处理器来说任然很慢，一般来讲，处理器要从内存中直接读取数据要花大概几百个时钟周期，在这期间，处理器除了等待什么也不能做。为了匹配处理器和内存之间存在巨大的速度差距，才提出了cache的概念。</p>
+</blockquote>
+<h4 id="2-2-1cache的种类"><a href="#2-2-1cache的种类" class="headerlink" title="2.2.1cache的种类"></a>2.2.1cache的种类</h4><p>一般来说，cache由三级组成，一级最快，但是容量最小，三级最慢，但是容量最大。cache是一种SRAM</p>
+<ul>
+<li>一级cache，一般分为数据cache和指令cache，数据cache用来存放数据，指令cache用来存放指令。一般只有几十KB。</li>
+<li>二级cache，数据cache和指令cache无差别存放在一起。一般有几百KB到几MB。</li>
+<li>三级cache，一般有几MB到几十个MB。</li>
+</ul>
+<p>对于各级cache的访问时间，在英特尔处理器上一般是一级cache访问是4个指令周期。二级cache是<br>12个指令周期，三级cache是26~31个指令周期。</p>
+<h3 id="2-3Cache地址映射和变换"><a href="#2-3Cache地址映射和变换" class="headerlink" title="2.3Cache地址映射和变换"></a>2.3Cache地址映射和变换</h3><p>由于内存大，cache容量小，如何把内存中的内容存放到cache中?需要一个映射算法和一个分块机制。</p>
+<p>分块机制就是cache和内存以块为单位进行数据交换，块的大小通常以在内粗的一个存储周期中能够访问到的数据长度为限。主流块的大小都是64字节，因此一个cache line就是64个字节大小的数据块。</p>
+<p>映射算法是指把内存地址空间映射到cache地址空间。<br>根据cache和内存之间的映射关系的不同，cache可以分为三类;全关联型cache，直接关联型cache，组关联型cache</p>
+<h4 id="2-3-1全关联型cache"><a href="#2-3-1全关联型cache" class="headerlink" title="2.3.1全关联型cache"></a>2.3.1全关联型cache</h4><p>全关联型cache是指主存中的任何一块内存都可以映射到cache中的任意一块位置上。在cache中，需要建立一个目录表，目录表的每个表项都有三部分组成：内存地址、cache块号和一个有效位。<br>使用全关联型cache，块冲突最小，cache的利用率也高，但是需要一个访问速度很快的相联存储器。一般只有容量很小的cache才会设计成全关联型的。</p>
+<h4 id="2-3-2直接关联型cache"><a href="#2-3-2直接关联型cache" class="headerlink" title="2.3.2直接关联型cache"></a>2.3.2直接关联型cache</h4><p>直接关联型cache是指主存中的一块内存只能映射到cache的一个特定的块中。假设一个cache中总共存在N个cache line，那么内存被分成N等分，其中每一等分对应一个cache line。直接关联型cache的目录表只有两部分组成，区号和有效位。<br>直接关联型cache命中率最低，但是实现方式最简单，匹配速度也最快。</p>
+<h4 id="2-3-3组关联型cache"><a href="#2-3-3组关联型cache" class="headerlink" title="2.3.3组关联型cache"></a>2.3.3组关联型cache</h4><p>组关联型Cache是目前Cache中用的比较广泛的一种方式，是前两种Cache的折中形式。在这种方式下，内存被分为很多组，一个组的大小为多个Cache line的大小，一个组映射到对应的多个连续的Cache line，也就是一个Cache组，并且该组内的任意一块可以映射到对应 Cache组的任意一个。可以看出，在组外，其采用直接关联型Cache的映射方式，而在组内，则采用全关联型Cache的映射方式。</p>
+<h3 id="2-4cache的写策略"><a href="#2-4cache的写策略" class="headerlink" title="2.4cache的写策略"></a>2.4cache的写策略</h3><p>内存的数据被加载到cache后，在某个时刻要被写回内存，有如下策略：</p>
+<ul>
+<li><em><strong>直写</strong></em>，就是在处理器对cache写入的同时，将数据写入到内存中，这种策略保证了在任何时刻，内存的数据和cache中的数据都是同步的。但是由于处理器每次对cache更新时都要对内存进行写操作，因此总线繁忙，占用了大量内存带宽。运行速度会受影响。</li>
+<li><em><strong>回写</strong></em>，回写系统通过将cache line的标志位添加上一个Dirty标志位，当处理器在改写了某个cache line后，并不是马上把其协会内存，而是将cache line的Dirty标志位置为1.当处理器查表发现该标志位为1时，先将cache line内容写回到内存中，再将新数据写到cache中。</li>
+</ul>
+<blockquote>
+<p>回写系统在多核系统中会引起cache一致性的问题。</p>
+</blockquote>
+<h3 id="2-5cache预取"><a href="#2-5cache预取" class="headerlink" title="2.5cache预取"></a>2.5cache预取</h3><h4 id="2-5-1cache预取原理"><a href="#2-5-1cache预取原理" class="headerlink" title="2.5.1cache预取原理"></a>2.5.1cache预取原理</h4><p>cache之所以能够提高系统性能，主要是程序执行存在局部性现象，即时间局部性和空间局部性。</p>
+<ol>
+<li>时间局部性：是指程序即将用到的指令&#x2F;数据可能就是目前正在使用的指令&#x2F;数据。比如一个循环语句的指令，在循环终止的条件满足之前，处理器需要反复执行循环语句中的指令</li>
+<li>空间局部性：是指程序即将用到的指令&#x2F;数据可能与目前正在使用的指令&#x2F;数据在空间上相邻或相近。比如一个需要顺序处理的数组。</li>
+</ol>
+<p>所谓的cache预取就是预测数据并取入到cache中，是根据空间局部性和时间局部性等在数据&#x2F;指令被使用前取入cache。</p>
+<h4 id="2-5-2DPDK中的预取"><a href="#2-5-2DPDK中的预取" class="headerlink" title="2.5.2DPDK中的预取"></a>2.5.2DPDK中的预取</h4><p>报文处理的基本过程：</p>
+<ol>
+<li>写接收描述符到内存，填充数据缓冲区指针，网卡收到报文后 就会根据这个地址把报文内容填充进去。</li>
+<li>从内存中读取接收描述符（当收到报文时，网卡会更新该结构）（内存读），从而确认是否收到报文。</li>
+<li>从接收描述符确认收到报文时，从内存中读取控制结构体的指针（内存读），再从内存中读取控制结构体（内存读），把从接收描述符读取的信息填充到该控制结构体。</li>
+<li>更新接收队列寄存器，表示软件接收到了新的报文。 </li>
+<li>内存中读取报文头部（内存读），决定转发端口。</li>
+<li>从控制结构体把报文信息填入到发送队列发送描述符，更新发送队列寄存器。 </li>
+<li>从内存中读取发送描述符（内存读），检查是否有包被硬件传送出去。 </li>
+<li>如果有的话，从内存中读取相应控制结构体（内存读），释放数据缓冲区。</li>
+</ol>
+<p>DPDK必须保证所有需要读取的数据都在cache中，否则一旦出现cache不命中，性能将会严重下降。<br>以下是报文接收部分代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (nb_rx &lt; nb_pkts) &#123; </span><br><span class="line">    rxdp = &amp;rx_ring[rx_id]; </span><br><span class="line">    <span class="comment">//读取接收描述符 </span></span><br><span class="line">    staterr = rxdp-&gt;wb.upper.status_error; </span><br><span class="line">    <span class="comment">//检查是否有报文收到</span></span><br><span class="line">    <span class="keyword">if</span> (!(staterr &amp; rte_cpu_to_le_32(IXGBE_RXDADV_STAT_DD))) <span class="keyword">break</span>;</span><br><span class="line">    rxd = *rxdp; </span><br><span class="line">    <span class="comment">//分配数据缓冲区</span></span><br><span class="line">    nmb = rte_rxmbuf_alloc(rxq-&gt;mb_pool); </span><br><span class="line">    nb_hold++; </span><br><span class="line">    <span class="comment">//读取控制结构体</span></span><br><span class="line">    rxe = &amp;sw_ring[rx_id]; ……</span><br><span class="line">    rx_id++;</span><br><span class="line">    <span class="keyword">if</span> (rx_id == rxq-&gt;nb_rx_desc) rx_id = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">//预取下一个控制结构体mbuf</span></span><br><span class="line">    rte_ixgbe_prefetch(sw_ring[rx_id].mbuf); </span><br><span class="line">    <span class="comment">//预取接收描述符和控制结构体指针 </span></span><br><span class="line">    <span class="keyword">if</span> ((rx_id &amp; <span class="number">0x3</span>) == <span class="number">0</span>) &#123;</span><br><span class="line">        rte_ixgbe_prefetch(&amp;rx_ring[rx_id]); </span><br><span class="line">        rte_ixgbe_prefetch(&amp;sw_ring[rx_id]);</span><br><span class="line">&#125;</span><br><span class="line">…… </span><br><span class="line">    <span class="comment">//预取报文</span></span><br><span class="line">    rte_packet_prefetch((<span class="type">char</span> *)rxm-&gt;buf_addr + rxm-&gt;data_off); </span><br><span class="line">    <span class="comment">//把接收描述符读取的信息存储在控制结构体mbuf中 </span></span><br><span class="line">    rxm-&gt;nb_segs = <span class="number">1</span>; </span><br><span class="line">    rxm-&gt;next = <span class="literal">NULL</span>; </span><br><span class="line">    rxm-&gt;pkt_len = pkt_len; </span><br><span class="line">    rxm-&gt;data_len = pkt_len; </span><br><span class="line">    rxm-&gt;port = rxq-&gt;port_id; ……</span><br><span class="line">    rx_pkts[nb_rx++] = rxm;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-6cache一致性"><a href="#2-6cache一致性" class="headerlink" title="2.6cache一致性"></a>2.6cache一致性</h3><h4 id="2-6-1cache一致性问题的由来及解决办法"><a href="#2-6-1cache一致性问题的由来及解决办法" class="headerlink" title="2.6.1cache一致性问题的由来及解决办法"></a>2.6.1cache一致性问题的由来及解决办法</h4><p>当多个处理器对某个内存块同时读写时，同时对内存进行写回操作时，便会引起冲突，这便是cache一致性问题。<br>cache一致性问题出现的原因时在一个多处理器系统中，每个处理器核心都有独占的cache系统，因此当他们独立执行计算机指令时，有可能同时对某个内存块进行读写操作。<br>cache一致性问题的根源是因为存在多个处理器独占的cache而不是多个处理器。<br>解决办法：两种机制</p>
+<ol>
+<li>基于目录的协议<br>需要缓存在cache的内存块被统一存储在一个目录表中，目录表统一管理所有的数据。<br>特点：延迟性较大，有更好的扩展性</li>
+<li>总线窥探协议<br>提出了一个窥探的动作，即对于被处理器独占的cache中的缓存的内容，该处理器负责监听总线，如果该内容被本处理器修改，则需要总线广播，繁殖如果本处理器的cache从总线收到了通知，则需要改变本地备份的状态。<br>适用于具有广播能力的总线结构。<h4 id="2-6-3DPDK如何保证cache一致性"><a href="#2-6-3DPDK如何保证cache一致性" class="headerlink" title="2.6.3DPDK如何保证cache一致性"></a>2.6.3DPDK如何保证cache一致性</h4>dpdk的解决方案很简单，首先就是避免多个核访问同一个内存地址或者数据结构。这样每个核都避免与其他核共享数据，从而减少因为错误的数据共享导致的cache一致性的开销。</li>
+</ol>
+
+      <div class="tags">
+          <a href="/tags/dpdk/" rel="tag"><i class="ic i-tag"></i> dpdk</a>
+          <a href="/tags/cache/" rel="tag"><i class="ic i-tag"></i> cache</a>
+          <a href="/tags/%E5%86%85%E5%AD%98/" rel="tag"><i class="ic i-tag"></i> 内存</a>
+      </div>
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新于</span>
+    <time title="修改时间：2022-05-04 19:54:51" itemprop="dateModified" datetime="2022-05-04T19:54:51+08:00">2022-05-04</time>
+  </span>
+  <span id="2022/05/03/dpdk/dpdk-advanced/dpdk进阶-ch2/" class="item leancloud_visitors" data-flag-title="深入浅出dpdk-ch2" title="阅读次数">
+      <span class="icon">
+        <i class="ic i-eye"></i>
+      </span>
+      <span class="text">阅读次数</span>
+      <span class="leancloud-visitors-count"></span>
+      <span class="text">次</span>
+  </span>
+</div>
+
+      
+<div class="reward">
+  <button><i class="ic i-heartbeat"></i> 赞赏</button>
+  <p>听我说，谢谢你</p>
+  <div id="qr">
+      
+      <div>
+        <img data-src="/images/wepay.jpg" alt="Single Wang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div>
+        <img data-src="/images/zhipay.jpg" alt="Single Wang 支付宝">
+        <p>支付宝</p>
+      </div>
+  </div>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>本文作者： </strong>Single Wang <i class="ic i-at"><em>@</em></i>Single Wang's Blog
+  </li>
+  <li class="link">
+    <strong>本文链接：</strong>
+    <a href="http://singlewang.top/2022/05/03/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch2/" title="深入浅出dpdk-ch2">http://singlewang.top/2022/05/03/dpdk/dpdk-advanced/dpdk进阶-ch2/</a>
+  </li>
+  <li class="license">
+    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/2022/05/03/linux/linux-command/linux%E5%91%BD%E4%BB%A4/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva1.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1gicm0fdw5cj20zk0m8hdt.jpg" title="Linux命令">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> Linux命令</span>
+  <h3>Linux命令</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/2022/05/03/linux/linux-kernal/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp1/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;tva1.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giciuja1j1j20zk0m8kjl.jpg" title="Linux内核协议栈-cp1">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> Linux内核协议栈</span>
+  <h3>Linux内核协议栈-cp1</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-cache%E5%92%8C%E5%86%85%E5%AD%98"><span class="toc-number">1.</span> <span class="toc-text">2.cache和内存</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1%E5%AD%98%E5%82%A8%E7%B3%BB%E7%BB%9F%E7%AE%80%E4%BB%8B"><span class="toc-number">1.1.</span> <span class="toc-text">2.1存储系统简介</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-1%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E7%9A%84%E6%BC%94%E8%BF%9B"><span class="toc-number">1.1.1.</span> <span class="toc-text">2.1.1系统架构的演进</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-cache%E7%B3%BB%E7%BB%9F%E7%AE%80%E4%BB%8B"><span class="toc-number">1.2.</span> <span class="toc-text">2.2 cache系统简介</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-1cache%E7%9A%84%E7%A7%8D%E7%B1%BB"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.2.1cache的种类</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3Cache%E5%9C%B0%E5%9D%80%E6%98%A0%E5%B0%84%E5%92%8C%E5%8F%98%E6%8D%A2"><span class="toc-number">1.3.</span> <span class="toc-text">2.3Cache地址映射和变换</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-1%E5%85%A8%E5%85%B3%E8%81%94%E5%9E%8Bcache"><span class="toc-number">1.3.1.</span> <span class="toc-text">2.3.1全关联型cache</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-2%E7%9B%B4%E6%8E%A5%E5%85%B3%E8%81%94%E5%9E%8Bcache"><span class="toc-number">1.3.2.</span> <span class="toc-text">2.3.2直接关联型cache</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-3%E7%BB%84%E5%85%B3%E8%81%94%E5%9E%8Bcache"><span class="toc-number">1.3.3.</span> <span class="toc-text">2.3.3组关联型cache</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4cache%E7%9A%84%E5%86%99%E7%AD%96%E7%95%A5"><span class="toc-number">1.4.</span> <span class="toc-text">2.4cache的写策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5cache%E9%A2%84%E5%8F%96"><span class="toc-number">1.5.</span> <span class="toc-text">2.5cache预取</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-5-1cache%E9%A2%84%E5%8F%96%E5%8E%9F%E7%90%86"><span class="toc-number">1.5.1.</span> <span class="toc-text">2.5.1cache预取原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-5-2DPDK%E4%B8%AD%E7%9A%84%E9%A2%84%E5%8F%96"><span class="toc-number">1.5.2.</span> <span class="toc-text">2.5.2DPDK中的预取</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-6cache%E4%B8%80%E8%87%B4%E6%80%A7"><span class="toc-number">1.6.</span> <span class="toc-text">2.6cache一致性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-6-1cache%E4%B8%80%E8%87%B4%E6%80%A7%E9%97%AE%E9%A2%98%E7%9A%84%E7%94%B1%E6%9D%A5%E5%8F%8A%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95"><span class="toc-number">1.6.1.</span> <span class="toc-text">2.6.1cache一致性问题的由来及解决办法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-6-3DPDK%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81cache%E4%B8%80%E8%87%B4%E6%80%A7"><span class="toc-number">1.6.2.</span> <span class="toc-text">2.6.3DPDK如何保证cache一致性</span></a></li></ol></li></ol></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li class="active"><a href="/2022/05/03/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch2/" rel="bookmark" title="深入浅出dpdk-ch2">深入浅出dpdk-ch2</a></li>
+        </ul>
+      </div>
+      <div class="overview panel" data-title="站点概览">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="Single Wang"
+      data-src="/images/taizaizhi.jpg">
+  <p class="name" itemprop="name">Single Wang</p>
+  <div class="description" itemprop="description">智者不入爱河，愚者重蹈覆辙</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/archives/">
+        <span class="count">10</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+    <div class="item categories">
+      <a href="/categories/">
+        <span class="count">12</span>
+        <span class="name">分类</span>
+      </a>
+    </div>
+    <div class="item tags">
+      <a href="/tags/">
+        <span class="count">18</span>
+        <span class="name">标签</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+      <span class="exturl item github" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbXBsZVdhbmcwMTE4" title="https:&#x2F;&#x2F;github.com&#x2F;SimpleWang0118"><i class="ic i-github"></i></span>
+      <a href="/931346283@qq.com" title="931346283@qq.com" class="item email"><i class="ic i-envelope"></i></a>
+      <a href="/931346283@qq.com" title="931346283@qq.com" class="item QQ"><i class="ic i-qq"></i></a>
+      <a href="/WLH931346283" title="WLH931346283" class="item WeChat"><i class="ic i-weixin"></i></a>
+      <span class="exturl item music" data-url="aHR0cHM6Ly9tdXNpYy4xNjMuY29tLyMvdXNlci9ob21lP2lkPTEyODkyMjAwMjc=" title="https:&#x2F;&#x2F;music.163.com&#x2F;#&#x2F;user&#x2F;home?id&#x3D;1289220027"><i class="ic i-cloud-music"></i></span>
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/" rel="section"><i class="ic i-home"></i>首页</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/archives/" rel="section"><i class="ic i-list-alt"></i>归档</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/categories/" rel="section"><i class="ic i-th"></i>分类</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/tags/" rel="section"><i class="ic i-tags"></i>标签</a>
+  </li>
+
+  </ul>
+    
+  <li class="item">
+    <a href="/about/" rel="section"><i class="ic i-user"></i>关于</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/2022/05/03/linux/linux-command/linux%E5%91%BD%E4%BB%A4/" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/2022/05/03/linux/linux-kernal/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp1/" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>随机文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/dpdk/dpdk-base/" title="分类于 DPDK基础">DPDK基础</a>
+</div>
+
+    <span><a href="/2022/04/29/dpdk/dpdk-base/dpdk/" title="DPDK基础">DPDK基础</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/linux/" title="分类于 Linux">Linux</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/linux/linux-kernal/" title="分类于 Linux内核协议栈">Linux内核协议栈</a>
+</div>
+
+    <span><a href="/2022/05/03/linux/linux-kernal/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp1/" title="Linux内核协议栈-cp1">Linux内核协议栈-cp1</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/linux/" title="分类于 Linux">Linux</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/linux/linux-kernal/" title="分类于 Linux内核协议栈">Linux内核协议栈</a>
+</div>
+
+    <span><a href="/2022/05/03/linux/linux-kernal/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp2/" title="Linux内核协议栈-cp2">Linux内核协议栈-cp2</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/markdown/" title="分类于 Markdown">Markdown</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/markdown/markdown-base/" title="分类于 Markdown基础">Markdown基础</a>
+</div>
+
+    <span><a href="/2022/04/29/markdown/markdown-base/markdownlearn/" title="Markdown教程">Markdown教程</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/linux/" title="分类于 Linux">Linux</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/linux/linux-command/" title="分类于 Linux命令">Linux命令</a>
+</div>
+
+    <span><a href="/2022/05/03/linux/linux-command/linux%E5%91%BD%E4%BB%A4/" title="Linux命令">Linux命令</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/cpp/" title="分类于 C++">C++</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/cpp/cpp-bug/" title="分类于 C++BUG">C++BUG</a>
+</div>
+
+    <span><a href="/2022/05/03/cpp/cpp-bug/c++bug-1/" title="c++遇到的bug-1">c++遇到的bug-1</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2022/05/03/%E5%88%B7%E6%9C%BA%E6%95%99%E7%A8%8B/" title="刷机教程">刷机教程</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/dpdk/dpdk-advanced/" title="分类于 DPDK进阶">DPDK进阶</a>
+</div>
+
+    <span><a href="/2022/05/03/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch2/" title="深入浅出dpdk-ch2">深入浅出dpdk-ch2</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/informal-essay/" title="分类于 随笔">随笔</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/informal-essay/life/" title="分类于 生活感悟">生活感悟</a>
+</div>
+
+    <span><a href="/2022/04/29/informal-essay/life/start/" title="少年啊，前路漫漫">少年啊，前路漫漫</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2022/05/03/git%E5%AD%A6%E4%B9%A0/" title="git学习">git学习</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新评论</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2022-04 – 
+    <span itemprop="copyrightYear">2022</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Single Wang @ 智者不入爱河</span>
+  </div>
+  <div class="count">
+    <span class="post-meta-item-icon">
+      <i class="ic i-chart-area"></i>
+    </span>
+    <span title="站点总字数">32k 字</span>
+
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="ic i-coffee"></i>
+    </span>
+    <span title="站点阅读时长">29 分钟</span>
+  </div>
+  <div class="powered-by">
+    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: '2022/05/03/dpdk/dpdk-advanced/dpdk进阶-ch2/',
+    favicon: {
+      show: "（●´3｀●）やれやれだぜ",
+      hide: "(´Д｀)大変だ！"
+    },
+    search : {
+      placeholder: "文章搜索",
+      empty: "关于 「 ${query} 」，什么也没搜到",
+      stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    valine: true,fancybox: true,
+    copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/js/app.js?v=0.2.5"></script>
+
+
+
+
+</body>
+</html>

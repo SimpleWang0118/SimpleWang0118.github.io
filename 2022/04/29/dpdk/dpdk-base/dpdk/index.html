@@ -76,7 +76,7 @@ DPDK基础 - DPDK基础 - DPDK |
       <i class="ic i-pen"></i>
     </span>
     <span class="text">本文字数</span>
-    <span>15k</span>
+    <span>16k</span>
     <span class="text">字</span>
   </span>
   <span class="item" title="阅读时长">
@@ -84,7 +84,7 @@ DPDK基础 - DPDK基础 - DPDK |
       <i class="ic i-clock"></i>
     </span>
     <span class="text">阅读时长</span>
-    <span>14 分钟</span>
+    <span>15 分钟</span>
   </span>
 </div>
 
@@ -117,12 +117,12 @@ DPDK基础 - DPDK基础 - DPDK |
       </div>
       <div id="imgs" class="pjax">
         <ul>
-          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1giclg5ms2rj20zk0m8u0x.jpg"></li>
-          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gipesng5oej20zk0m87d4.jpg"></li>
-          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1giph4baakhj20zk0m8h5q.jpg"></li>
-          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gipeun65urj20zk0m81ii.jpg"></li>
-          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1giciub8ja1j20zk0m81ky.jpg"></li>
-          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gicli9lfebj20zk0m84qp.jpg"></li>
+          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1giciundwu5j20zk0m8n9e.jpg"></li>
+          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gicljitigmj20zk0m87fp.jpg"></li>
+          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1giclxp31goj20zk0m8qv5.jpg"></li>
+          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1giciukx8a7j20zk0m8aio.jpg"></li>
+          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gicm07ih54j20zk0m84qp.jpg"></li>
+          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gipevgoki5j20zk0m84qp.jpg"></li>
         </ul>
       </div>
     </header>
@@ -610,14 +610,17 @@ DPDK基础 - DPDK基础 - DPDK |
 <li><p>运行</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./build/helloworld -c f -n 4</span><br></pre></td></tr></table></figure>
 <h4 id="4-2-1代码说明"><a href="#4-2-1代码说明" class="headerlink" title="4.2.1代码说明"></a>4.2.1代码说明</h4></li>
+<li><p>主线程运行入口是main函数,调用了<code>rte_eal_init</code>入口函数，启动基础运行环境。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ret = rte_eal_init(argc, argv);<span class="comment">//初始化EAL层，返回值时解析的参数格式。</span></span><br><span class="line"><span class="keyword">if</span> (ret &lt; <span class="number">0</span>)</span><br><span class="line">	rte_panic(<span class="string">&quot;Cannot init EAL\n&quot;</span>);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>RTE_LCORE_FOREACH_SLAVE(lcore_id)</code>，遍历所有的EAL指定可以使用的lcore，然后通过<code>rte_eal_remote_launch</code>在每个lcore上启动被指定的线程。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">RTE_LCORE_FOREACH_SLAVE(lcore_id) &#123;</span><br><span class="line">	rte_eal_remote_launch(lcore_hello, <span class="literal">NULL</span>, lcore_id);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>执行lcore_hello从线程</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">int</span></span><br><span class="line"><span class="title function_">lcore_hello</span><span class="params">(__attribute__((unused)) <span class="type">void</span> *arg)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">unsigned</span> lcore_id;</span><br><span class="line">	lcore_id = rte_lcore_id();<span class="comment">//返回线程ID</span></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;hello from core %u\n&quot;</span>, lcore_id);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ol>
-<ul>
-<li>主线程运行入口是main函数,调用了<code>rte_eal_init</code>入口函数，启动基础运行环境。</li>
-<li><code>RTE_LCORE_FOREACH_SLAVE(lcore_id)</code>，遍历所有的EAL指定可以使用的lcore，然后通过<code>rte_eal_remote_launch</code>在每个lcore上启动被指定的线程。</li>
-</ul>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">rte_eal_remote_launch</span><span class="params">(<span class="type">int</span> (*f)(<span class="type">void</span>*),<span class="type">void</span> *arg,unsingned slave_id)</span>;</span><br></pre></td></tr></table></figure>
 <ul>
-<li>第一个参数是从线程，被征兆额线程</li>
+<li>第一个参数是从线程，被征兆的线程</li>
 <li>第二个参数是传给从线程的参数</li>
 <li>第三个参数是指定的逻辑核，从线程会执行在这个core上。</li>
 </ul>
@@ -637,11 +640,11 @@ DPDK基础 - DPDK基础 - DPDK |
 
 <p>编译该应用同helloworld类似</p>
 <ol>
-<li>该应用实例首先是初始化EAL层使用<code>rte_eal_init</code>初始化，解析EAL参数，然后通过<code>l2fwd_parse_args()</code>函数解析该应用例的特殊参数。</li>
-<li>参数解析完毕，便使用<code>rte_pktmbuf_pool_create()</code>函数创建mbuf pool，mbuf pool中包含了一系列的mbuf对象，用来驱动和应用程序来存放报文。在<code>rte_pktmbuf_pool_creat()</code>函数中，有两个回调函数指针，一个是位于<code>rte_pktmbuf_pool_init()</code>函数中的mp指针，用于初始化驱动程序的私有数据的内存。</li>
-<li>接下来是驱动程序初始化，通过<code>ret_eth_dev_configure()</code>函数配置每个端口上的队列个数。</li>
-<li>然后是RX接收队列初始化，通过<code>rte_eth_rx_queue_setup</code>设置接收队列。</li>
-<li>初始化TX发送队列，发送队列中，每个逻辑核可以在任何端口中发送。通过<code>rte_eth_tx_queue_setup</code>初始化。</li>
+<li>该应用实例首先是初始化EAL层使用<code>rte_eal_init</code>初始化，解析EAL参数，然后通过<code>l2fwd_parse_args()</code>函数解析该应用例的特殊参数。<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ret = rte_eal_init(argc, argv);<span class="comment">//初始化EAL层</span></span><br><span class="line">······</span><br><span class="line">signal(SIGINT, signal_handler);  <span class="comment">//SIGINT,中断信号</span></span><br><span class="line">signal(SIGTERM, signal_handler);  <span class="comment">//SIGTERM，发送给本程序的中止请求信号</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* parse application arguments (after the EAL ones) */</span></span><br><span class="line">ret = l2fwd_parse_args(argc, argv);  <span class="comment">//解析该应用例的特殊参数</span></span><br></pre></td></tr></table></figure></li>
+<li>参数解析完毕，便使用<code>rte_pktmbuf_pool_create()</code>函数创建mbuf pool，mbuf pool中包含了一系列的mbuf对象，用来驱动和应用程序来存放报文。在<code>rte_pktmbuf_pool_creat()</code>函数中，有两个回调函数指针，一个是位于<code>rte_pktmbuf_pool_init()</code>函数中的mp指针，用于初始化驱动程序的私有数据的内存。<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">l2fwd_pktmbuf_pool = rte_pktmbuf_pool_create(<span class="string">&quot;mbuf_pool&quot;</span>, nb_mbufs,</span><br><span class="line">		MEMPOOL_CACHE_SIZE, <span class="number">0</span>, RTE_MBUF_DEFAULT_BUF_SIZE,</span><br><span class="line">		rte_socket_id());</span><br></pre></td></tr></table></figure></li>
+<li>接下来是驱动程序初始化，通过<code>ret_eth_dev_configure()</code>函数配置每个端口上的队列个数。<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ret = rte_eth_dev_configure(portid, <span class="number">1</span>, <span class="number">1</span>, &amp;local_port_conf);</span><br></pre></td></tr></table></figure></li>
+<li>然后是RX接收队列初始化，通过<code>rte_eth_rx_queue_setup</code>设置接收队列。<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ret = rte_eth_rx_queue_setup(portid, <span class="number">0</span>, nb_rxd,</span><br><span class="line">			     rte_eth_dev_socket_id(portid),</span><br><span class="line">			     &amp;rxq_conf,</span><br><span class="line">			     l2fwd_pktmbuf_pool);</span><br></pre></td></tr></table></figure></li>
+<li>初始化TX发送队列，发送队列中，每个逻辑核可以在任何端口中发送。通过<code>rte_eth_tx_queue_setup</code>初始化。<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ret = rte_eth_tx_queue_setup(portid, <span class="number">0</span>, nb_txd,</span><br><span class="line">		rte_eth_dev_socket_id(portid),</span><br><span class="line">		&amp;txq_conf);</span><br></pre></td></tr></table></figure></li>
 <li>报文的收发与报文处理。通过<code>l2fwd_main_loop</code>函数读取从RX队列接收到的报文。报文被读取到<code>MAX_PKT_BURST</code>大小的内存块中，然后通过<code>rte_eth_rx_burst</code>函数将mbuf指针写入一个本地表，并返回该表中的mbuf个数。然后每个mbuf被<code>l2fwd_simple_forward</code>函数处理。处理过程：从RX端口处理完成后，转送到TX端口发送，替换源MAC和目的MAC。</li>
 <li>报文使用<code>rte_eth_tx_buffer</code>函数发送。</li>
 </ol>
@@ -862,7 +865,7 @@ DPDK基础 - DPDK基础 - DPDK |
       <i class="ic i-calendar-check"></i>
     </span>
     <span class="text">更新于</span>
-    <time title="修改时间：2022-05-03 15:42:50" itemprop="dateModified" datetime="2022-05-03T15:42:50+08:00">2022-05-03</time>
+    <time title="修改时间：2022-05-04 20:09:16" itemprop="dateModified" datetime="2022-05-04T20:09:16+08:00">2022-05-04</time>
   </span>
   <span id="2022/04/29/dpdk/dpdk-base/dpdk/" class="item leancloud_visitors" data-flag-title="DPDK基础" title="阅读次数">
       <span class="icon">
@@ -920,7 +923,7 @@ DPDK基础 - DPDK基础 - DPDK |
     <div class="item left">
       
 
-  <a href="/2022/04/29/informal-essay/life/start/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva1.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giclfdu6exj20zk0m87hw.jpg" title="少年啊，前路漫漫">
+  <a href="/2022/04/29/informal-essay/life/start/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva1.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1gipeyvx1d4j20zk0m8hdt.jpg" title="少年啊，前路漫漫">
   <span class="type">上一篇</span>
   <span class="category"><i class="ic i-flag"></i> 生活感悟</span>
   <h3>少年啊，前路漫漫</h3>
@@ -930,7 +933,7 @@ DPDK基础 - DPDK基础 - DPDK |
     <div class="item right">
       
 
-  <a href="/2022/05/03/linux/linux-command/linux%E5%91%BD%E4%BB%A4/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;tva1.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1gipevuctzzj20zk0m84qp.jpg" title="Linux命令">
+  <a href="/2022/05/03/linux/linux-command/linux%E5%91%BD%E4%BB%A4/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;tva1.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giclfdu6exj20zk0m87hw.jpg" title="Linux命令">
   <span class="type">下一篇</span>
   <span class="category"><i class="ic i-flag"></i> Linux命令</span>
   <h3>Linux命令</h3>
@@ -982,7 +985,7 @@ DPDK基础 - DPDK基础 - DPDK |
     </div>
     <div class="item tags">
       <a href="/tags/">
-        <span class="count">16</span>
+        <span class="count">18</span>
         <span class="name">标签</span>
       </a>
     </div>
@@ -1060,54 +1063,6 @@ DPDK基础 - DPDK基础 - DPDK |
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
-<i class="ic i-angle-right"></i>
-<a href="/categories/dpdk/dpdk-advanced/" title="分类于 DPDK进阶">DPDK进阶</a>
-</div>
-
-    <span><a href="/2022/05/03/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6/" title="深入浅出dpdk">深入浅出dpdk</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/markdown/" title="分类于 Markdown">Markdown</a>
-<i class="ic i-angle-right"></i>
-<a href="/categories/markdown/markdown-base/" title="分类于 Markdown基础">Markdown基础</a>
-</div>
-
-    <span><a href="/2022/04/29/markdown/markdown-base/markdownlearn/" title="Markdown教程">Markdown教程</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/linux/" title="分类于 Linux">Linux</a>
-<i class="ic i-angle-right"></i>
-<a href="/categories/linux/linux-kernal/" title="分类于 Linux内核协议栈">Linux内核协议栈</a>
-</div>
-
-    <span><a href="/2022/05/03/linux/linux-kernal/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp1/" title="Linux内核协议栈-cp1">Linux内核协议栈-cp1</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/cpp/" title="分类于 C++">C++</a>
-<i class="ic i-angle-right"></i>
-<a href="/categories/cpp/cpp-bug/" title="分类于 C++BUG">C++BUG</a>
-</div>
-
-    <span><a href="/2022/05/03/cpp/cpp-bug/c++bug-1/" title="c++遇到的bug-1">c++遇到的bug-1</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
 <a href="/categories/linux/" title="分类于 Linux">Linux</a>
 <i class="ic i-angle-right"></i>
 <a href="/categories/linux/linux-kernal/" title="分类于 Linux内核协议栈">Linux内核协议栈</a>
@@ -1132,12 +1087,21 @@ DPDK基础 - DPDK基础 - DPDK |
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
-<i class="ic i-angle-right"></i>
-<a href="/categories/dpdk/dpdk-base/" title="分类于 DPDK基础">DPDK基础</a>
 </div>
 
-    <span><a href="/2022/04/29/dpdk/dpdk-base/dpdk/" title="DPDK基础">DPDK基础</a></span>
+    <span><a href="/2022/05/03/%E5%88%B7%E6%9C%BA%E6%95%99%E7%A8%8B/" title="刷机教程">刷机教程</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/markdown/" title="分类于 Markdown">Markdown</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/markdown/markdown-base/" title="分类于 Markdown基础">Markdown基础</a>
+</div>
+
+    <span><a href="/2022/04/29/markdown/markdown-base/markdownlearn/" title="Markdown教程">Markdown教程</a></span>
   </li>
 
       
@@ -1158,16 +1122,55 @@ DPDK基础 - DPDK基础 - DPDK |
 <div class="breadcrumb">
 </div>
 
-    <span><a href="/2022/05/03/%E5%88%B7%E6%9C%BA%E6%95%99%E7%A8%8B/" title="刷机教程">刷机教程</a></span>
+    <span><a href="/2022/05/03/git%E5%AD%A6%E4%B9%A0/" title="git学习">git学习</a></span>
   </li>
 
       
   <li class="item">
     
 <div class="breadcrumb">
+<a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/dpdk/dpdk-base/" title="分类于 DPDK基础">DPDK基础</a>
 </div>
 
-    <span><a href="/2022/05/03/git%E5%AD%A6%E4%B9%A0/" title="git学习">git学习</a></span>
+    <span><a href="/2022/04/29/dpdk/dpdk-base/dpdk/" title="DPDK基础">DPDK基础</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/linux/" title="分类于 Linux">Linux</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/linux/linux-kernal/" title="分类于 Linux内核协议栈">Linux内核协议栈</a>
+</div>
+
+    <span><a href="/2022/05/03/linux/linux-kernal/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp1/" title="Linux内核协议栈-cp1">Linux内核协议栈-cp1</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/dpdk/dpdk-advanced/" title="分类于 DPDK进阶">DPDK进阶</a>
+</div>
+
+    <span><a href="/2022/05/03/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch2/" title="深入浅出dpdk-ch2">深入浅出dpdk-ch2</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/cpp/" title="分类于 C++">C++</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/cpp/cpp-bug/" title="分类于 C++BUG">C++BUG</a>
+</div>
+
+    <span><a href="/2022/05/03/cpp/cpp-bug/c++bug-1/" title="c++遇到的bug-1">c++遇到的bug-1</a></span>
   </li>
 
   </ul>
@@ -1192,13 +1195,13 @@ DPDK基础 - DPDK基础 - DPDK |
     <span class="post-meta-item-icon">
       <i class="ic i-chart-area"></i>
     </span>
-    <span title="站点总字数">27k 字</span>
+    <span title="站点总字数">32k 字</span>
 
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="ic i-coffee"></i>
     </span>
-    <span title="站点阅读时长">25 分钟</span>
+    <span title="站点阅读时长">29 分钟</span>
   </div>
   <div class="powered-by">
     基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
