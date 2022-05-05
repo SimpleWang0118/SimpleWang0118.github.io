@@ -9,8 +9,77 @@
     <atom:link href="http://singlewang.top/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>智者不入爱河，愚者重蹈覆辙</description>
-    <pubDate>Tue, 03 May 2022 12:57:20 GMT</pubDate>
+    <pubDate>Thu, 05 May 2022 13:46:17 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>cpp之虚函数与多态</title>
+      <link>http://singlewang.top/2022/05/05/cpp/cpp%E5%A4%9A%E6%80%81/</link>
+      <guid>http://singlewang.top/2022/05/05/cpp/cpp%E5%A4%9A%E6%80%81/</guid>
+      <pubDate>Thu, 05 May 2022 13:20:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;p&gt;何为 &lt;em&gt;&lt;strong&gt;多态&lt;/strong&gt;&lt;/em&gt;,顾名思义是同一个事物在不同场景下的多种形态。&lt;br&gt;多态分类：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;静态多态&lt;ul&gt;
+&lt;li&gt;函数重载&lt;/li&gt;
+&lt;li&gt;泛型编程&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;动态多态&lt;ul</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<p>何为 <em><strong>多态</strong></em>,顾名思义是同一个事物在不同场景下的多种形态。<br>多态分类：</p><ul><li>静态多态<ul><li>函数重载</li><li>泛型编程</li></ul></li><li>动态多态<ul><li>虚函数</li></ul></li></ul><h3 id="静态多态"><a href="#静态多态" class="headerlink" title="静态多态"></a>静态多态</h3><p>函数重载就是一个简单的静态多态</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">Add</span><span class="params">(<span class="type">int</span> left, <span class="type">int</span> right)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> left + right;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">double</span> <span class="title">Add</span><span class="params">(<span class="type">double</span> left, <span class="type">int</span> right)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> left + right;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">Add</span>(<span class="number">10</span>, <span class="number">20</span>);</span><br><span class="line">    <span class="comment">//Add(10.0, 20.0);  //这是一个问题代码</span></span><br><span class="line">    <span class="built_in">Add</span>(<span class="number">10.0</span>,<span class="number">20</span>);  <span class="comment">//正常代码</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p><em>静态多态实在编译期间完成的，编译器会根据实参类型来调用合适的函数,如果有合适的函数就调用，如果没有就会发出警告或报错</em></p><h3 id="动态多态"><a href="#动态多态" class="headerlink" title="动态多态"></a>动态多态</h3><p>动态多态，看名字就知道和静态多态是相反的。<em>它是在程序运行时根据基类的引用（指针）指向的对象来确定自己具体该调用哪一个类的&#x3D;&#x3D;虚函数&#x3D;&#x3D;</em></p><p>提到动态多态那么不得不提一嘴虚函数。虚函数可以说对动态多态具有决定性的作用。有虚函数才能构成多态。使用虚函数的注意事项：</p><ol><li>只需要在虚函数的声明处加上 virtual 关键字，函数定义处可以加也可以不加。</li><li>可以只将基类中的函数声明为虚函数，这样所有派生类中具有遮蔽（覆盖）关系的同名函数都将自动成为虚函数。</li><li>当在基类中定义了虚函数时，如果派生类没有定义新的函数来遮蔽此函数，那么将使用基类的虚函数。</li><li>只有派生类的虚函数遮蔽基类的虚函数（函数原型相同）才能构成多态（通过基类指针访问派生类函数）。</li><li>构造函数不能是虚函数。对于基类的构造函数，它仅仅是在派生类构造函数中被调用，这种机制不同于继承。也就是说，派生类不继承基类的构造函数，将构造函数声明为虚函数没有什么意义。</li><li>析构函数可以声明为虚函数，而且有时候必须要声明为虚函数。</li></ol><p>那么虚函数的作用是什么呢？</p><ol><li>定义子类对象，并调用对象中未被子类覆盖的基类函数A。同时在该函数A中，又调用了已被子类覆盖的基类函数B。那此时将会调用基类中的函数B，可我们本应该调用的是子类中的覆盖函数B。虚函数即能解决这个问题。</li></ol><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 基类 Father</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Father</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">display</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;Father::display()\n&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 在函数中调用了，子类覆盖基类的函数display()</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">fatherShowDisplay</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="built_in">display</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 子类Son</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Son</span>:<span class="keyword">public</span> Father &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 重写基类中的display()函数</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">display</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;Son::display()\n&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Son son;                    <span class="comment">// 子类对象</span></span><br><span class="line">    son.<span class="built_in">fatherShowDisplay</span>();    <span class="comment">// 通过基类中未被覆盖的函数，想调用子类中覆盖的display函数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>如果父类中的<code>display()</code>不是虚函数，则执行结果为<code>Father::display()</code>。反之，执行结果为<code>Son::display()</code>。</p><ol start="2"><li>在使用指向子类对象的基类指针，并调用子类中的覆盖函数时，如果该函数不是虚函数，那么将调用基类中的该函数；如果该函数是虚函数，则会调用子类中的该函数。</li></ol><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 基类 Father</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Father</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 定义了虚函数</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="keyword">virtual</span> <span class="title">display</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;Father::display()\n&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 子类Son</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Son</span>:<span class="keyword">public</span> Father &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 覆盖基类中的display函数</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">display</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;Son::display()\n&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Father *fp;     <span class="comment">// 定义基类指针</span></span><br><span class="line">    Son son;        <span class="comment">// 子类对象</span></span><br><span class="line">    fp=&amp;son;        <span class="comment">// 使基类指针指向子类对象</span></span><br><span class="line">    fp-&gt;<span class="built_in">display</span>();  <span class="comment">// 通过基类指针想调用子类中覆盖的display函数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>如果父类中的<code>display()</code>不是虚函数，则执行结果为<code>Father::display()</code>。反之，执行结果为<code>Son::display()</code>。</p>]]></content:encoded>
+      
+      
+      <category domain="http://singlewang.top/categories/CPP/">CPP</category>
+      
+      
+      <category domain="http://singlewang.top/tags/cpp/">cpp</category>
+      
+      <category domain="http://singlewang.top/tags/%E5%A4%9A%E6%80%81/">多态</category>
+      
+      <category domain="http://singlewang.top/tags/%E8%99%9A%E5%87%BD%E6%95%B0/">虚函数</category>
+      
+      
+      <comments>http://singlewang.top/2022/05/05/cpp/cpp%E5%A4%9A%E6%80%81/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>Linux内核协议栈-cp3</title>
+      <link>http://singlewang.top/2022/05/04/linux/linux-kernal/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp3/</link>
+      <guid>http://singlewang.top/2022/05/04/linux/linux-kernal/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp3/</guid>
+      <pubDate>Wed, 04 May 2022 12:17:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;3-配置系统&quot;&gt;&lt;a href=&quot;#3-配置系统&quot; class=&quot;headerlink&quot; title=&quot;3.配置系统&quot;&gt;&lt;/a&gt;3.配置系统&lt;/h2&gt;&lt;h3 id=&quot;3-1配置过程分析&quot;&gt;&lt;a href=&quot;#3-1配置过程分析&quot; class=&quot;headerlink</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="3-配置系统"><a href="#3-配置系统" class="headerlink" title="3.配置系统"></a>3.配置系统</h2><h3 id="3-1配置过程分析"><a href="#3-1配置过程分析" class="headerlink" title="3.1配置过程分析"></a>3.1配置过程分析</h3><h4 id="3-1-1配置如何下达到内核"><a href="#3-1-1配置如何下达到内核" class="headerlink" title="3.1.1配置如何下达到内核"></a>3.1.1配置如何下达到内核</h4><p>我们假设在安装我们的 Linux 系统时，没有配置 IP 地址，也没有挂上网线，完完全全是一台“裸机”， 这样方便我们跟踪系统到底做了什么。<br>使用<code>ifconfig -a</code>查看网络配置<br>使用<code>strace ifconfig eth0 192.168.18.2 netmask 255.255.255.0</code>配置号ip和网络掩码<br>在大部分系统上是没有 ifconfig 的源代码的，那么为了查看 ifconfig 内部完成了什么操作时，可以用strace命令查看。<br>把 ifconfig 内部调用的系统接口整理如下：</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">main(<span class="type">int</span> argc, <span class="type">char</span> **argv ) &#123; </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr</span> <span class="title">sa</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> <span class="title">sin</span>;</span> </span><br><span class="line">    <span class="type">char</span> host[<span class="number">128</span>];</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">aftype</span> *<span class="title">ap</span>;</span> </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">hwtype</span> *<span class="title">hw</span>;</span> </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">ifreq</span> <span class="title">ifr</span>;</span> </span><br><span class="line">    <span class="type">char</span> **spp; </span><br><span class="line">    <span class="type">int</span> fd;</span><br><span class="line">    </span><br><span class="line">    fd = socket(PF_INET, SOCK_DGRAM, IPPROTO_IP);</span><br><span class="line">    ifr.ifr_name = “eth0”; </span><br><span class="line"> </span><br><span class="line">    ap = inet_aftype = &#123;</span><br><span class="line">    <span class="string">&quot;inet&quot;</span>, <span class="literal">NULL</span>, <span class="comment">/*&quot;DARPA Internet&quot;, */</span> AF_INET, <span class="keyword">sizeof</span>(<span class="type">unsigned</span> <span class="type">long</span>), INET_print, INET_sprint, INET_input, INET_reserror, <span class="literal">NULL</span> <span class="comment">/*INET_rprint */</span> , <span class="literal">NULL</span> <span class="comment">/*INET_rinput */</span> , INET_getnetmask,</span><br><span class="line"><span class="number">-1</span>, <span class="comment">/* 这个值会被赋成 fd，即刚才打开的 socket */</span> <span class="literal">NULL</span></span><br><span class="line">&#125;;</span><br><span class="line">    host = “<span class="number">192.168</span><span class="number">.18</span><span class="number">.2</span>”; </span><br><span class="line">    ap-&gt;input(<span class="number">0</span>, host, &amp;sa);<span class="comment">/* 在此 sa-&gt;sa_family=AF_INET，af-&gt;sa_data 已经被设置成 192.168.1.1 */</span></span><br><span class="line">    <span class="built_in">memcpy</span>((<span class="type">char</span> *) &amp;ifr.ifr_addr, (<span class="type">char</span> *) &amp;sa, <span class="keyword">sizeof</span>(<span class="keyword">struct</span> sockaddr)); </span><br><span class="line">    ioctl (fd, SIOCSIFADDR, &amp;ifr);</span><br><span class="line">    ioctl (skfd, SIOCGIFFLAGS, &amp;ifr); </span><br><span class="line">    ioctl (skfd, SIOCSIFFLAGS, &amp;ifr);</span><br><span class="line">    host = “<span class="number">255.255</span><span class="number">.255</span><span class="number">.0</span>”;</span><br><span class="line">    ioctl (skfd, SIOCSIFNETMASK, ifr);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>从上面的代码中可以看出 ifconfig 实际调用了 2 个系统函数：socket 和 ioctl。</p><h4 id="3-1-2socket系统调用"><a href="#3-1-2socket系统调用" class="headerlink" title="3.1.2socket系统调用"></a>3.1.2socket系统调用</h4><p>内核中与socket对应的系统调用时sys_socket,所谓的船舰套接字，就是在sockfs这个文件系统中创建一个节点。该节点是一个文件，不过这个文件具有非普通文件的属性，于是起名socket。<br>从进程角度看，一个套接口就是一个特殊的已打开文件。<br>socket函数本身经过glibc库对其封装，通过int 0x80产生一个软件中断，由内核导向执行sys_socket。</p>]]></content:encoded>
+      
+      
+      <category domain="http://singlewang.top/categories/linux/">Linux</category>
+      
+      <category domain="http://singlewang.top/categories/linux/linux-kernal/">Linux内核协议栈</category>
+      
+      
+      <category domain="http://singlewang.top/tags/kernal/">kernal</category>
+      
+      <category domain="http://singlewang.top/tags/linux/">linux</category>
+      
+      <category domain="http://singlewang.top/tags/%E5%86%85%E6%A0%B8/">内核</category>
+      
+      
+      <comments>http://singlewang.top/2022/05/04/linux/linux-kernal/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp3/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>c++遇到的bug-1</title>
@@ -265,69 +334,6 @@
       
       
       <comments>http://singlewang.top/2022/04/29/dpdk/dpdk-base/dpdk/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>少年啊，前路漫漫</title>
-      <link>http://singlewang.top/2022/04/29/informal-essay/life/start/</link>
-      <guid>http://singlewang.top/2022/04/29/informal-essay/life/start/</guid>
-      <pubDate>Fri, 29 Apr 2022 03:06:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;p&gt;终于在今天搭建好了自己的博客，看着这个网页从无到有能够成功展示的那一刻，还是挺开心的，至少从今天起，有一个可以自由发挥的地方来发泄自己情绪，总想写点什么来纪念一下。&lt;/p&gt;
-&lt;p&gt;博主是一个比较内向的人，想法很多却又怯于表达，导致留下了许多遗憾，若不是高中时我的班主任给了我</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<p>终于在今天搭建好了自己的博客，看着这个网页从无到有能够成功展示的那一刻，还是挺开心的，至少从今天起，有一个可以自由发挥的地方来发泄自己情绪，总想写点什么来纪念一下。</p><p>博主是一个比较内向的人，想法很多却又怯于表达，导致留下了许多遗憾，若不是高中时我的班主任给了我一个机会当班长(可惜做的并不好)，我可能现在连站在一群人面前讲话的勇气都没有，我的父母也常常建议我要大胆的表达自己的想法，可现实往往是话到嘴边却说不出，我并不知道这算是优点还是缺点，我知道言多必失，可我也知道掌握话语权是多么的重要。但是改变一个人的性格却并不是一件易事，我想将来可能我还是多半会以自己的行事风格去学习工作。</p><blockquote><p>先写到这儿，到饭点了，恰饭，今天刚好要放五一假，开心，虽然下午还是要去校外做项目，但是一想到之后的五一小长假，还是很兴奋的。</p></blockquote><p>虽然我不是出生在什么大富大贵的家庭，但是父母依然把他们最好的给予了我，我的父母都是老师，从小到大一直在他们的呵护下长大，虽然有时候会迎来劈头盖脸的训斥，但是现在想想倒也是一种美好的回忆。我的父亲很注重我们的素质教育，从小就让我们学习绘画，书法等，可惜那时候不懂父母的良苦用心，只是贪玩，现在当事人觉得十分后悔，要是能多一门技艺该多好。</p><p>我的读书生涯真的很平静，没有什么大风大浪，真的可以用一帆风顺来形容了，在西北教育资源相对匮乏的地区，我还是依旧享受了相对来说比较好的教育，一路顺风顺水，从小学再到初中，一直到高中所谓的冲刺班，基本没有任何阻碍，但我并不觉的这是一件特别好的事，或许还是因为太年轻，总想着要经历轰轰烈烈的青春，可慢慢的才发现，自己的青春是那么平淡，有人说青春这种珍贵的东西，要么拼命珍惜，要么使劲挥霍，我的青春可能就介于这个天平中间，平淡无奇。</p><p>高中的时候，总觉得自己还行，没有狂妄自大，也没有自卑，和同学们的关系也很好，有许多朋友，也有一些知己。总幻想着自己能在大学里干一番大事业，或者至少谈一段轰轰烈烈的爱情吧，可当自己以贫困专项的身份进入到华中科技大学的时候，才发现自己是那么渺小，无论是学习能力还是社交能力，都被别人碾压。以前我还不信高中老师们口中的阶级，现在我慢慢明白了，这些教育大省走出来的孩子，比我优秀得多，我一两周的复习抵不过人家一两天的突击。我想起高中班主任口中的差距，有些东西，天赋是很重要的。看着周围的同学参加各种各样的竞赛，各种各样的社团，我渐渐感到迷茫，不知何去何从，未来到底该走怎样的路。有一段时间甚至有过轻生的念头，但还好有我朋友的开导，我没有就此离去，这样太对不起生我养我这么多年的父母，这世上我唯一牵挂的也就是他们了。在大学的四年里我可能就属于最平凡的那一类人，考试没挂科，成绩也一般，没科研，没竞赛，我想努力向那些获奖的大佬们看齐，到后来发现，真的是云壤之别。社交方面更是难为我这个社死分子了，除了同班同学之外几乎不认识什么人了，他们毕业走后我更是觉得孤单一人，不过却也是习惯了。没学到什么本领，只能考研作为就业的缓冲，其实我也挺幸运的，一战就上岸，被一个还不错的老师录取，然而研一的一半已经过去，一个项目都做不出，我又开始怀疑自己选择的路是否是对的，读研真的适合我吗，但是开弓没有回头箭，自己选择的路就是再难，也得咽在肚子里。毕竟生活还是要继续，而且至少现在我有两个明确的目标，第一个毕业，第二个找到一份好工作，后面都会朝着这两个方向进行努力。至于爸妈催得紧的恋爱，正如我的首页–智者不入爱河，不是不想谈，只是自己的那份对于爱的热情已经被消耗殆尽了吧。</p><p>总之到现在，不想放弃自己，不为自己也为父母争一口气。</p><p><em>少年啊，前路漫漫，拨开云雾，方见璀璨星河</em></p>]]></content:encoded>
-      
-      
-      <category domain="http://singlewang.top/categories/informal-essay/">随笔</category>
-      
-      <category domain="http://singlewang.top/categories/informal-essay/life/">生活感悟</category>
-      
-      
-      <category domain="http://singlewang.top/tags/%E5%BF%83%E5%BE%97/">心得</category>
-      
-      <category domain="http://singlewang.top/tags/%E7%94%9F%E6%B4%BB%E6%84%9F%E6%82%9F/">生活感悟</category>
-      
-      
-      <comments>http://singlewang.top/2022/04/29/informal-essay/life/start/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>Markdown教程</title>
-      <link>http://singlewang.top/2022/04/29/markdown/markdown-base/markdownlearn/</link>
-      <guid>http://singlewang.top/2022/04/29/markdown/markdown-base/markdownlearn/</guid>
-      <pubDate>Fri, 29 Apr 2022 03:00:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#%E4%B8%BA%E4%BB%80%E4%B9%88%E7%94%A8vscode%E5%86%99markdown&quot;&gt;为什么用Vscode写Markdown&lt;/a&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#%E6%80%8E%E4%B9%88</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<ul><li><a href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E7%94%A8vscode%E5%86%99markdown">为什么用Vscode写Markdown</a><ul><li><a href="#%E6%80%8E%E4%B9%88%E7%94%A8vscode%E5%86%99markdown">怎么用vscode写markdown</a></li><li><a href="#%E9%9A%8F%E4%BE%BF%E5%86%99%E7%82%B9">随便写点</a><ul><li><a href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E6%9C%AC%E5%9C%B0%E5%86%99markdown">为什么要本地写markdown</a><ul><li><a href="#%E5%A5%BD%E7%94%A8%E5%90%97">好用吗</a><ul><li><a href="#%E6%83%B3%E4%B8%8D%E5%87%BA%E5%86%99%E5%95%A5%E4%BA%86">想不出写啥了</a><ul><li><a href="#%E5%8F%AA%E6%98%AF%E4%B8%80%E4%B8%AA%E6%B5%8B%E8%AF%95">只是一个测试</a></li></ul></li></ul></li></ul></li></ul></li></ul></li></ul><!-- /code_chunk_output --><!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=true} --><!-- code_chunk_output --><ul><li><a href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E7%94%A8vscode%E5%86%99markdown">为什么用Vscode写Markdown</a><ul><li><a href="#%E6%80%8E%E4%B9%88%E7%94%A8vscode%E5%86%99markdown">怎么用vscode写markdown</a></li><li><a href="#%E9%9A%8F%E4%BE%BF%E5%86%99%E7%82%B9">随便写点</a><ul><li><a href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E6%9C%AC%E5%9C%B0%E5%86%99markdown">为什么要本地写markdown</a><ul><li><a href="#%E5%A5%BD%E7%94%A8%E5%90%97">好用吗</a><ul><li><a href="#%E6%83%B3%E4%B8%8D%E5%87%BA%E5%86%99%E5%95%A5%E4%BA%86">想不出写啥了</a><ul><li><a href="#%E5%8F%AA%E6%98%AF%E4%B8%80%E4%B8%AA%E6%B5%8B%E8%AF%95">只是一个测试</a></li></ul></li></ul></li></ul></li></ul></li></ul></li></ul><!-- /code_chunk_output --><h1 id="为什么用Vscode写Markdown"><a href="#为什么用Vscode写Markdown" class="headerlink" title="为什么用Vscode写Markdown"></a>为什么用Vscode写Markdown</h1><h2 id="怎么用vscode写markdown"><a href="#怎么用vscode写markdown" class="headerlink" title="怎么用vscode写markdown"></a>怎么用vscode写markdown</h2><h2 id="随便写点"><a href="#随便写点" class="headerlink" title="随便写点"></a>随便写点</h2><h3 id="为什么要本地写markdown"><a href="#为什么要本地写markdown" class="headerlink" title="为什么要本地写markdown"></a>为什么要本地写markdown</h3><h4 id="好用吗"><a href="#好用吗" class="headerlink" title="好用吗"></a>好用吗</h4><h5 id="想不出写啥了"><a href="#想不出写啥了" class="headerlink" title="想不出写啥了"></a>想不出写啥了</h5><h6 id="只是一个测试"><a href="#只是一个测试" class="headerlink" title="只是一个测试"></a>只是一个测试</h6><p><em><strong>正文直接输入</strong></em></p><p>换行注意。直接换行的话，渲染输出其实是没有换行的，需要空行，使用<code>ctrl+shift+v</code>预览输出,或者使用<code>ctrl+鼠标右键，MPE打开侧边预览</code>，一边写一边看输出结果</p><p>代码段使用两个<code>标记，并且可以在第一个</code>的后面加上自己的语言</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br></pre></td></tr></table></figure><hr><p>正文中的代码用<code>helloworld</code>，即两个&#96;&#96;,使用三个—就可以绘制出分割线</p><hr><p>有序列表,加上数字.空格就可以作出有序列表，</p><ol><li>123</li><li>12321</li><li>123123</li><li>123123<ol><li>asdf<ol><li>asdf<ol><li>大声道</li></ol></li></ol></li></ol></li></ol><hr><p>无序列表<br>输入-，然后空格，当然也可以换成*</p><ul><li>123<ul><li>1231<ul><li>12312<ul><li>3214<ul><li>2342</li></ul></li></ul></li></ul></li></ul></li></ul><hr><p><strong>加粗</strong><br><em>倾斜</em><br><em><strong>加粗和倾斜</strong></em> </p><hr><blockquote><p>这段就是引用，引用是加&gt;和空格</p></blockquote><blockquote><p>也许</p></blockquote><hr><p>插入图片，插入图片时，需要md文件的同级目录下建立一个文件夹，然后将图片放在里面即可</p><p><img data-src="/./assets/000002.jpg" alt="随便找的图片"></p><p><span class="exturl" data-url="aHR0cHM6Ly93d3cuYmFpZHUuY29tLw==">如果是链接的话，就不需要前面的额感叹号</span></p><hr><p>表格</p><table><thead><tr><th align="left">左对齐</th><th align="center">居中</th><th align="right">右对齐</th></tr></thead><tbody><tr><td align="left">2</td><td align="center">3</td><td align="right">5</td></tr><tr><td align="left">10</td><td align="center">1000</td><td align="right">1111</td></tr></tbody></table><hr><p>加入目录，在 MPE 里最简单的插入目录的方法就是在单独的行里使用 [TOC] 标记。这会在当前位置立即插入一个目录。</p><p><code>&lt;!-- @import &quot;[TOC]&quot; &#123;cmd=&quot;toc&quot; depthFrom=1 depthTo=5 orderedList=false&#125; --&gt;</code></p><p>depthFrom的参数是最高从几级标题开始</p><p>&#x3D;&#x3D;depthTo&#x3D;&#x3D;的参数是到几级标题结束</p><p>orderedList的参数是是否需要序号</p><hr><p>高亮&#x3D;&#x3D;高亮&#x3D;&#x3D;,使用两个&#x3D;&#x3D;对相应语句进行高亮</p><hr>]]></content:encoded>
-      
-      
-      <category domain="http://singlewang.top/categories/markdown/">Markdown</category>
-      
-      <category domain="http://singlewang.top/categories/markdown/markdown-base/">Markdown基础</category>
-      
-      
-      <category domain="http://singlewang.top/tags/Markdown/">Markdown</category>
-      
-      <category domain="http://singlewang.top/tags/%E6%95%99%E7%A8%8B/">教程</category>
-      
-      
-      <comments>http://singlewang.top/2022/04/29/markdown/markdown-base/markdownlearn/#disqus_thread</comments>
       
     </item>
     

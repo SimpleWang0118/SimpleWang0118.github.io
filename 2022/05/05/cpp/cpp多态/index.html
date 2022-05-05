@@ -1,0 +1,597 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="Single Wang's Blog" href="http://singlewang.top/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="Single Wang's Blog" href="http://singlewang.top/atom.xml" />
+<link rel="alternate" type="application/json" title="Single Wang's Blog" href="http://singlewang.top/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/css/app.css?v=0.2.5">
+
+  
+  <meta name="keywords" content="cpp,多态,虚函数" />
+
+
+<link rel="canonical" href="http://singlewang.top/2022/05/05/cpp/cpp%E5%A4%9A%E6%80%81/">
+
+
+
+  <title>
+cpp之虚函数与多态 - CPP |
+智者不入爱河 = Single Wang's Blog = 建设美丽中国</title>
+<meta name="generator" content="Hexo 6.1.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">cpp之虚函数与多态
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="创建时间：2022-05-05 21:20:00">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="dateCreated datePublished" datetime="2022-05-05T21:20:00+08:00">2022-05-05</time>
+  </span>
+  <span class="item" title="本文字数">
+    <span class="icon">
+      <i class="ic i-pen"></i>
+    </span>
+    <span class="text">本文字数</span>
+    <span>2k</span>
+    <span class="text">字</span>
+  </span>
+  <span class="item" title="阅读时长">
+    <span class="icon">
+      <i class="ic i-clock"></i>
+    </span>
+    <span class="text">阅读时长</span>
+    <span>2 分钟</span>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/" rel="start">智者不入爱河</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipex2cdtbj20zk0m8x6p.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicm07ih54j20zk0m84qp.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giclhnx9glj20zk0m8npd.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicliwyw55j20zk0m8hdt.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipeudstjqj20zk0m8k3r.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicitspjpbj20zk0m81ky.jpg"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/">首页</a></span><i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/categories/CPP/" itemprop="item" rel="index" title="分类于 CPP"><span itemprop="name">CPP</span></a>
+<meta itemprop="position" content="1" /></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+  <link itemprop="mainEntityOfPage" href="http://singlewang.top/2022/05/05/cpp/cpp%E5%A4%9A%E6%80%81/">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/images/taizaizhi.jpg">
+    <meta itemprop="name" content="Single Wang">
+    <meta itemprop="description" content="建设美丽中国, 智者不入爱河，愚者重蹈覆辙">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Single Wang's Blog">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <p>何为 <em><strong>多态</strong></em>,顾名思义是同一个事物在不同场景下的多种形态。<br>多态分类：</p>
+<ul>
+<li>静态多态<ul>
+<li>函数重载</li>
+<li>泛型编程</li>
+</ul>
+</li>
+<li>动态多态<ul>
+<li>虚函数</li>
+</ul>
+</li>
+</ul>
+<h3 id="静态多态"><a href="#静态多态" class="headerlink" title="静态多态"></a>静态多态</h3><p>函数重载就是一个简单的静态多态</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">Add</span><span class="params">(<span class="type">int</span> left, <span class="type">int</span> right)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> left + right;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">double</span> <span class="title">Add</span><span class="params">(<span class="type">double</span> left, <span class="type">int</span> right)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> left + right;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">Add</span>(<span class="number">10</span>, <span class="number">20</span>);</span><br><span class="line">    <span class="comment">//Add(10.0, 20.0);  //这是一个问题代码</span></span><br><span class="line">    <span class="built_in">Add</span>(<span class="number">10.0</span>,<span class="number">20</span>);  <span class="comment">//正常代码</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><em>静态多态实在编译期间完成的，编译器会根据实参类型来调用合适的函数,如果有合适的函数就调用，如果没有就会发出警告或报错</em></p>
+<h3 id="动态多态"><a href="#动态多态" class="headerlink" title="动态多态"></a>动态多态</h3><p>动态多态，看名字就知道和静态多态是相反的。<em>它是在程序运行时根据基类的引用（指针）指向的对象来确定自己具体该调用哪一个类的&#x3D;&#x3D;虚函数&#x3D;&#x3D;</em></p>
+<p>提到动态多态那么不得不提一嘴虚函数。虚函数可以说对动态多态具有决定性的作用。有虚函数才能构成多态。使用虚函数的注意事项：</p>
+<ol>
+<li>只需要在虚函数的声明处加上 virtual 关键字，函数定义处可以加也可以不加。</li>
+<li>可以只将基类中的函数声明为虚函数，这样所有派生类中具有遮蔽（覆盖）关系的同名函数都将自动成为虚函数。</li>
+<li>当在基类中定义了虚函数时，如果派生类没有定义新的函数来遮蔽此函数，那么将使用基类的虚函数。</li>
+<li>只有派生类的虚函数遮蔽基类的虚函数（函数原型相同）才能构成多态（通过基类指针访问派生类函数）。</li>
+<li>构造函数不能是虚函数。对于基类的构造函数，它仅仅是在派生类构造函数中被调用，这种机制不同于继承。也就是说，派生类不继承基类的构造函数，将构造函数声明为虚函数没有什么意义。</li>
+<li>析构函数可以声明为虚函数，而且有时候必须要声明为虚函数。</li>
+</ol>
+<p>那么虚函数的作用是什么呢？</p>
+<ol>
+<li>定义子类对象，并调用对象中未被子类覆盖的基类函数A。同时在该函数A中，又调用了已被子类覆盖的基类函数B。那此时将会调用基类中的函数B，可我们本应该调用的是子类中的覆盖函数B。虚函数即能解决这个问题。</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 基类 Father</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Father</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">display</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;Father::display()\n&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 在函数中调用了，子类覆盖基类的函数display()</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">fatherShowDisplay</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="built_in">display</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 子类Son</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Son</span>:<span class="keyword">public</span> Father &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 重写基类中的display()函数</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">display</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;Son::display()\n&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Son son;                    <span class="comment">// 子类对象</span></span><br><span class="line">    son.<span class="built_in">fatherShowDisplay</span>();    <span class="comment">// 通过基类中未被覆盖的函数，想调用子类中覆盖的display函数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果父类中的<code>display()</code>不是虚函数，则执行结果为<code>Father::display()</code>。反之，执行结果为<code>Son::display()</code>。</p>
+<ol start="2">
+<li>在使用指向子类对象的基类指针，并调用子类中的覆盖函数时，如果该函数不是虚函数，那么将调用基类中的该函数；如果该函数是虚函数，则会调用子类中的该函数。</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 基类 Father</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Father</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 定义了虚函数</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="keyword">virtual</span> <span class="title">display</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;Father::display()\n&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 子类Son</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Son</span>:<span class="keyword">public</span> Father &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 覆盖基类中的display函数</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">display</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;Son::display()\n&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Father *fp;     <span class="comment">// 定义基类指针</span></span><br><span class="line">    Son son;        <span class="comment">// 子类对象</span></span><br><span class="line">    fp=&amp;son;        <span class="comment">// 使基类指针指向子类对象</span></span><br><span class="line">    fp-&gt;<span class="built_in">display</span>();  <span class="comment">// 通过基类指针想调用子类中覆盖的display函数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果父类中的<code>display()</code>不是虚函数，则执行结果为<code>Father::display()</code>。反之，执行结果为<code>Son::display()</code>。</p>
+
+      <div class="tags">
+          <a href="/tags/cpp/" rel="tag"><i class="ic i-tag"></i> cpp</a>
+          <a href="/tags/%E5%A4%9A%E6%80%81/" rel="tag"><i class="ic i-tag"></i> 多态</a>
+          <a href="/tags/%E8%99%9A%E5%87%BD%E6%95%B0/" rel="tag"><i class="ic i-tag"></i> 虚函数</a>
+      </div>
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新于</span>
+    <time title="修改时间：2022-05-05 21:46:17" itemprop="dateModified" datetime="2022-05-05T21:46:17+08:00">2022-05-05</time>
+  </span>
+  <span id="2022/05/05/cpp/cpp多态/" class="item leancloud_visitors" data-flag-title="cpp之虚函数与多态" title="阅读次数">
+      <span class="icon">
+        <i class="ic i-eye"></i>
+      </span>
+      <span class="text">阅读次数</span>
+      <span class="leancloud-visitors-count"></span>
+      <span class="text">次</span>
+  </span>
+</div>
+
+      
+<div class="reward">
+  <button><i class="ic i-heartbeat"></i> 赞赏</button>
+  <p>听我说，谢谢你</p>
+  <div id="qr">
+      
+      <div>
+        <img data-src="/images/wepay.jpg" alt="Single Wang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div>
+        <img data-src="/images/zhipay.jpg" alt="Single Wang 支付宝">
+        <p>支付宝</p>
+      </div>
+  </div>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>本文作者： </strong>Single Wang <i class="ic i-at"><em>@</em></i>Single Wang's Blog
+  </li>
+  <li class="link">
+    <strong>本文链接：</strong>
+    <a href="http://singlewang.top/2022/05/05/cpp/cpp%E5%A4%9A%E6%80%81/" title="cpp之虚函数与多态">http://singlewang.top/2022/05/05/cpp/cpp多态/</a>
+  </li>
+  <li class="license">
+    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/2022/05/04/linux/linux-kernal/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp3/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giclgrvbd6j20zk0m8qv5.jpg" title="Linux内核协议栈-cp3">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> Linux内核协议栈</span>
+  <h3>Linux内核协议栈-cp3</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E5%A4%9A%E6%80%81"><span class="toc-number">1.</span> <span class="toc-text">静态多态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E5%A4%9A%E6%80%81"><span class="toc-number">2.</span> <span class="toc-text">动态多态</span></a></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li class="active"><a href="/2022/05/05/cpp/cpp%E5%A4%9A%E6%80%81/" rel="bookmark" title="cpp之虚函数与多态">cpp之虚函数与多态</a></li>
+        </ul>
+      </div>
+      <div class="overview panel" data-title="站点概览">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="Single Wang"
+      data-src="/images/taizaizhi.jpg">
+  <p class="name" itemprop="name">Single Wang</p>
+  <div class="description" itemprop="description">智者不入爱河，愚者重蹈覆辙</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/archives/">
+        <span class="count">12</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+    <div class="item categories">
+      <a href="/categories/">
+        <span class="count">13</span>
+        <span class="name">分类</span>
+      </a>
+    </div>
+    <div class="item tags">
+      <a href="/tags/">
+        <span class="count">20</span>
+        <span class="name">标签</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+      <span class="exturl item github" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbXBsZVdhbmcwMTE4" title="https:&#x2F;&#x2F;github.com&#x2F;SimpleWang0118"><i class="ic i-github"></i></span>
+      <a href="/931346283@qq.com" title="931346283@qq.com" class="item email"><i class="ic i-envelope"></i></a>
+      <a href="/931346283@qq.com" title="931346283@qq.com" class="item QQ"><i class="ic i-qq"></i></a>
+      <a href="/WLH931346283" title="WLH931346283" class="item WeChat"><i class="ic i-weixin"></i></a>
+      <span class="exturl item music" data-url="aHR0cHM6Ly9tdXNpYy4xNjMuY29tLyMvdXNlci9ob21lP2lkPTEyODkyMjAwMjc=" title="https:&#x2F;&#x2F;music.163.com&#x2F;#&#x2F;user&#x2F;home?id&#x3D;1289220027"><i class="ic i-cloud-music"></i></span>
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/" rel="section"><i class="ic i-home"></i>首页</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/archives/" rel="section"><i class="ic i-list-alt"></i>归档</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/categories/" rel="section"><i class="ic i-th"></i>分类</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/tags/" rel="section"><i class="ic i-tags"></i>标签</a>
+  </li>
+
+  </ul>
+    
+  <li class="item">
+    <a href="/about/" rel="section"><i class="ic i-user"></i>关于</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>随机文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/dpdk/dpdk-advanced/" title="分类于 DPDK进阶">DPDK进阶</a>
+</div>
+
+    <span><a href="/2022/05/03/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch2/" title="深入浅出dpdk-ch2">深入浅出dpdk-ch2</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2022/05/03/git%E5%AD%A6%E4%B9%A0/" title="git学习">git学习</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/cpp/" title="分类于 C++">C++</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/cpp/cpp-bug/" title="分类于 C++BUG">C++BUG</a>
+</div>
+
+    <span><a href="/2022/05/03/cpp/cpp-bug/c++bug-1/" title="c++遇到的bug-1">c++遇到的bug-1</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/CPP/" title="分类于 CPP">CPP</a>
+</div>
+
+    <span><a href="/2022/05/05/cpp/cpp%E5%A4%9A%E6%80%81/" title="cpp之虚函数与多态">cpp之虚函数与多态</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/markdown/" title="分类于 Markdown">Markdown</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/markdown/markdown-base/" title="分类于 Markdown基础">Markdown基础</a>
+</div>
+
+    <span><a href="/2022/04/29/markdown/markdown-base/markdownlearn/" title="Markdown教程">Markdown教程</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/linux/" title="分类于 Linux">Linux</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/linux/linux-command/" title="分类于 Linux命令">Linux命令</a>
+</div>
+
+    <span><a href="/2022/05/03/linux/linux-command/linux%E5%91%BD%E4%BB%A4/" title="Linux命令">Linux命令</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/linux/" title="分类于 Linux">Linux</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/linux/linux-kernal/" title="分类于 Linux内核协议栈">Linux内核协议栈</a>
+</div>
+
+    <span><a href="/2022/05/04/linux/linux-kernal/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp3/" title="Linux内核协议栈-cp3">Linux内核协议栈-cp3</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/informal-essay/" title="分类于 随笔">随笔</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/informal-essay/life/" title="分类于 生活感悟">生活感悟</a>
+</div>
+
+    <span><a href="/2022/04/29/informal-essay/life/start/" title="少年啊，前路漫漫">少年啊，前路漫漫</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/dpdk/dpdk-base/" title="分类于 DPDK基础">DPDK基础</a>
+</div>
+
+    <span><a href="/2022/04/29/dpdk/dpdk-base/dpdk/" title="DPDK基础">DPDK基础</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/linux/" title="分类于 Linux">Linux</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/linux/linux-kernal/" title="分类于 Linux内核协议栈">Linux内核协议栈</a>
+</div>
+
+    <span><a href="/2022/05/03/linux/linux-kernal/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp2/" title="Linux内核协议栈-cp2">Linux内核协议栈-cp2</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新评论</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2022-04 – 
+    <span itemprop="copyrightYear">2022</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Single Wang @ 智者不入爱河</span>
+  </div>
+  <div class="count">
+    <span class="post-meta-item-icon">
+      <i class="ic i-chart-area"></i>
+    </span>
+    <span title="站点总字数">36k 字</span>
+
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="ic i-coffee"></i>
+    </span>
+    <span title="站点阅读时长">32 分钟</span>
+  </div>
+  <div class="powered-by">
+    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: '2022/05/05/cpp/cpp多态/',
+    favicon: {
+      show: "（●´3｀●）やれやれだぜ",
+      hide: "(´Д｀)大変だ！"
+    },
+    search : {
+      placeholder: "文章搜索",
+      empty: "关于 「 ${query} 」，什么也没搜到",
+      stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    valine: true,fancybox: true,
+    copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/js/app.js?v=0.2.5"></script>
+
+
+
+
+</body>
+</html>
