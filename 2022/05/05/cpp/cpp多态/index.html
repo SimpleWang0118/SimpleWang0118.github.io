@@ -76,7 +76,7 @@ cpp之虚函数与多态 - CPP |
       <i class="ic i-pen"></i>
     </span>
     <span class="text">本文字数</span>
-    <span>2k</span>
+    <span>3.5k</span>
     <span class="text">字</span>
   </span>
   <span class="item" title="阅读时长">
@@ -84,7 +84,7 @@ cpp之虚函数与多态 - CPP |
       <i class="ic i-clock"></i>
     </span>
     <span class="text">阅读时长</span>
-    <span>2 分钟</span>
+    <span>3 分钟</span>
   </span>
 </div>
 
@@ -117,12 +117,12 @@ cpp之虚函数与多态 - CPP |
       </div>
       <div id="imgs" class="pjax">
         <ul>
-          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipex2cdtbj20zk0m8x6p.jpg"></li>
-          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicm07ih54j20zk0m84qp.jpg"></li>
-          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giclhnx9glj20zk0m8npd.jpg"></li>
-          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicliwyw55j20zk0m8hdt.jpg"></li>
-          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipeudstjqj20zk0m8k3r.jpg"></li>
-          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicitspjpbj20zk0m81ky.jpg"></li>
+          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gipeun65urj20zk0m81ii.jpg"></li>
+          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gipet8c1a2j20zk0m8kct.jpg"></li>
+          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gicliierfjj20zk0m8npd.jpg"></li>
+          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gicli3sbvtj20zk0m8x6p.jpg"></li>
+          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gipexj2jgzj20zk0m8b09.jpg"></li>
+          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gicitzannuj20zk0m8b29.jpg"></li>
         </ul>
       </div>
     </header>
@@ -168,24 +168,30 @@ cpp之虚函数与多态 - CPP |
   <div class="body md" itemprop="articleBody">
     
 
-    <p>何为 <em><strong>多态</strong></em>,顾名思义是同一个事物在不同场景下的多种形态。<br>多态分类：</p>
+    <h2 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h2><p>何为 <em><strong>多态</strong></em>,顾名思义是同一个事物在不同场景下的多种形态。<br>多态分类：</p>
 <ul>
-<li>静态多态<ul>
+<li>静态多态(编译阶段)<ul>
 <li>函数重载</li>
 <li>泛型编程</li>
 </ul>
 </li>
-<li>动态多态<ul>
+<li>动态多态(运行阶段)<ul>
 <li>虚函数</li>
 </ul>
 </li>
 </ul>
+<p><em><strong>为什么需要多态</strong></em><br>派生类对象的地址可以赋值给基类指针。对于通过基类指针调用基类和派生类中都有的同名、同参数表的虚函数的语句，编译时并不确定要执行的是基类还是派生类的虚函数；而当程序运行到该语句时，如果基类指针指向的是一个基类对象，则基类的虚函数被调用，如果基类指针指向的是一个派生类对象，则派生类的虚函数被调用。这种机制就叫作 <strong>多态（polymorphism）</strong>。</p>
 <h3 id="静态多态"><a href="#静态多态" class="headerlink" title="静态多态"></a>静态多态</h3><p>函数重载就是一个简单的静态多态</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">Add</span><span class="params">(<span class="type">int</span> left, <span class="type">int</span> right)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> left + right;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">double</span> <span class="title">Add</span><span class="params">(<span class="type">double</span> left, <span class="type">int</span> right)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> left + right;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">Add</span>(<span class="number">10</span>, <span class="number">20</span>);</span><br><span class="line">    <span class="comment">//Add(10.0, 20.0);  //这是一个问题代码</span></span><br><span class="line">    <span class="built_in">Add</span>(<span class="number">10.0</span>,<span class="number">20</span>);  <span class="comment">//正常代码</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p><em>静态多态实在编译期间完成的，编译器会根据实参类型来调用合适的函数,如果有合适的函数就调用，如果没有就会发出警告或报错</em></p>
 <h3 id="动态多态"><a href="#动态多态" class="headerlink" title="动态多态"></a>动态多态</h3><p>动态多态，看名字就知道和静态多态是相反的。<em>它是在程序运行时根据基类的引用（指针）指向的对象来确定自己具体该调用哪一个类的&#x3D;&#x3D;虚函数&#x3D;&#x3D;</em></p>
-<p>提到动态多态那么不得不提一嘴虚函数。虚函数可以说对动态多态具有决定性的作用。有虚函数才能构成多态。使用虚函数的注意事项：</p>
+<p><em><strong>动态多态的条件</strong></em></p>
+<ul>
+<li>基类中必须包含虚函数，并且派生类中一定要对基类中的虚函数进行重写</li>
+<li>通过基类对象的指针或者引用调用虚函数。</li>
+</ul>
+<p>提到动态多态那么不得不提一嘴 <em><strong>虚函数</strong></em>。虚函数可以说对动态多态具有决定性的作用。有虚函数才能构成多态。使用虚函数的注意事项：</p>
 <ol>
 <li>只需要在虚函数的声明处加上 virtual 关键字，函数定义处可以加也可以不加。</li>
 <li>可以只将基类中的函数声明为虚函数，这样所有派生类中具有遮蔽（覆盖）关系的同名函数都将自动成为虚函数。</li>
@@ -194,7 +200,7 @@ cpp之虚函数与多态 - CPP |
 <li>构造函数不能是虚函数。对于基类的构造函数，它仅仅是在派生类构造函数中被调用，这种机制不同于继承。也就是说，派生类不继承基类的构造函数，将构造函数声明为虚函数没有什么意义。</li>
 <li>析构函数可以声明为虚函数，而且有时候必须要声明为虚函数。</li>
 </ol>
-<p>那么虚函数的作用是什么呢？</p>
+<p><em><strong>那么虚函数的作用是什么呢？</strong></em></p>
 <ol>
 <li>定义子类对象，并调用对象中未被子类覆盖的基类函数A。同时在该函数A中，又调用了已被子类覆盖的基类函数B。那此时将会调用基类中的函数B，可我们本应该调用的是子类中的覆盖函数B。虚函数即能解决这个问题。</li>
 </ol>
@@ -206,6 +212,55 @@ cpp之虚函数与多态 - CPP |
 </ol>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 基类 Father</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Father</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 定义了虚函数</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="keyword">virtual</span> <span class="title">display</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;Father::display()\n&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 子类Son</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Son</span>:<span class="keyword">public</span> Father &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 覆盖基类中的display函数</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">display</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;Son::display()\n&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Father *fp;     <span class="comment">// 定义基类指针</span></span><br><span class="line">    Son son;        <span class="comment">// 子类对象</span></span><br><span class="line">    fp=&amp;son;        <span class="comment">// 使基类指针指向子类对象</span></span><br><span class="line">    fp-&gt;<span class="built_in">display</span>();  <span class="comment">// 通过基类指针想调用子类中覆盖的display函数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>如果父类中的<code>display()</code>不是虚函数，则执行结果为<code>Father::display()</code>。反之，执行结果为<code>Son::display()</code>。</p>
+<blockquote>
+<p>哪些函数不能定义为虚函数？（面试题）</p>
+<ol>
+<li>友元函数，它不是类的成员函数</li>
+<li>全局函数</li>
+<li>静态成员函数，它没有this指针</li>
+<li>构造函数，拷贝构造函数，以及赋值运算符重载。</li>
+</ol>
+</blockquote>
+<p><em><strong>纯虚函数和抽象类</strong></em><br><strong>纯虚函数</strong>:没有函数体的虚函数</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> </span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">Print</span><span class="params">( )</span> </span>= <span class="number">0</span> ; <span class="comment">//纯虚函数</span></span><br><span class="line"><span class="keyword">private</span>: </span><br><span class="line">    <span class="type">int</span> a;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>包含纯虚函数的类叫做<strong>抽象类</strong></p>
+<ul>
+<li>抽象类只能作为基类来派生新类使用，不能创建抽象类的对象</li>
+<li>抽象类的指针和引用可以指向抽象类派生出来的类的对象</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">A a;         <span class="comment">// 错，A 是抽象类，不能创建对象</span></span><br><span class="line">A * pa ;     <span class="comment">// ok,可以定义抽象类的指针和引用</span></span><br><span class="line">pa = <span class="keyword">new</span> A ; <span class="comment">// 错误, A 是抽象类，不能创建对象</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+<h3 id="多态的表现形式"><a href="#多态的表现形式" class="headerlink" title="多态的表现形式"></a>多态的表现形式</h3><p><em><strong>多态的表现形式一</strong></em></p>
+<ul>
+<li>&#x3D;&#x3D;派生类的指针&#x3D;&#x3D;可以赋给&#x3D;&#x3D;基类指针&#x3D;&#x3D;</li>
+<li>通过基类指针调用基类和派生类中的同名&#x3D;&#x3D;虚函数时&#x3D;&#x3D;：</li>
+</ul>
+<ol>
+<li>若该指针指向一个基类的对象，那么调用是基类的虚函数；</li>
+<li>若该指针指向一个派生类的对象，那么调用的是派生类的虚函数。</li>
+</ol>
+<blockquote>
+<p>调用哪个虚函数，取决于指针对象指向哪种类型的对象。</p>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 基类</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CFather</span> </span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">Fun</span><span class="params">()</span> </span>&#123; &#125; <span class="comment">// 虚函数</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 派生类</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CSon</span> : <span class="keyword">public</span> CFather </span><br><span class="line">&#123; </span><br><span class="line"><span class="keyword">public</span> :</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">Fun</span><span class="params">()</span> </span>&#123; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    CSon son;</span><br><span class="line">    CFather *p = &amp;son;</span><br><span class="line">    p-&gt;<span class="built_in">Fun</span>(); <span class="comment">//调用哪个虚函数取决于 p 指向哪种类型的对象</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>指针<code>p</code>指向的是<code>CSon</code>类对象，所以<code>p-&gt;Fun()</code>调用的是<code>CSon</code>类的<code>Fun</code>。</p>
+<p><em><strong>多态的表现形式二</strong></em></p>
+<ul>
+<li>派生类的对象可以付给基类&#x3D;&#x3D;引用&#x3D;&#x3D;</li>
+<li>通过基类引用调用基类和派生类中的同名&#x3D;&#x3D;虚函数&#x3D;&#x3D;时：</li>
+</ul>
+<ol>
+<li>若该引用引用的是一个基类的对象，那么被调用的是基类的虚函数</li>
+<li>若该引用引用的是派生类的对象，那么被调用的是派生类的虚函数。</li>
+</ol>
+<blockquote>
+<p>调用哪个虚函数，取决于引用的对象是哪种类型的对象</p>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 基类</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CFather</span> </span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">Fun</span><span class="params">()</span> </span>&#123; &#125; <span class="comment">// 虚函数</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 派生类</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CSon</span> : <span class="keyword">public</span> CFather </span><br><span class="line">&#123; </span><br><span class="line"><span class="keyword">public</span> :</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">Fun</span><span class="params">()</span> </span>&#123; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    CSon son;</span><br><span class="line">    CFather &amp;r = son;</span><br><span class="line">    r.<span class="built_in">Fun</span>(); <span class="comment">//调用哪个虚函数取决于 r 引用哪种类型的对象</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>r</code>引用的是<code>CSon</code>类对象，所以<code>r.Fun()</code>调用的是<code>CSon</code>类的<code>Fun</code>。</p>
 
       <div class="tags">
           <a href="/tags/cpp/" rel="tag"><i class="ic i-tag"></i> cpp</a>
@@ -222,7 +277,7 @@ cpp之虚函数与多态 - CPP |
       <i class="ic i-calendar-check"></i>
     </span>
     <span class="text">更新于</span>
-    <time title="修改时间：2022-05-05 21:46:17" itemprop="dateModified" datetime="2022-05-05T21:46:17+08:00">2022-05-05</time>
+    <time title="修改时间：2022-05-09 20:18:40" itemprop="dateModified" datetime="2022-05-09T20:18:40+08:00">2022-05-09</time>
   </span>
   <span id="2022/05/05/cpp/cpp多态/" class="item leancloud_visitors" data-flag-title="cpp之虚函数与多态" title="阅读次数">
       <span class="icon">
@@ -280,7 +335,7 @@ cpp之虚函数与多态 - CPP |
     <div class="item left">
       
 
-  <a href="/2022/05/04/linux/linux-kernal/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp3/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giclgrvbd6j20zk0m8qv5.jpg" title="Linux内核协议栈-cp3">
+  <a href="/2022/05/04/linux/linux-kernal/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp3/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva1.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1gipexw3o58j20zk0m8e81.jpg" title="Linux内核协议栈-cp3">
   <span class="type">上一篇</span>
   <span class="category"><i class="ic i-flag"></i> Linux内核协议栈</span>
   <h3>Linux内核协议栈-cp3</h3>
@@ -288,6 +343,14 @@ cpp之虚函数与多态 - CPP |
 
     </div>
     <div class="item right">
+      
+
+  <a href="/2022/05/09/linux/linux-kernal/linux%E9%94%81/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;tva1.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1gipeuibk9fj20zk0m8ay2.jpg" title="Linux驱动中的并发控制">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> Linux内核</span>
+  <h3>Linux驱动中的并发控制</h3>
+  </a>
+
     </div>
 </div>
 
@@ -304,7 +367,7 @@ cpp之虚函数与多态 - CPP |
   <div class="panels">
     <div class="inner">
       <div class="contents panel pjax" data-title="文章目录">
-          <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E5%A4%9A%E6%80%81"><span class="toc-number">1.</span> <span class="toc-text">静态多态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E5%A4%9A%E6%80%81"><span class="toc-number">2.</span> <span class="toc-text">动态多态</span></a></li></ol>
+          <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E6%80%81"><span class="toc-number">1.</span> <span class="toc-text">多态</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E5%A4%9A%E6%80%81"><span class="toc-number">1.1.</span> <span class="toc-text">静态多态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E5%A4%9A%E6%80%81"><span class="toc-number">1.2.</span> <span class="toc-text">动态多态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E6%80%81%E7%9A%84%E8%A1%A8%E7%8E%B0%E5%BD%A2%E5%BC%8F"><span class="toc-number">1.3.</span> <span class="toc-text">多态的表现形式</span></a></li></ol></li></ol>
       </div>
       <div class="related panel pjax" data-title="系列文章">
         <ul>
@@ -322,19 +385,19 @@ cpp之虚函数与多态 - CPP |
 <nav class="state">
     <div class="item posts">
       <a href="/archives/">
-        <span class="count">12</span>
+        <span class="count">13</span>
         <span class="name">文章</span>
       </a>
     </div>
     <div class="item categories">
       <a href="/categories/">
-        <span class="count">13</span>
+        <span class="count">14</span>
         <span class="name">分类</span>
       </a>
     </div>
     <div class="item tags">
       <a href="/tags/">
-        <span class="count">20</span>
+        <span class="count">22</span>
         <span class="name">标签</span>
       </a>
     </div>
@@ -385,10 +448,12 @@ cpp之虚函数与多态 - CPP |
 
   <ul id="quick">
     <li class="prev pjax">
+        <a href="/2022/05/04/linux/linux-kernal/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp3/" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
     </li>
     <li class="up"><i class="ic i-arrow-up"></i></li>
     <li class="down"><i class="ic i-arrow-down"></i></li>
     <li class="next pjax">
+        <a href="/2022/05/09/linux/linux-kernal/linux%E9%94%81/" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
     </li>
     <li class="percent"></li>
   </ul>
@@ -410,55 +475,10 @@ cpp之虚函数与多态 - CPP |
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
-<i class="ic i-angle-right"></i>
-<a href="/categories/dpdk/dpdk-advanced/" title="分类于 DPDK进阶">DPDK进阶</a>
-</div>
-
-    <span><a href="/2022/05/03/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch2/" title="深入浅出dpdk-ch2">深入浅出dpdk-ch2</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-</div>
-
-    <span><a href="/2022/05/03/git%E5%AD%A6%E4%B9%A0/" title="git学习">git学习</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/cpp/" title="分类于 C++">C++</a>
-<i class="ic i-angle-right"></i>
-<a href="/categories/cpp/cpp-bug/" title="分类于 C++BUG">C++BUG</a>
-</div>
-
-    <span><a href="/2022/05/03/cpp/cpp-bug/c++bug-1/" title="c++遇到的bug-1">c++遇到的bug-1</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
 <a href="/categories/CPP/" title="分类于 CPP">CPP</a>
 </div>
 
     <span><a href="/2022/05/05/cpp/cpp%E5%A4%9A%E6%80%81/" title="cpp之虚函数与多态">cpp之虚函数与多态</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/markdown/" title="分类于 Markdown">Markdown</a>
-<i class="ic i-angle-right"></i>
-<a href="/categories/markdown/markdown-base/" title="分类于 Markdown基础">Markdown基础</a>
-</div>
-
-    <span><a href="/2022/04/29/markdown/markdown-base/markdownlearn/" title="Markdown教程">Markdown教程</a></span>
   </li>
 
       
@@ -479,10 +499,10 @@ cpp之虚函数与多态 - CPP |
 <div class="breadcrumb">
 <a href="/categories/linux/" title="分类于 Linux">Linux</a>
 <i class="ic i-angle-right"></i>
-<a href="/categories/linux/linux-kernal/" title="分类于 Linux内核协议栈">Linux内核协议栈</a>
+<a href="/categories/linux/Linux%E5%86%85%E6%A0%B8/" title="分类于 Linux内核">Linux内核</a>
 </div>
 
-    <span><a href="/2022/05/04/linux/linux-kernal/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp3/" title="Linux内核协议栈-cp3">Linux内核协议栈-cp3</a></span>
+    <span><a href="/2022/05/09/linux/linux-kernal/linux%E9%94%81/" title="Linux驱动中的并发控制">Linux驱动中的并发控制</a></span>
   </li>
 
       
@@ -503,10 +523,58 @@ cpp之虚函数与多态 - CPP |
 <div class="breadcrumb">
 <a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
 <i class="ic i-angle-right"></i>
+<a href="/categories/dpdk/dpdk-advanced/" title="分类于 DPDK进阶">DPDK进阶</a>
+</div>
+
+    <span><a href="/2022/05/03/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch2/" title="深入浅出dpdk-ch2">深入浅出dpdk-ch2</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/linux/" title="分类于 Linux">Linux</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/linux/linux-kernal/" title="分类于 Linux内核协议栈">Linux内核协议栈</a>
+</div>
+
+    <span><a href="/2022/05/03/linux/linux-kernal/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp1/" title="Linux内核协议栈-cp1">Linux内核协议栈-cp1</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/markdown/" title="分类于 Markdown">Markdown</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/markdown/markdown-base/" title="分类于 Markdown基础">Markdown基础</a>
+</div>
+
+    <span><a href="/2022/04/29/markdown/markdown-base/markdownlearn/" title="Markdown教程">Markdown教程</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
+<i class="ic i-angle-right"></i>
 <a href="/categories/dpdk/dpdk-base/" title="分类于 DPDK基础">DPDK基础</a>
 </div>
 
     <span><a href="/2022/04/29/dpdk/dpdk-base/dpdk/" title="DPDK基础">DPDK基础</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/linux/" title="分类于 Linux">Linux</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/linux/linux-kernal/" title="分类于 Linux内核协议栈">Linux内核协议栈</a>
+</div>
+
+    <span><a href="/2022/05/04/linux/linux-kernal/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp3/" title="Linux内核协议栈-cp3">Linux内核协议栈-cp3</a></span>
   </li>
 
       
@@ -543,13 +611,13 @@ cpp之虚函数与多态 - CPP |
     <span class="post-meta-item-icon">
       <i class="ic i-chart-area"></i>
     </span>
-    <span title="站点总字数">36k 字</span>
+    <span title="站点总字数">40k 字</span>
 
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="ic i-coffee"></i>
     </span>
-    <span title="站点阅读时长">32 分钟</span>
+    <span title="站点阅读时长">36 分钟</span>
   </div>
   <div class="powered-by">
     基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
