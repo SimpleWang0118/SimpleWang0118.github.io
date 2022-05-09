@@ -9,7 +9,7 @@
     <atom:link href="http://singlewang.top/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>智者不入爱河，愚者重蹈覆辙</description>
-    <pubDate>Mon, 09 May 2022 13:40:57 GMT</pubDate>
+    <pubDate>Mon, 09 May 2022 13:46:17 GMT</pubDate>
     <generator>http://hexo.io/</generator>
     
     <item>
@@ -30,7 +30,7 @@
       
       <category domain="http://singlewang.top/categories/linux/">Linux</category>
       
-      <category domain="http://singlewang.top/categories/linux/Linux%E5%86%85%E6%A0%B8/">Linux内核</category>
+      <category domain="http://singlewang.top/categories/linux/linux-kernal/">Linux内核</category>
       
       
       <category domain="http://singlewang.top/tags/Linux/">Linux</category>
@@ -93,7 +93,7 @@
       
       <category domain="http://singlewang.top/categories/linux/">Linux</category>
       
-      <category domain="http://singlewang.top/categories/linux/linux-kernal/">Linux内核协议栈</category>
+      <category domain="http://singlewang.top/categories/linux/linux-kernal/">Linux内核</category>
       
       
       <category domain="http://singlewang.top/tags/kernal/">kernal</category>
@@ -211,7 +211,7 @@
       
       <category domain="http://singlewang.top/categories/linux/">Linux</category>
       
-      <category domain="http://singlewang.top/categories/linux/linux-kernal/">Linux内核协议栈</category>
+      <category domain="http://singlewang.top/categories/linux/linux-kernal/">Linux内核</category>
       
       
       <category domain="http://singlewang.top/tags/kernal/">kernal</category>
@@ -244,7 +244,7 @@
       
       <category domain="http://singlewang.top/categories/linux/">Linux</category>
       
-      <category domain="http://singlewang.top/categories/linux/linux-kernal/">Linux内核协议栈</category>
+      <category domain="http://singlewang.top/categories/linux/linux-kernal/">Linux内核</category>
       
       
       <category domain="http://singlewang.top/tags/kernal/">kernal</category>
