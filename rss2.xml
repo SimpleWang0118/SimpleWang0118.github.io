@@ -9,8 +9,36 @@
     <atom:link href="http://singlewang.top/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>智者不入爱河，愚者重蹈覆辙</description>
-    <pubDate>Tue, 10 May 2022 03:09:04 GMT</pubDate>
+    <pubDate>Tue, 10 May 2022 13:28:33 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>TCP窗口拥塞控制</title>
+      <link>http://singlewang.top/2022/05/10/mobile-communication/TCP%E7%AA%97%E5%8F%A3/</link>
+      <guid>http://singlewang.top/2022/05/10/mobile-communication/TCP%E7%AA%97%E5%8F%A3/</guid>
+      <pubDate>Tue, 10 May 2022 11:47:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h3 id=&quot;TCP的特点及其目的&quot;&gt;&lt;a href=&quot;#TCP的特点及其目的&quot; class=&quot;headerlink&quot; title=&quot;TCP的特点及其目的&quot;&gt;&lt;/a&gt;TCP的特点及其目的&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;TCP&lt;/strong&gt;和&lt;strong&gt;UDP&lt;/stro</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h3 id="TCP的特点及其目的"><a href="#TCP的特点及其目的" class="headerlink" title="TCP的特点及其目的"></a>TCP的特点及其目的</h3><p><strong>TCP</strong>和<strong>UDP</strong>协议都位于传输层中，TCP主要提供可靠的通信传输，而UDP则常被用于让广播和细节控制交给应用的通信传输。</p><p><em>TCP是面向连接的可靠的流协议，&#x3D;&#x3D;流就是指不简短的数据结构&#x3D;&#x3D;。采用TCP发送消息时，虽然可以保证发送的顺序，但是还是犹如没有任何间隔的数据流发送给接收端</em></p><blockquote><p><strong>连接</strong>是指各种设备，线路，或网络中进行通信的两个应用程序为了相互传递消息而转悠的、虚拟的通信线路，也叫虚拟电路。</p></blockquote><p>TCP为提供可靠性传输，实行“顺序控制”或“重传控制”机制。此外还有“流控制”，“拥塞控制”等众多功能。</p><h3 id="通过序列号与确认应答提高可靠性"><a href="#通过序列号与确认应答提高可靠性" class="headerlink" title="通过序列号与确认应答提高可靠性"></a>通过序列号与确认应答提高可靠性</h3><p>在TCP中，当发送端的数据到达接收主机时，接收端主机会返回一个已收到消息的通知，这个消息叫做<strong>确认应答（ACK）</strong>,如果有确认应答，说明数据已经成功到达对端，反之，则数据丢失的可能性很大，倘若在一段时间内没有ACK,则发送端进行数据的重发。</p><p>未收到ACK,有如下几种情况：</p><ol><li>发出去的数据包丢失</li><li>接收端发回来的ACK在途中丢失。</li></ol><p>虽然在发送端可以按照机制重传，但是对于接收端会重复收到相同的数据，为了对上层应用提供可靠的传输，必须放弃重复的数据包。需要引入一种机制识别是否已经接收数据，判断是否需要接收。</p><p>使用<strong>序列号</strong>解决上述问题。</p><p>序列号时按顺序发送给数据的每一个字节都标上号码的编号。接收端查询接收数据TCP首部中的序列号和数据的长度，将自己下一步应该接收的序号作为ACK返回，这样就可以是心啊可靠传输。</p><h3 id="重发超时如何确定"><a href="#重发超时如何确定" class="headerlink" title="重发超时如何确定"></a>重发超时如何确定</h3><p><strong>重发超时</strong>指在重发数据之前，等待ACK的那个特定时间间隔，如果超过了这个时间还未收到ACK，发送端就进行数据重发。</p><p>最理想的时间是，找一个最小时间，能保证 <em><strong>确认应答一定能在这个时间内返回</strong></em>。但是TCP要求在任何网络环境下都要提供高性能通信，无论网络拥塞情况如何，都要保持这一特性。因此每次发包时都会计算<strong>往返时间（RTT）</strong>及其偏差，将这个RTT和偏差相加，重发超时的时间就是比这个总和稍微大一点的值。</p><p>在linux系统中，一般以0.5秒为单位进行控制。最初的数据包的重发超时一般设置为6s。<br>数据被重发之后还是收不到ACK，则进行再次重发，但是等待的时间以2倍，4倍指数函数进行增长。达到一定次数后，如果仍然欸有收到ACK，则通知应用通信异常，强行关闭。</p><h3 id="TCP以段为单位发送数据"><a href="#TCP以段为单位发送数据" class="headerlink" title="TCP以段为单位发送数据"></a>TCP以段为单位发送数据</h3><p>建立TCP连接的同时，可以确定发送数据包的单位，称其为<strong>最大消息长度</strong>(MSS)。最理想的情况时最大消息长度正好是IP中不会被分片处理的最大数据长度。</p><p>MSS实在三次握手的时候，在两端主机之间被计算得出。两端主机在建立连接的时候，在TCP首部写入MSS选项，告诉对方自己的接口能适应的MSS的大小，然后选一个较小的值使用。</p><h3 id="利用窗口控制提高速度"><a href="#利用窗口控制提高速度" class="headerlink" title="利用窗口控制提高速度"></a>利用窗口控制提高速度</h3><p>TCP以段为单位，每发一个段进行一次ACK的处理。但是这样一来，包的往返时间越长通信性能就越低。</p><p>于是乎，TCP引入<strong>窗口</strong>这个概念，即发送端主机，发送了一个段后不必一直等待ACK,而是继续发送。<br><strong>窗口大小</strong>就是指无需等待确认应答就可以继续阿松数据的最大值。这个机制实现使用了大量的<strong>缓冲区</strong>。<br>在窗口内的数据即便没有收到确认应答也可以发送出去。而在滑动窗口以外的部分包括尚未发送的数据以及已经确认对端已收到的数据。当数据发出后若收到确认则不必重发，此时数据就可以从缓冲区清除。<br>这种机制也被称为 <strong>滑动窗口控制</strong>。</p><h3 id="窗口控制与重发控制"><a href="#窗口控制与重发控制" class="headerlink" title="窗口控制与重发控制"></a>窗口控制与重发控制</h3><p>窗口控制时，若出现段丢失该怎么办？</p><ol><li><p><strong>确认应答未能返回的情况</strong><br>这种情况下，数据已经到达对端，不需要进行重发，窗口在一定程度上较大时，即使有少部分的确认应答丢失也不会进行数据重发。可以通过下一个确认应答进行确认。</p></li><li><p><strong>报文段丢失的情况</strong><br>当某一报文段丢失后，发送段会一直收到某个序号的ACK，同一个序号的ACK会被重复不断地返回。而发送端主机如果连续三次收到同一个ACK，就会将其对应的数据进行重发。这种机制被称为 <strong>高速重发控制</strong></p></li></ol><h3 id="流控制"><a href="#流控制" class="headerlink" title="流控制"></a>流控制</h3><p><strong>流控制</strong>是一种可以让发送端根据接收端的实际接收能力控制发送的数据量的机制。具体操作是接收端主机向发送店主机通知自己可以接收数据的大小，于是发送端会发送不超过这个限度的数据。该大小限度被称为<strong>窗口大小</strong>。</p><p>TCP首部中，专门有一个字段来通知窗口大小，<em><strong>这个字段的值越大，说明网络的吞吐量越高</strong></em>。</p><blockquote><p>拥塞控制明天更。</p></blockquote>]]></content:encoded>
+      
+      
+      <category domain="http://singlewang.top/categories/mobile-communication/">移动通信</category>
+      
+      
+      <category domain="http://singlewang.top/tags/TCP/">TCP</category>
+      
+      <category domain="http://singlewang.top/tags/%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6/">拥塞控制</category>
+      
+      
+      <comments>http://singlewang.top/2022/05/10/mobile-communication/TCP%E7%AA%97%E5%8F%A3/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>Linux驱动中的并发控制</title>
@@ -100,11 +128,11 @@
       <category domain="http://singlewang.top/categories/linux/linux-kernal/linx-kernal-proto/">Linux内核协议栈</category>
       
       
+      <category domain="http://singlewang.top/tags/kernal/">kernal</category>
+      
       <category domain="http://singlewang.top/tags/linux%E5%8D%8F%E8%AE%AE%E6%A0%88/">linux协议栈</category>
       
       <category domain="http://singlewang.top/tags/%E5%86%85%E6%A0%B8/">内核</category>
-      
-      <category domain="http://singlewang.top/tags/kernal/">kernal</category>
       
       
       <comments>http://singlewang.top/2022/05/04/linux/linux-kernal/linx-kernal-proto/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp3/#disqus_thread</comments>
@@ -220,11 +248,11 @@
       <category domain="http://singlewang.top/categories/linux/linux-kernal/linx-kernal-proto/">Linux内核协议栈</category>
       
       
+      <category domain="http://singlewang.top/tags/kernal/">kernal</category>
+      
       <category domain="http://singlewang.top/tags/linux%E5%8D%8F%E8%AE%AE%E6%A0%88/">linux协议栈</category>
       
       <category domain="http://singlewang.top/tags/%E5%86%85%E6%A0%B8/">内核</category>
-      
-      <category domain="http://singlewang.top/tags/kernal/">kernal</category>
       
       
       <comments>http://singlewang.top/2022/05/03/linux/linux-kernal/linx-kernal-proto/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp2/#disqus_thread</comments>
@@ -299,40 +327,6 @@
       
       
       <comments>http://singlewang.top/2022/05/03/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch2/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>Linux命令</title>
-      <link>http://singlewang.top/2022/05/03/linux/linux-command/linux%E5%91%BD%E4%BB%A4/</link>
-      <guid>http://singlewang.top/2022/05/03/linux/linux-command/linux%E5%91%BD%E4%BB%A4/</guid>
-      <pubDate>Tue, 03 May 2022 03:24:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;blockquote&gt;
-&lt;p&gt;.    #当前文件夹&lt;br&gt;..   #上一级文件夹&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;hr&gt;
-&lt;p&gt;&lt;em&gt;&lt;strong&gt;tar&lt;/strong&gt;&lt;/em&gt;&lt;br&gt;tar -zxvf             解压缩&lt;br&gt;tar -zcv</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<blockquote><p>.    #当前文件夹<br>..   #上一级文件夹</p></blockquote><hr><p><em><strong>tar</strong></em><br>tar -zxvf             解压缩<br>tar -zcvf             压缩</p><blockquote><p>解压tar.xz文件时<br>xz -d xxx.tar.xz 之后会得到xxx.tar文件<br>再执行tar -xvf xxx.tar即可</p></blockquote><p><em>~&#x2F;.bash_history 记录了所有的历史命令</em><br>执行history中的某一句，只需用！加行号<br><code>!1322</code></p><hr><p><em><strong>find</strong></em></p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">find ./home/wang -name test.txt  在/home/wang路径下寻找test.txt文件</span><br><span class="line"></span><br><span class="line">find ./home/wang -name <span class="string">&quot;*.c&quot;</span> 在/home/wang路径下寻找所有后缀为.c的文件</span><br></pre></td></tr></table></figure><hr><p><em><strong>grep</strong></em></p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">grep -i -n &quot;hello&quot; ./*.cpp 在当前文件夹下所有的.cpp文件中查找hello字符串，-n 并且打印行号，-i 不区分大小写</span><br><span class="line">grep -r &quot;include&quot; ./*.cpp 在当前文件夹下所有的.cpp文件中查找include字符串，-r 并且打印文件路径</span><br><span class="line">ls | grep -n &#x27;.c$&#x27;  列出所有的.c文件</span><br><span class="line">grep shell ed.md 在文件ed.md中查找所有的单词shell</span><br></pre></td></tr></table></figure><hr><p><em><strong>环境变量</strong></em><br>查看全局变量 <code>env</code> 或者 <code>printenv</code><br><code>export PATH=$PATH:/home/wang</code>        将某个路径添加到环境变量中，只能生效一次，待重启之后依然需要重新添加<br><code>echo</code> 显示变量的值<br><code>echo $PATH</code> 取出变量PATH的内容</p><hr><p><em><strong>vim</strong></em><br>vim常用命令：<br><code>yy</code> 复制光标所指的当前行<br><code>nyy</code> 复制光标所指的一行往下n行<br><code>p</code> 粘贴在光标以下<br><code>P</code> 粘贴在光标以上<br><code>dd</code> 删除光标所指的一行<br><code>ndd</code> 删除光标所指的往下n行<br><code>set nu</code> 显示行号</p><hr><blockquote><p>反单引号&#96;&#96;&#96;这个符号代表的意义为何？<br>在一串指令中，在”&#96;”之内的指令会被先执行，而其执行出来的结果将作为外部的输入信息</p></blockquote><hr><p><code>uname -a</code> 查看当前内核版本</p><p><code>?</code>代表一个字符<br><code>*</code> 代表零个或多个字符</p><hr><p><em><strong>进程</strong></em><br><code>ps</code>                查看进程<br><code>top</code>               显示实时进程<br><code>kill 3445</code>(端口号)  结束进程 </p><p><code>ctrl+c</code>             中断进程<br><code>ctrl+z</code>              暂停进程 </p><hr><p><code>rmdir</code> 删除目录<br><code>rm -rf</code> 强制删除目录，即使目录下面有文件<br>要想同时创建多个目录和子目录，需要加入-p参数<br><code>mkdir -p new_dir/sub_dir/under_dir</code><br><code>tree</code> 目录以树的形式列出目录中的所有文件<br><code>file</code>  查看文件类型<br><code>cat file1</code> 显示文件内容<br><code>cat -n file1</code> 给显示的文件内容加上行号<br><code>cat -b file</code>   只给文件中有内容的加上行号</p><p><code>du</code>显示当前目录下所有的文件、目录、子目录的磁盘使用情况:</p><ul><li>-c  显示所有已列出文件的大小</li><li>-h 以易读形式显示</li><li>-s 显示每个输出参数的总计</li></ul><hr><p><em><strong>挂载</strong></em><br>要手动在虚拟目录中挂载设备，需要以root用户身份登录，或是以root用户身份运行sudo命<br>令。下面是手动挂载媒体设备的基本命令：<br><code>mount -t type device directory</code></p><blockquote><p>&#x3D;&#x3D;文件类型&#x3D;&#x3D;：<br><em>vfat</em>：Windows长文件系统。<br><em>ntfs</em>：Windows NT、XP、Vista以及Windows 7中广泛使用的高级文件系统。<br><em>iso9660</em>：标准CD-ROM文件系统。</p></blockquote><p>手动将U盘&#x2F;dev&#x2F;sdb1挂载到&#x2F;media&#x2F;disk，可用下面的命令：<br><code>mount -t vfat /dev/sdb1 /media/disk</code></p><ul><li>从Linux系统上移除一个可移动设备时，不能直接从系统上移除，而应该先卸载。</li><li>Linux上不能直接弹出已挂载的CD。如果你在从光驱中移除CD时遇到麻烦，通常是因为该CD还挂载在虚拟目录里。先卸载它，然后再去尝试弹出。</li></ul><p><code>df -h</code> 查看所有已挂载磁盘的使用情况，-h把磁盘空间以易读的形式显示</p><hr><p><em><strong>sort</strong></em><br><code>sort</code> 按指定的默认语言的排序规则对文件中的数据进行排序</p><ul><li>-d 仅考虑空白和字母</li><li>-n 按字符串数值排序</li><li>-u 消除输出中重复的行</li><li>-r 逆序排列</li><li>-o 指定输出文件</li></ul><hr>]]></content:encoded>
-      
-      
-      <category domain="http://singlewang.top/categories/linux/">Linux</category>
-      
-      <category domain="http://singlewang.top/categories/linux/linux-command/">Linux命令</category>
-      
-      
-      <category domain="http://singlewang.top/tags/Linux/">Linux</category>
-      
-      <category domain="http://singlewang.top/tags/Linux%E5%91%BD%E4%BB%A4/">Linux命令</category>
-      
-      
-      <comments>http://singlewang.top/2022/05/03/linux/linux-command/linux%E5%91%BD%E4%BB%A4/#disqus_thread</comments>
       
     </item>
     
