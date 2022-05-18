@@ -1,0 +1,634 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="Single Wang's Blog" href="http://singlewang.top/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="Single Wang's Blog" href="http://singlewang.top/atom.xml" />
+<link rel="alternate" type="application/json" title="Single Wang's Blog" href="http://singlewang.top/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/css/app.css?v=0.2.5">
+
+  
+  <meta name="keywords" content="dpdk,cache,内存" />
+
+
+<link rel="canonical" href="http://singlewang.top/2022/05/03/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch3/">
+
+
+
+  <title>
+深入浅出dpdk-ch3并行计算 - DPDK进阶 - DPDK |
+智者不入爱河 = Single Wang's Blog = 建设美丽中国</title>
+<meta name="generator" content="Hexo 6.1.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">深入浅出dpdk-ch3并行计算
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="创建时间：2022-05-03 15:00:00">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="dateCreated datePublished" datetime="2022-05-03T15:00:00+08:00">2022-05-03</time>
+  </span>
+  <span class="item" title="本文字数">
+    <span class="icon">
+      <i class="ic i-pen"></i>
+    </span>
+    <span class="text">本文字数</span>
+    <span>1.9k</span>
+    <span class="text">字</span>
+  </span>
+  <span class="item" title="阅读时长">
+    <span class="icon">
+      <i class="ic i-clock"></i>
+    </span>
+    <span class="text">阅读时长</span>
+    <span>2 分钟</span>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/" rel="start">智者不入爱河</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1gipevuctzzj20zk0m84qp.jpg"></li>
+          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1gipeuv80yoj20zk0m8kjl.jpg"></li>
+          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1gipey84bjtj20zk0m8hdt.jpg"></li>
+          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1giclx29mstj20zk0m8hdt.jpg"></li>
+          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1gipewr8iypj20zk0m8b29.jpg"></li>
+          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1gicitspjpbj20zk0m81ky.jpg"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/">首页</a></span><i class="ic i-angle-right"></i>
+<span  itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/categories/dpdk/" itemprop="item" rel="index" title="分类于 DPDK"><span itemprop="name">DPDK</span></a>
+<meta itemprop="position" content="1" /></span>
+<i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/categories/dpdk/dpdk-advanced/" itemprop="item" rel="index" title="分类于 DPDK进阶"><span itemprop="name">DPDK进阶</span></a>
+<meta itemprop="position" content="2" /></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+  <link itemprop="mainEntityOfPage" href="http://singlewang.top/2022/05/03/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch3/">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/images/taizaizhi.jpg">
+    <meta itemprop="name" content="Single Wang">
+    <meta itemprop="description" content="建设美丽中国, 智者不入爱河，愚者重蹈覆辙">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Single Wang's Blog">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <h2 id="并行计算"><a href="#并行计算" class="headerlink" title="并行计算"></a>并行计算</h2><p>处理器性能提升主要有两个途径：</p>
+<ol>
+<li>提高IPC(每个时钟周期内可执行的指令条数)</li>
+<li>提高处理器主频(一味提高会触及频率墙，处理器的功耗正比与主频的三次方)</li>
+</ol>
+<p>可以通过提高指令执行的并行度提高IPC，有两种方法：</p>
+<ol>
+<li>提高微架构的指令并行度</li>
+<li>多核并发</li>
+</ol>
+<h3 id="多核性能和可扩展性"><a href="#多核性能和可扩展性" class="headerlink" title="多核性能和可扩展性"></a>多核性能和可扩展性</h3><h4 id="追求性能水平扩展"><a href="#追求性能水平扩展" class="headerlink" title="追求性能水平扩展"></a>追求性能水平扩展</h4><blockquote>
+<p>Amdahl定律告诉我们，假设一个工作的任务量不变，多核并行计算理论时延加速上限取决于那些不能并行处理部分的比例。</p>
+</blockquote>
+<blockquote>
+<p>Gustafson定律指出，多核并行计算额吞吐率随核数增加而线性扩展，可并行处理部分占整个任务的比例越高，增长的斜率越大。</p>
+</blockquote>
+<h4 id="多核处理器"><a href="#多核处理器" class="headerlink" title="多核处理器"></a>多核处理器</h4><p>CPU物理核中的基本组件可以简化为：CPU寄存器集合、中断逻辑、执行单元和Cache。<br>多核处理器就是指多颗单独封装的CPU通过外部总线连接构成统一的计算平台。</p>
+<blockquote>
+<p>一个物理封装的CPU(通过physical id区分)可以有多个核(通过core id区分)。每个核可以有多个逻辑CPU(通过processor区分判断)。</p>
+</blockquote>
+<h4 id="亲和性"><a href="#亲和性" class="headerlink" title="亲和性"></a>亲和性</h4><p>CPU亲和性指一个特定的任务要在某个给定的CPU上尽量长时间的运行而不被迁移到其他处理器上的倾向性。</p>
+<p>线程迁移的频率小就意味着产生的负载小。</p>
+<h5 id="Linux内核对亲和性的支持"><a href="#Linux内核对亲和性的支持" class="headerlink" title="Linux内核对亲和性的支持"></a>Linux内核对亲和性的支持</h5><p>在Linux内核中，所有的线程都有一个相关的数据结构，称为<code>mask_struct</code>。与亲和性相关度最高的是<code>cpus_allowed</code>位掩码。这个位掩码由n位组成，与系统中的n个逻辑核一一对应。如果针对某个线程设置了相关的位，那么这个线程就可以在相关的CPU上运行。</p>
+<p>Linux相关API：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sched_set_affinity() <span class="comment">//用来修改位掩码</span></span><br><span class="line">sched_get_affinity() <span class="comment">//用来查看当前的位掩码</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><code>cpu_affinity</code>会被传递给子线程，因此应该适当的调用<code>sched_set_affinity</code>。</p>
+</blockquote>
+<h5 id="为什么使用亲和性"><a href="#为什么使用亲和性" class="headerlink" title="为什么使用亲和性"></a>为什么使用亲和性</h5><p>将线程与CPU绑定，最直观的好处就是提高了Cache的命中率，减少内存方位损耗，提高程序的速度。<br>减少了线程来回迁移的性能消耗，线程之间干扰也会减少。</p>
+<p>使用亲和性的三个原因：</p>
+<ol>
+<li>有大量计算要做</li>
+<li>测试复杂的应用程序</li>
+<li>运行时间敏感的、决定性的线程</li>
+</ol>
+<h5 id="线程独占"><a href="#线程独占" class="headerlink" title="线程独占"></a>线程独占</h5><p>DPDK通过把线程绑定到逻辑核的方法避免跨核任务中的切换开销，但对于绑定运行的当前逻辑核，仍然可能会有线程切换的发生。因此可以进一步采取把逻辑核从内核调度系统剥离的方法。</p>
+<p>linux内核提供了启动参数<code>isolcpus</code>。对于有4个CPU的服务器，在启动的时候加入启动参数isolcpus&#x3D;2，3.那么系统启动后将不使用CPU3和CPU4;但是还是可以通过<code>taskset</code>指定哪些程序在这些核心中运行。</p>
+<p>步骤如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vim /boot/grub2.cfg <span class="comment">//在Linux kernel启动参数里面加入isolcpus参数，isolcpu=2， 3</span></span><br><span class="line"></span><br><span class="line">cat /proc/cmdline  <span class="comment">//等待系统重新启动之后查看启动参数BOOT_IMAGE=/boot/vmlinuz3.17.8-200.fc20.x86_64root=UUID=3ae47813-79ea-4805-a732-</span></span><br><span class="line"><span class="number">21b</span>edcbdb0b5ro LANG=en_US.UTF<span class="number">-8</span>isolcpus=<span class="number">2</span>，<span class="number">3</span>。</span><br></pre></td></tr></table></figure>
+
+
+<h5 id="DPDK的多线程"><a href="#DPDK的多线程" class="headerlink" title="DPDK的多线程"></a>DPDK的多线程</h5><p>DPDK的线程基于<code>pthread</code>接口创建，属于抢占式线程模型，受内核调度支配。</p>
+<ol>
+<li>EAL中的lcore</li>
+</ol>
+<p>DPDK的lcore指的是EAL线程，本质是基于<code>pthread</code>(Linux&#x2F;FreeBSD)封装实现。<code>lcore</code>由<code>remote_launch</code>指定的任务创建并管理。在每个EAL pthread中， 有一个TLS（Thread Local Storage）称为_lcore_id。当使用DPDK的 EAL‘-c’参数指定coremask时，EAL pthread生成相应个数lcore并默 认是1：1亲和到coremask对应的CPU逻辑核，_lcore_id和CPU ID是一致的。</p>
+<p><em><strong>DPDK中lcore的初始化及执行任务的注册</strong></em></p>
+<ul>
+<li>初始化<ul>
+<li><code>rte_eal_cpu_init()</code>函数中，通过读取<code>/sys/devices/system/cpu/cpuX/</code>,确定当前系统有哪些CPU核，以及每个核属于哪个CPU Socket。</li>
+<li><code>eal_parse_args()</code>函数，解析-c参数。</li>
+<li>为每一个SLAVE核创建线程，并调用<code>eal_thread_set_affinity()</code>绑定CPU。线程的执行体是<code>eal_thread_loop()</code></li>
+</ul>
+</li>
+<li>注册<br>不同的模块需要调用<code>rte_eal_mp_remote_launch()</code>,将自己的回调处理函数注册到lcore_config[]中。</li>
+</ul>
+
+      <div class="tags">
+          <a href="/tags/dpdk/" rel="tag"><i class="ic i-tag"></i> dpdk</a>
+          <a href="/tags/cache/" rel="tag"><i class="ic i-tag"></i> cache</a>
+          <a href="/tags/%E5%86%85%E5%AD%98/" rel="tag"><i class="ic i-tag"></i> 内存</a>
+      </div>
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新于</span>
+    <time title="修改时间：2022-05-18 20:56:12" itemprop="dateModified" datetime="2022-05-18T20:56:12+08:00">2022-05-18</time>
+  </span>
+  <span id="2022/05/03/dpdk/dpdk-advanced/dpdk进阶-ch3/" class="item leancloud_visitors" data-flag-title="深入浅出dpdk-ch3并行计算" title="阅读次数">
+      <span class="icon">
+        <i class="ic i-eye"></i>
+      </span>
+      <span class="text">阅读次数</span>
+      <span class="leancloud-visitors-count"></span>
+      <span class="text">次</span>
+  </span>
+</div>
+
+      
+<div class="reward">
+  <button><i class="ic i-heartbeat"></i> 赞赏</button>
+  <p>听我说，谢谢你</p>
+  <div id="qr">
+      
+      <div>
+        <img data-src="/images/wepay.jpg" alt="Single Wang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div>
+        <img data-src="/images/zhipay.jpg" alt="Single Wang 支付宝">
+        <p>支付宝</p>
+      </div>
+  </div>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>本文作者： </strong>Single Wang <i class="ic i-at"><em>@</em></i>Single Wang's Blog
+  </li>
+  <li class="link">
+    <strong>本文链接：</strong>
+    <a href="http://singlewang.top/2022/05/03/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch3/" title="深入浅出dpdk-ch3并行计算">http://singlewang.top/2022/05/03/dpdk/dpdk-advanced/dpdk进阶-ch3/</a>
+  </li>
+  <li class="license">
+    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/2022/05/03/linux/linux-command/linux%E5%91%BD%E4%BB%A4/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva2.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giclhfehz7j20zk0m8u0x.jpg" title="Linux命令">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> Linux命令</span>
+  <h3>Linux命令</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/2022/05/03/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch2/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;tva2.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giclize41wj20zk0m87gk.jpg" title="深入浅出dpdk-ch2Cache">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> DPDK进阶</span>
+  <h3>深入浅出dpdk-ch2Cache</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97"><span class="toc-number">1.</span> <span class="toc-text">并行计算</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E6%A0%B8%E6%80%A7%E8%83%BD%E5%92%8C%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7"><span class="toc-number">1.1.</span> <span class="toc-text">多核性能和可扩展性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%BD%E6%B1%82%E6%80%A7%E8%83%BD%E6%B0%B4%E5%B9%B3%E6%89%A9%E5%B1%95"><span class="toc-number">1.1.1.</span> <span class="toc-text">追求性能水平扩展</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%9A%E6%A0%B8%E5%A4%84%E7%90%86%E5%99%A8"><span class="toc-number">1.1.2.</span> <span class="toc-text">多核处理器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%B2%E5%92%8C%E6%80%A7"><span class="toc-number">1.1.3.</span> <span class="toc-text">亲和性</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Linux%E5%86%85%E6%A0%B8%E5%AF%B9%E4%BA%B2%E5%92%8C%E6%80%A7%E7%9A%84%E6%94%AF%E6%8C%81"><span class="toc-number">1.1.3.1.</span> <span class="toc-text">Linux内核对亲和性的支持</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8%E4%BA%B2%E5%92%8C%E6%80%A7"><span class="toc-number">1.1.3.2.</span> <span class="toc-text">为什么使用亲和性</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E7%8B%AC%E5%8D%A0"><span class="toc-number">1.1.3.3.</span> <span class="toc-text">线程独占</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#DPDK%E7%9A%84%E5%A4%9A%E7%BA%BF%E7%A8%8B"><span class="toc-number">1.1.3.4.</span> <span class="toc-text">DPDK的多线程</span></a></li></ol></li></ol></li></ol></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li><a href="/2022/05/03/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch2/" rel="bookmark" title="深入浅出dpdk-ch2Cache">深入浅出dpdk-ch2Cache</a></li><li class="active"><a href="/2022/05/03/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch3/" rel="bookmark" title="深入浅出dpdk-ch3并行计算">深入浅出dpdk-ch3并行计算</a></li>
+        </ul>
+      </div>
+      <div class="overview panel" data-title="站点概览">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="Single Wang"
+      data-src="/images/taizaizhi.jpg">
+  <p class="name" itemprop="name">Single Wang</p>
+  <div class="description" itemprop="description">智者不入爱河，愚者重蹈覆辙</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/archives/">
+        <span class="count">17</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+    <div class="item categories">
+      <a href="/categories/">
+        <span class="count">16</span>
+        <span class="name">分类</span>
+      </a>
+    </div>
+    <div class="item tags">
+      <a href="/tags/">
+        <span class="count">27</span>
+        <span class="name">标签</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+      <span class="exturl item github" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbXBsZVdhbmcwMTE4" title="https:&#x2F;&#x2F;github.com&#x2F;SimpleWang0118"><i class="ic i-github"></i></span>
+      <a href="/931346283@qq.com" title="931346283@qq.com" class="item email"><i class="ic i-envelope"></i></a>
+      <a href="/931346283@qq.com" title="931346283@qq.com" class="item QQ"><i class="ic i-qq"></i></a>
+      <a href="/WLH931346283" title="WLH931346283" class="item WeChat"><i class="ic i-weixin"></i></a>
+      <span class="exturl item music" data-url="aHR0cHM6Ly9tdXNpYy4xNjMuY29tLyMvdXNlci9ob21lP2lkPTEyODkyMjAwMjc=" title="https:&#x2F;&#x2F;music.163.com&#x2F;#&#x2F;user&#x2F;home?id&#x3D;1289220027"><i class="ic i-cloud-music"></i></span>
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/" rel="section"><i class="ic i-home"></i>首页</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/archives/" rel="section"><i class="ic i-list-alt"></i>归档</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/categories/" rel="section"><i class="ic i-th"></i>分类</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/tags/" rel="section"><i class="ic i-tags"></i>标签</a>
+  </li>
+
+  </ul>
+    
+  <li class="item">
+    <a href="/about/" rel="section"><i class="ic i-user"></i>关于</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/2022/05/03/linux/linux-command/linux%E5%91%BD%E4%BB%A4/" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/2022/05/03/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch2/" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>随机文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/markdown/" title="分类于 Markdown">Markdown</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/markdown/markdown-base/" title="分类于 Markdown基础">Markdown基础</a>
+</div>
+
+    <span><a href="/2022/04/29/markdown/markdown-base/markdownlearn/" title="Markdown教程">Markdown教程</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/cpp/" title="分类于 C++">C++</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/cpp/cpp-bug/" title="分类于 C++BUG">C++BUG</a>
+</div>
+
+    <span><a href="/2022/05/03/cpp/cpp-bug/c++bug-1/" title="c++遇到的bug-1">c++遇到的bug-1</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/dpdk/dpdk-advanced/" title="分类于 DPDK进阶">DPDK进阶</a>
+</div>
+
+    <span><a href="/2022/05/03/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch3/" title="深入浅出dpdk-ch3并行计算">深入浅出dpdk-ch3并行计算</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/linux/" title="分类于 Linux">Linux</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/linux/linux-kernal/" title="分类于 Linux内核">Linux内核</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/linux/linux-kernal/linx-kernal-proto/" title="分类于 Linux内核协议栈">Linux内核协议栈</a>
+</div>
+
+    <span><a href="/2022/05/04/linux/linux-kernal/linx-kernal-proto/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp3/" title="Linux内核协议栈-cp3">Linux内核协议栈-cp3</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/dpdk/dpdk-advanced/" title="分类于 DPDK进阶">DPDK进阶</a>
+</div>
+
+    <span><a href="/2022/05/03/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch2/" title="深入浅出dpdk-ch2Cache">深入浅出dpdk-ch2Cache</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/linux/" title="分类于 Linux">Linux</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/linux/linux-kernal/" title="分类于 Linux内核">Linux内核</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/linux/linux-kernal/linx-kernal-proto/" title="分类于 Linux内核协议栈">Linux内核协议栈</a>
+</div>
+
+    <span><a href="/2022/05/03/linux/linux-kernal/linx-kernal-proto/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp1/" title="Linux内核协议栈-cp1">Linux内核协议栈-cp1</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/markdown/" title="分类于 Markdown">Markdown</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/markdown/markdown-base/" title="分类于 Markdown基础">Markdown基础</a>
+</div>
+
+    <span><a href="/2022/05/11/markdown/markdown-base/markdown%E5%85%AC%E5%BC%8F%E7%BC%96%E8%BE%91/" title="Markdown公式编辑">Markdown公式编辑</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/CPP/" title="分类于 CPP">CPP</a>
+</div>
+
+    <span><a href="/2022/05/05/cpp/cpp%E5%A4%9A%E6%80%81/" title="cpp之虚函数与多态">cpp之虚函数与多态</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/dpdk/dpdk-base/" title="分类于 DPDK基础">DPDK基础</a>
+</div>
+
+    <span><a href="/2022/04/29/dpdk/dpdk-base/dpdk/" title="DPDK基础">DPDK基础</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/mobile-communication/" title="分类于 移动通信">移动通信</a>
+</div>
+
+    <span><a href="/2022/05/10/mobile-communication/TCP%E7%AA%97%E5%8F%A3/" title="TCP窗口与拥塞控制">TCP窗口与拥塞控制</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新评论</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2022-04 – 
+    <span itemprop="copyrightYear">2022</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Single Wang @ 智者不入爱河</span>
+  </div>
+  <div class="count">
+    <span class="post-meta-item-icon">
+      <i class="ic i-chart-area"></i>
+    </span>
+    <span title="站点总字数">53k 字</span>
+
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="ic i-coffee"></i>
+    </span>
+    <span title="站点阅读时长">48 分钟</span>
+  </div>
+  <div class="powered-by">
+    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: '2022/05/03/dpdk/dpdk-advanced/dpdk进阶-ch3/',
+    favicon: {
+      show: "（●´3｀●）やれやれだぜ",
+      hide: "(´Д｀)大変だ！"
+    },
+    search : {
+      placeholder: "文章搜索",
+      empty: "关于 「 ${query} 」，什么也没搜到",
+      stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    valine: true,fancybox: true,
+    copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/js/app.js?v=0.2.5"></script>
+
+
+
+
+</body>
+</html>
