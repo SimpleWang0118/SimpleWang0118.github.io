@@ -24,15 +24,15 @@
 <link rel="stylesheet" href="/css/app.css?v=0.2.5">
 
   
-  <meta name="keywords" content="git,github" />
+  <meta name="keywords" content="dpdk,同步互斥" />
 
 
-<link rel="canonical" href="http://singlewang.top/2022/05/03/git%E5%AD%A6%E4%B9%A0/">
+<link rel="canonical" href="http://singlewang.top/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch4/">
 
 
 
   <title>
-git学习 |
+深入浅出dpdk-ch4同步互斥机制 - DPDK进阶 - DPDK |
 智者不入爱河 = Single Wang's Blog = 建设美丽中国</title>
 <meta name="generator" content="Hexo 6.1.0"></head>
 <body itemscope itemtype="http://schema.org/WebPage">
@@ -60,23 +60,23 @@ git学习 |
         <div id="brand">
           <div class="pjax">
           
-  <h1 itemprop="name headline">git学习
+  <h1 itemprop="name headline">深入浅出dpdk-ch4同步互斥机制
   </h1>
   
 <div class="meta">
-  <span class="item" title="创建时间：2022-05-03 20:51:00">
+  <span class="item" title="创建时间：2022-05-19 20:00:00">
     <span class="icon">
       <i class="ic i-calendar"></i>
     </span>
     <span class="text">发表于</span>
-    <time itemprop="dateCreated datePublished" datetime="2022-05-03T20:51:00+08:00">2022-05-03</time>
+    <time itemprop="dateCreated datePublished" datetime="2022-05-19T20:00:00+08:00">2022-05-19</time>
   </span>
   <span class="item" title="本文字数">
     <span class="icon">
       <i class="ic i-pen"></i>
     </span>
     <span class="text">本文字数</span>
-    <span>721</span>
+    <span>922</span>
     <span class="text">字</span>
   </span>
   <span class="item" title="阅读时长">
@@ -117,12 +117,12 @@ git学习 |
       </div>
       <div id="imgs" class="pjax">
         <ul>
-          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1giclflwv2aj20zk0m84qp.jpg"></li>
-          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1giph4fomxoj20zk0m8axp.jpg"></li>
-          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1gipewr8iypj20zk0m8b29.jpg"></li>
-          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1gipeudstjqj20zk0m8k3r.jpg"></li>
-          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1giciszlczyj20zk0m816d.jpg"></li>
-          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1gicitht3xtj20zk0m8k5v.jpg"></li>
+          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1gipeuv80yoj20zk0m8kjl.jpg"></li>
+          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1gipew8gmvyj20zk0m87wh.jpg"></li>
+          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1gipevo9j1jj20zk0m8e81.jpg"></li>
+          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1gicivghyooj20zk0m8dir.jpg"></li>
+          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1giclj9410cj20zk0m8h12.jpg"></li>
+          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1giclwuom7cj20zk0m8dvn.jpg"></li>
         </ul>
       </div>
     </header>
@@ -147,11 +147,16 @@ git学习 |
     
 <div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
 <i class="ic i-home"></i>
-<span><a href="/">首页</a></span>
+<span><a href="/">首页</a></span><i class="ic i-angle-right"></i>
+<span  itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/categories/dpdk/" itemprop="item" rel="index" title="分类于 DPDK"><span itemprop="name">DPDK</span></a>
+<meta itemprop="position" content="1" /></span>
+<i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/categories/dpdk/dpdk-advanced/" itemprop="item" rel="index" title="分类于 DPDK进阶"><span itemprop="name">DPDK进阶</span></a>
+<meta itemprop="position" content="2" /></span>
 </div>
 
     <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
-  <link itemprop="mainEntityOfPage" href="http://singlewang.top/2022/05/03/git%E5%AD%A6%E4%B9%A0/">
+  <link itemprop="mainEntityOfPage" href="http://singlewang.top/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch4/">
 
   <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="image" content="/images/taizaizhi.jpg">
@@ -166,19 +171,36 @@ git学习 |
   <div class="body md" itemprop="articleBody">
     
 
-    <ol>
-<li>初始化一个git目录    <code>git init</code></li>
-<li>添加文件到Git仓库，分两步：<br> 使用命令<code>git add &lt;file&gt;</code>，注意，可反复多次使用，添加多个文件；<br> 使用命令<code>git commit -m &lt;message&gt;</code>提交完成。-m后面输入的是本次提交的说明</li>
-<li>要随时掌握工作区的状态，使用<code>git status</code>命令。<br> 如果<code>git status</code>告诉你有文件被修改过，用<code>git diff</code>可以查看修改内容。</li>
-<li>添加远程库<code>git remote add origin git@github.com:SimpleWang0118/C-Game.git</code><br> 添加后，远程库的名字就是<code>origin</code><br> 把本地库的所有内容推送到远程库上（第一次）<code>git push -u origin master</code><br> 只要本地作了提交，就可以通过命令 <code>git push origin master</code>推送至远程库上</li>
-<li>查看远程库信息<code>git remote -v</code></li>
-<li>删除远程库<code>eg git remote rm origin</code></li>
-<li><code>git commit</code>提示<code>Your branch is up-to-date with &#39;origin/master&#39;</code><br> 首先建立一个分支：<code>git branch new branch</code><br> 然后检查分支是否创建成功: <code>git branch</code> *代表的是当前你所在的工作分支<br> 然后切换到你的新分支: <code>git checkout newbranch</code><br> 然后将你的改动提交到新分支上: git add .     git commit -m “18.03.01”<br> 然后切换到主分支:<code>git checkout master</code><br> 然后将新分支提交的改动合并到主分支上:<code>git merge newbranch</code><br> 然后就可以push代码了:<code>git push -u origin master</code><br> 最后还可以删除这个分支:<code>git branch -D newbranch</code></li>
+    <h3 id="DPDK原子操作实现和应用"><a href="#DPDK原子操作实现和应用" class="headerlink" title="DPDK原子操作实现和应用"></a>DPDK原子操作实现和应用</h3><p>原子操作在DPD代码中的定义都在<code>rte_atomic.h</code>中，主要包含两部分：<strong>内存屏蔽和原16、32和64位的原子操作API</strong></p>
+<blockquote>
+<p>Linux内核的原子操作见linux驱动</p>
+</blockquote>
+<h4 id="内存屏障API"><a href="#内存屏障API" class="headerlink" title="内存屏障API"></a>内存屏障API</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rte_mb()  <span class="comment">//内存屏障读写API</span></span><br><span class="line">rte_wmb()  <span class="comment">//内存屏障写API</span></span><br><span class="line">rte_rmb()  <span class="comment">//内存屏障读API</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="DPDK读写锁实现和应用"><a href="#DPDK读写锁实现和应用" class="headerlink" title="DPDK读写锁实现和应用"></a>DPDK读写锁实现和应用</h3><p>DPDK的读写锁的定义在<code>rte_rwlock.h</code>中，</p>
+<blockquote>
+<p>linux读写锁的API见linux驱动</p>
+</blockquote>
+<p><code>rte_rwlock_init(rte_rwlock_t *rwl)</code>:初始化读写锁到unlocked状态<br><code>rte_rwlock_read_lock(rte_rwlock_t *rwl)</code>:尝试获取读锁直到锁被占用<br><code>rte_rwlock_read_unlock(rte_rwlock_t *rwl)</code>:释放读锁<br><code>rte_rwlock_write_lock(rte_rwlock_t *rwl)</code>:获取写锁<br><code>rte_rwlock_write_unlock(rte_rwlock_t *rwl)</code>:释放写锁</p>
+<p>读写锁在DPDK中主要应用在如下几个地方：</p>
+<ol>
+<li>在查找空闲的<code>memory segment</code>的时候，使用读写锁来保护<code>memseg</code>结构，LPM表的创建、查找和释放</li>
+<li><code>Memory ring</code>的创建、查找、释放</li>
+<li>ACL表的创建、查找、释放</li>
+<li>Memzone的创建、查找、释放</li>
 </ol>
+<h3 id="DPDK自旋锁实现和应用"><a href="#DPDK自旋锁实现和应用" class="headerlink" title="DPDK自旋锁实现和应用"></a>DPDK自旋锁实现和应用</h3><p>DPDK自旋锁API的定义在<code>rte_spinlock.h</code>中，下面三个API被广泛应用在告警、日志、中断机制、内存共享、link bonding中用于临界资源的保护</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rte_spinlock_init(<span class="type">rte_spinlock_t</span> *sl)</span><br><span class="line">rte_spinlock_lock(<span class="type">rte_spinlock_t</span> *sl)</span><br><span class="line">rte_spinlock_unlock(<span class="type">rte_spinlock_t</span> *sl)</span><br></pre></td></tr></table></figure>
+
+<h3 id="DPDK无锁环形缓冲"><a href="#DPDK无锁环形缓冲" class="headerlink" title="DPDK无锁环形缓冲"></a>DPDK无锁环形缓冲</h3><p>DPDK提供了一套无锁环形缓冲区队列管理代码，支持单生产者产品入队，单消费者产品出队；多生产者入队，多消费者出队</p>
+<blockquote>
+<p>见DPDK基础</p>
+</blockquote>
+<p>单生产者单消费者模型不需要加锁<br>（一）多对多（一）模型中正常逻辑操作是要对队列操作进行加锁处理。加锁的性能开销较大，一般采用无锁实现。</p>
 
       <div class="tags">
-          <a href="/tags/git/" rel="tag"><i class="ic i-tag"></i> git</a>
-          <a href="/tags/github/" rel="tag"><i class="ic i-tag"></i> github</a>
+          <a href="/tags/dpdk/" rel="tag"><i class="ic i-tag"></i> dpdk</a>
+          <a href="/tags/%E5%90%8C%E6%AD%A5%E4%BA%92%E6%96%A5/" rel="tag"><i class="ic i-tag"></i> 同步互斥</a>
       </div>
   </div>
 
@@ -190,9 +212,9 @@ git学习 |
       <i class="ic i-calendar-check"></i>
     </span>
     <span class="text">更新于</span>
-    <time title="修改时间：2022-05-03 20:51:38" itemprop="dateModified" datetime="2022-05-03T20:51:38+08:00">2022-05-03</time>
+    <time title="修改时间：2022-05-19 15:02:02" itemprop="dateModified" datetime="2022-05-19T15:02:02+08:00">2022-05-19</time>
   </span>
-  <span id="2022/05/03/git学习/" class="item leancloud_visitors" data-flag-title="git学习" title="阅读次数">
+  <span id="2022/05/19/dpdk/dpdk-advanced/dpdk进阶-ch4/" class="item leancloud_visitors" data-flag-title="深入浅出dpdk-ch4同步互斥机制" title="阅读次数">
       <span class="icon">
         <i class="ic i-eye"></i>
       </span>
@@ -229,7 +251,7 @@ git学习 |
   </li>
   <li class="link">
     <strong>本文链接：</strong>
-    <a href="http://singlewang.top/2022/05/03/git%E5%AD%A6%E4%B9%A0/" title="git学习">http://singlewang.top/2022/05/03/git学习/</a>
+    <a href="http://singlewang.top/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch4/" title="深入浅出dpdk-ch4同步互斥机制">http://singlewang.top/2022/05/19/dpdk/dpdk-advanced/dpdk进阶-ch4/</a>
   </li>
   <li class="license">
     <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
@@ -248,20 +270,20 @@ git学习 |
     <div class="item left">
       
 
-  <a href="/2022/05/03/%E5%88%B7%E6%9C%BA%E6%95%99%E7%A8%8B/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva2.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1gicis3attqj20zk0m8k7l.jpg" title="刷机教程">
+  <a href="/2022/05/11/linux/linux-kernal/linux-kernal-driver/linux%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva2.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giciuja1j1j20zk0m8kjl.jpg" title="Linux网络设备驱动">
   <span class="type">上一篇</span>
-  <span class="category"><i class="ic i-flag"></i> </span>
-  <h3>刷机教程</h3>
+  <span class="category"><i class="ic i-flag"></i> Linux内核驱动</span>
+  <h3>Linux网络设备驱动</h3>
   </a>
 
     </div>
     <div class="item right">
       
 
-  <a href="/2022/05/03/cpp/cpp-bug/c++bug-1/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;tva2.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giclgrvbd6j20zk0m8qv5.jpg" title="c++遇到的bug-1">
+  <a href="/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch3/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;tva2.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1gipevuctzzj20zk0m84qp.jpg" title="深入浅出dpdk-ch3并行计算">
   <span class="type">下一篇</span>
-  <span class="category"><i class="ic i-flag"></i> C++BUG</span>
-  <h3>c++遇到的bug-1</h3>
+  <span class="category"><i class="ic i-flag"></i> DPDK进阶</span>
+  <h3>深入浅出dpdk-ch3并行计算</h3>
   </a>
 
     </div>
@@ -280,8 +302,12 @@ git学习 |
   <div class="panels">
     <div class="inner">
       <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#DPDK%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C%E5%AE%9E%E7%8E%B0%E5%92%8C%E5%BA%94%E7%94%A8"><span class="toc-number">1.</span> <span class="toc-text">DPDK原子操作实现和应用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E5%B1%8F%E9%9A%9CAPI"><span class="toc-number">1.1.</span> <span class="toc-text">内存屏障API</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DPDK%E8%AF%BB%E5%86%99%E9%94%81%E5%AE%9E%E7%8E%B0%E5%92%8C%E5%BA%94%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">DPDK读写锁实现和应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DPDK%E8%87%AA%E6%97%8B%E9%94%81%E5%AE%9E%E7%8E%B0%E5%92%8C%E5%BA%94%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text">DPDK自旋锁实现和应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DPDK%E6%97%A0%E9%94%81%E7%8E%AF%E5%BD%A2%E7%BC%93%E5%86%B2"><span class="toc-number">4.</span> <span class="toc-text">DPDK无锁环形缓冲</span></a></li></ol>
       </div>
       <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li><a href="/2022/05/03/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch2/" rel="bookmark" title="深入浅出dpdk-ch2Cache">深入浅出dpdk-ch2Cache</a></li><li><a href="/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch3/" rel="bookmark" title="深入浅出dpdk-ch3并行计算">深入浅出dpdk-ch3并行计算</a></li><li class="active"><a href="/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch4/" rel="bookmark" title="深入浅出dpdk-ch4同步互斥机制">深入浅出dpdk-ch4同步互斥机制</a></li>
+        </ul>
       </div>
       <div class="overview panel" data-title="站点概览">
         <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -357,12 +383,12 @@ git学习 |
 
   <ul id="quick">
     <li class="prev pjax">
-        <a href="/2022/05/03/%E5%88%B7%E6%9C%BA%E6%95%99%E7%A8%8B/" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+        <a href="/2022/05/11/linux/linux-kernal/linux-kernal-driver/linux%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8/" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
     </li>
     <li class="up"><i class="ic i-arrow-up"></i></li>
     <li class="down"><i class="ic i-arrow-down"></i></li>
     <li class="next pjax">
-        <a href="/2022/05/03/cpp/cpp-bug/c++bug-1/" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+        <a href="/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch3/" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
     </li>
     <li class="percent"></li>
   </ul>
@@ -384,35 +410,14 @@ git学习 |
   <li class="item">
     
 <div class="breadcrumb">
-</div>
-
-    <span><a href="/2022/05/03/%E5%88%B7%E6%9C%BA%E6%95%99%E7%A8%8B/" title="刷机教程">刷机教程</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
 <a href="/categories/linux/" title="分类于 Linux">Linux</a>
 <i class="ic i-angle-right"></i>
 <a href="/categories/linux/linux-kernal/" title="分类于 Linux内核">Linux内核</a>
 <i class="ic i-angle-right"></i>
-<a href="/categories/linux/linux-kernal/linux-kernal-driver/" title="分类于 Linux内核驱动">Linux内核驱动</a>
+<a href="/categories/linux/linux-kernal/linx-kernal-proto/" title="分类于 Linux内核协议栈">Linux内核协议栈</a>
 </div>
 
-    <span><a href="/2022/05/11/linux/linux-kernal/linux-kernal-driver/linux%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8/" title="Linux网络设备驱动">Linux网络设备驱动</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
-<i class="ic i-angle-right"></i>
-<a href="/categories/dpdk/dpdk-base/" title="分类于 DPDK基础">DPDK基础</a>
-</div>
-
-    <span><a href="/2022/04/29/dpdk/dpdk-base/dpdk/" title="DPDK基础">DPDK基础</a></span>
+    <span><a href="/2022/05/04/linux/linux-kernal/linx-kernal-proto/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp3/" title="Linux内核协议栈-cp3">Linux内核协议栈-cp3</a></span>
   </li>
 
       
@@ -425,26 +430,6 @@ git学习 |
 </div>
 
     <span><a href="/2022/05/11/markdown/markdown-base/markdown%E5%85%AC%E5%BC%8F%E7%BC%96%E8%BE%91/" title="Markdown公式编辑">Markdown公式编辑</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/mobile-communication/" title="分类于 移动通信">移动通信</a>
-</div>
-
-    <span><a href="/2022/05/10/mobile-communication/TCP%E7%AA%97%E5%8F%A3/" title="TCP窗口与拥塞控制">TCP窗口与拥塞控制</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/CPP/" title="分类于 CPP">CPP</a>
-</div>
-
-    <span><a href="/2022/05/05/cpp/cpp%E5%A4%9A%E6%80%81/" title="cpp之虚函数与多态">cpp之虚函数与多态</a></span>
   </li>
 
       
@@ -472,7 +457,31 @@ git学习 |
 <a href="/categories/linux/linux-kernal/linux-kernal-driver/" title="分类于 Linux内核驱动">Linux内核驱动</a>
 </div>
 
-    <span><a href="/2022/05/09/linux/linux-kernal/linux-kernal-driver/linux%E9%94%81/" title="Linux驱动中的并发控制">Linux驱动中的并发控制</a></span>
+    <span><a href="/2022/05/11/linux/linux-kernal/linux-kernal-driver/linux%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8/" title="Linux网络设备驱动">Linux网络设备驱动</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/cpp/" title="分类于 C++">C++</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/cpp/cpp-bug/" title="分类于 C++BUG">C++BUG</a>
+</div>
+
+    <span><a href="/2022/05/03/cpp/cpp-bug/c++bug-1/" title="c++遇到的bug-1">c++遇到的bug-1</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/dpdk/dpdk-advanced/" title="分类于 DPDK进阶">DPDK进阶</a>
+</div>
+
+    <span><a href="/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch4/" title="深入浅出dpdk-ch4同步互斥机制">深入浅出dpdk-ch4同步互斥机制</a></span>
   </li>
 
       
@@ -491,14 +500,38 @@ git学习 |
   <li class="item">
     
 <div class="breadcrumb">
+<a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/dpdk/dpdk-advanced/" title="分类于 DPDK进阶">DPDK进阶</a>
+</div>
+
+    <span><a href="/2022/05/03/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch2/" title="深入浅出dpdk-ch2Cache">深入浅出dpdk-ch2Cache</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/markdown/" title="分类于 Markdown">Markdown</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/markdown/markdown-base/" title="分类于 Markdown基础">Markdown基础</a>
+</div>
+
+    <span><a href="/2022/04/29/markdown/markdown-base/markdownlearn/" title="Markdown教程">Markdown教程</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
 <a href="/categories/linux/" title="分类于 Linux">Linux</a>
 <i class="ic i-angle-right"></i>
 <a href="/categories/linux/linux-kernal/" title="分类于 Linux内核">Linux内核</a>
 <i class="ic i-angle-right"></i>
-<a href="/categories/linux/linux-kernal/linx-kernal-proto/" title="分类于 Linux内核协议栈">Linux内核协议栈</a>
+<a href="/categories/linux/linux-kernal/linux-kernal-driver/" title="分类于 Linux内核驱动">Linux内核驱动</a>
 </div>
 
-    <span><a href="/2022/05/03/linux/linux-kernal/linx-kernal-proto/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp1/" title="Linux内核协议栈-cp1">Linux内核协议栈-cp1</a></span>
+    <span><a href="/2022/05/09/linux/linux-kernal/linux-kernal-driver/linux%E9%94%81/" title="Linux驱动中的并发控制">Linux驱动中的并发控制</a></span>
   </li>
 
   </ul>
@@ -541,7 +574,7 @@ git学习 |
   </div>
 <script data-config type="text/javascript">
   var LOCAL = {
-    path: '2022/05/03/git学习/',
+    path: '2022/05/19/dpdk/dpdk-advanced/dpdk进阶-ch4/',
     favicon: {
       show: "（●´3｀●）やれやれだぜ",
       hide: "(´Д｀)大変だ！"

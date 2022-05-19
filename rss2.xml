@@ -9,8 +9,71 @@
     <atom:link href="http://singlewang.top/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>智者不入爱河，愚者重蹈覆辙</description>
-    <pubDate>Mon, 16 May 2022 12:30:31 GMT</pubDate>
+    <pubDate>Thu, 19 May 2022 02:46:47 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>深入浅出dpdk-ch3并行计算</title>
+      <link>http://singlewang.top/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch3/</link>
+      <guid>http://singlewang.top/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch3/</guid>
+      <pubDate>Thu, 19 May 2022 12:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;并行计算&quot;&gt;&lt;a href=&quot;#并行计算&quot; class=&quot;headerlink&quot; title=&quot;并行计算&quot;&gt;&lt;/a&gt;并行计算&lt;/h2&gt;&lt;p&gt;处理器性能提升主要有两个途径：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;提高IPC(每个时钟周期内可执行的指令条数)&lt;/li&gt;
+&lt;li&gt;提</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="并行计算"><a href="#并行计算" class="headerlink" title="并行计算"></a>并行计算</h2><p>处理器性能提升主要有两个途径：</p><ol><li>提高IPC(每个时钟周期内可执行的指令条数)</li><li>提高处理器主频(一味提高会触及频率墙，处理器的功耗正比与主频的三次方)</li></ol><p>可以通过提高指令执行的并行度提高IPC，有两种方法：</p><ol><li>提高微架构的指令并行度</li><li>多核并发</li></ol><h3 id="多核性能和可扩展性"><a href="#多核性能和可扩展性" class="headerlink" title="多核性能和可扩展性"></a>多核性能和可扩展性</h3><h4 id="追求性能水平扩展"><a href="#追求性能水平扩展" class="headerlink" title="追求性能水平扩展"></a>追求性能水平扩展</h4><blockquote><p>Amdahl定律告诉我们，假设一个工作的任务量不变，多核并行计算理论时延加速上限取决于那些不能并行处理部分的比例。</p></blockquote><blockquote><p>Gustafson定律指出，多核并行计算额吞吐率随核数增加而线性扩展，可并行处理部分占整个任务的比例越高，增长的斜率越大。</p></blockquote><h4 id="多核处理器"><a href="#多核处理器" class="headerlink" title="多核处理器"></a>多核处理器</h4><p>CPU物理核中的基本组件可以简化为：CPU寄存器集合、中断逻辑、执行单元和Cache。<br>多核处理器就是指多颗单独封装的CPU通过外部总线连接构成统一的计算平台。</p><blockquote><p>一个物理封装的CPU(通过physical id区分)可以有多个核(通过core id区分)。每个核可以有多个逻辑CPU(通过processor区分判断)。</p></blockquote><h4 id="亲和性"><a href="#亲和性" class="headerlink" title="亲和性"></a>亲和性</h4><p>CPU亲和性指一个特定的任务要在某个给定的CPU上尽量长时间的运行而不被迁移到其他处理器上的倾向性。</p><p>线程迁移的频率小就意味着产生的负载小。</p><h5 id="Linux内核对亲和性的支持"><a href="#Linux内核对亲和性的支持" class="headerlink" title="Linux内核对亲和性的支持"></a>Linux内核对亲和性的支持</h5><p>在Linux内核中，所有的线程都有一个相关的数据结构，称为<code>mask_struct</code>。与亲和性相关度最高的是<code>cpus_allowed</code>位掩码。这个位掩码由n位组成，与系统中的n个逻辑核一一对应。如果针对某个线程设置了相关的位，那么这个线程就可以在相关的CPU上运行。</p><p>Linux相关API：</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sched_set_affinity() <span class="comment">//用来修改位掩码</span></span><br><span class="line">sched_get_affinity() <span class="comment">//用来查看当前的位掩码</span></span><br></pre></td></tr></table></figure><blockquote><p><code>cpu_affinity</code>会被传递给子线程，因此应该适当的调用<code>sched_set_affinity</code>。</p></blockquote><h5 id="为什么使用亲和性"><a href="#为什么使用亲和性" class="headerlink" title="为什么使用亲和性"></a>为什么使用亲和性</h5><p>将线程与CPU绑定，最直观的好处就是提高了Cache的命中率，减少内存方位损耗，提高程序的速度。<br>减少了线程来回迁移的性能消耗，线程之间干扰也会减少。</p><p>使用亲和性的三个原因：</p><ol><li>有大量计算要做</li><li>测试复杂的应用程序</li><li>运行时间敏感的、决定性的线程</li></ol><h5 id="线程独占"><a href="#线程独占" class="headerlink" title="线程独占"></a>线程独占</h5><p>DPDK通过把线程绑定到逻辑核的方法避免跨核任务中的切换开销，但对于绑定运行的当前逻辑核，仍然可能会有线程切换的发生。因此可以进一步采取把逻辑核从内核调度系统剥离的方法。</p><p>linux内核提供了启动参数<code>isolcpus</code>。对于有4个CPU的服务器，在启动的时候加入启动参数isolcpus&#x3D;2，3.那么系统启动后将不使用CPU3和CPU4;但是还是可以通过<code>taskset</code>指定哪些程序在这些核心中运行。</p><p>步骤如下：</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vim /boot/grub2.cfg <span class="comment">//在Linux kernel启动参数里面加入isolcpus参数，isolcpu=2， 3</span></span><br><span class="line"></span><br><span class="line">cat /proc/cmdline  <span class="comment">//等待系统重新启动之后查看启动参数BOOT_IMAGE=/boot/vmlinuz3.17.8-200.fc20.x86_64root=UUID=3ae47813-79ea-4805-a732-</span></span><br><span class="line"><span class="number">21b</span>edcbdb0b5ro LANG=en_US.UTF<span class="number">-8</span>isolcpus=<span class="number">2</span>，<span class="number">3</span>。</span><br></pre></td></tr></table></figure><h5 id="DPDK的多线程"><a href="#DPDK的多线程" class="headerlink" title="DPDK的多线程"></a>DPDK的多线程</h5><p>DPDK的线程基于<code>pthread</code>接口创建，属于抢占式线程模型，受内核调度支配。</p><ol><li>EAL中的lcore</li></ol><p>DPDK的lcore指的是EAL线程，本质是基于<code>pthread</code>(Linux&#x2F;FreeBSD)封装实现。<code>lcore</code>由<code>remote_launch</code>指定的任务创建并管理。在每个EAL pthread中， 有一个TLS（Thread Local Storage）称为_lcore_id。当使用DPDK的 EAL‘-c’参数指定coremask时，EAL pthread生成相应个数lcore并默 认是1：1亲和到coremask对应的CPU逻辑核，_lcore_id和CPU ID是一致的。</p><p><em><strong>DPDK中lcore的初始化及执行任务的注册</strong></em></p><ul><li>初始化<ul><li><code>rte_eal_cpu_init()</code>函数中，通过读取<code>/sys/devices/system/cpu/cpuX/</code>,确定当前系统有哪些CPU核，以及每个核属于哪个CPU Socket。</li><li><code>eal_parse_args()</code>函数，解析-c参数。</li><li>为每一个SLAVE核创建线程，并调用<code>eal_thread_set_affinity()</code>绑定CPU。线程的执行体是<code>eal_thread_loop()</code></li></ul></li><li>注册<br>不同的模块需要调用<code>rte_eal_mp_remote_launch()</code>,将自己的回调处理函数注册到lcore_config[]中。</li></ul>]]></content:encoded>
+      
+      
+      <category domain="http://singlewang.top/categories/dpdk/">DPDK</category>
+      
+      <category domain="http://singlewang.top/categories/dpdk/dpdk-advanced/">DPDK进阶</category>
+      
+      
+      <category domain="http://singlewang.top/tags/dpdk/">dpdk</category>
+      
+      <category domain="http://singlewang.top/tags/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/">并行计算</category>
+      
+      
+      <comments>http://singlewang.top/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch3/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>深入浅出dpdk-ch4同步互斥机制</title>
+      <link>http://singlewang.top/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch4/</link>
+      <guid>http://singlewang.top/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch4/</guid>
+      <pubDate>Thu, 19 May 2022 12:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h3 id=&quot;DPDK原子操作实现和应用&quot;&gt;&lt;a href=&quot;#DPDK原子操作实现和应用&quot; class=&quot;headerlink&quot; title=&quot;DPDK原子操作实现和应用&quot;&gt;&lt;/a&gt;DPDK原子操作实现和应用&lt;/h3&gt;&lt;p&gt;原子操作在DPD代码中的定义都在&lt;code&gt;rte_</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h3 id="DPDK原子操作实现和应用"><a href="#DPDK原子操作实现和应用" class="headerlink" title="DPDK原子操作实现和应用"></a>DPDK原子操作实现和应用</h3><p>原子操作在DPD代码中的定义都在<code>rte_atomic.h</code>中，主要包含两部分：<strong>内存屏蔽和原16、32和64位的原子操作API</strong></p><blockquote><p>Linux内核的原子操作见linux驱动</p></blockquote><h4 id="内存屏障API"><a href="#内存屏障API" class="headerlink" title="内存屏障API"></a>内存屏障API</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rte_mb()  <span class="comment">//内存屏障读写API</span></span><br><span class="line">rte_wmb()  <span class="comment">//内存屏障写API</span></span><br><span class="line">rte_rmb()  <span class="comment">//内存屏障读API</span></span><br></pre></td></tr></table></figure><h3 id="DPDK读写锁实现和应用"><a href="#DPDK读写锁实现和应用" class="headerlink" title="DPDK读写锁实现和应用"></a>DPDK读写锁实现和应用</h3><p>DPDK的读写锁的定义在<code>rte_rwlock.h</code>中，</p><blockquote><p>linux读写锁的API见linux驱动</p></blockquote><p><code>rte_rwlock_init(rte_rwlock_t *rwl)</code>:初始化读写锁到unlocked状态<br><code>rte_rwlock_read_lock(rte_rwlock_t *rwl)</code>:尝试获取读锁直到锁被占用<br><code>rte_rwlock_read_unlock(rte_rwlock_t *rwl)</code>:释放读锁<br><code>rte_rwlock_write_lock(rte_rwlock_t *rwl)</code>:获取写锁<br><code>rte_rwlock_write_unlock(rte_rwlock_t *rwl)</code>:释放写锁</p><p>读写锁在DPDK中主要应用在如下几个地方：</p><ol><li>在查找空闲的<code>memory segment</code>的时候，使用读写锁来保护<code>memseg</code>结构，LPM表的创建、查找和释放</li><li><code>Memory ring</code>的创建、查找、释放</li><li>ACL表的创建、查找、释放</li><li>Memzone的创建、查找、释放</li></ol><h3 id="DPDK自旋锁实现和应用"><a href="#DPDK自旋锁实现和应用" class="headerlink" title="DPDK自旋锁实现和应用"></a>DPDK自旋锁实现和应用</h3><p>DPDK自旋锁API的定义在<code>rte_spinlock.h</code>中，下面三个API被广泛应用在告警、日志、中断机制、内存共享、link bonding中用于临界资源的保护</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rte_spinlock_init(<span class="type">rte_spinlock_t</span> *sl)</span><br><span class="line">rte_spinlock_lock(<span class="type">rte_spinlock_t</span> *sl)</span><br><span class="line">rte_spinlock_unlock(<span class="type">rte_spinlock_t</span> *sl)</span><br></pre></td></tr></table></figure><h3 id="DPDK无锁环形缓冲"><a href="#DPDK无锁环形缓冲" class="headerlink" title="DPDK无锁环形缓冲"></a>DPDK无锁环形缓冲</h3><p>DPDK提供了一套无锁环形缓冲区队列管理代码，支持单生产者产品入队，单消费者产品出队；多生产者入队，多消费者出队</p><blockquote><p>见DPDK基础</p></blockquote><p>单生产者单消费者模型不需要加锁<br>（一）多对多（一）模型中正常逻辑操作是要对队列操作进行加锁处理。加锁的性能开销较大，一般采用无锁实现。</p>]]></content:encoded>
+      
+      
+      <category domain="http://singlewang.top/categories/dpdk/">DPDK</category>
+      
+      <category domain="http://singlewang.top/categories/dpdk/dpdk-advanced/">DPDK进阶</category>
+      
+      
+      <category domain="http://singlewang.top/tags/dpdk/">dpdk</category>
+      
+      <category domain="http://singlewang.top/tags/%E5%90%8C%E6%AD%A5%E4%BA%92%E6%96%A5/">同步互斥</category>
+      
+      
+      <comments>http://singlewang.top/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch4/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>Linux网络设备驱动</title>
@@ -191,11 +254,11 @@
       <category domain="http://singlewang.top/categories/linux/linux-kernal/linx-kernal-proto/">Linux内核协议栈</category>
       
       
-      <category domain="http://singlewang.top/tags/kernal/">kernal</category>
-      
       <category domain="http://singlewang.top/tags/linux%E5%8D%8F%E8%AE%AE%E6%A0%88/">linux协议栈</category>
       
       <category domain="http://singlewang.top/tags/%E5%86%85%E6%A0%B8/">内核</category>
+      
+      <category domain="http://singlewang.top/tags/kernal/">kernal</category>
       
       
       <comments>http://singlewang.top/2022/05/04/linux/linux-kernal/linx-kernal-proto/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp3/#disqus_thread</comments>
@@ -260,65 +323,6 @@
       
       
       <comments>http://singlewang.top/2022/05/03/git%E5%AD%A6%E4%B9%A0/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>刷机教程</title>
-      <link>http://singlewang.top/2022/05/03/%E5%88%B7%E6%9C%BA%E6%95%99%E7%A8%8B/</link>
-      <guid>http://singlewang.top/2022/05/03/%E5%88%B7%E6%9C%BA%E6%95%99%E7%A8%8B/</guid>
-      <pubDate>Tue, 03 May 2022 08:34:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;p&gt;1、首先解锁手机BL锁，进入开发者选项，然后需要到相应的手机官网下载解锁工具。&lt;br&gt;2、安装对应手机的rec软件，之后进入rec，先双清，即首先清除数据，再格式化&lt;br&gt;3、下载对应的系统压缩包&lt;br&gt;4、在rec软件中安装压缩包即可。&lt;/p&gt;
-</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<p>1、首先解锁手机BL锁，进入开发者选项，然后需要到相应的手机官网下载解锁工具。<br>2、安装对应手机的rec软件，之后进入rec，先双清，即首先清除数据，再格式化<br>3、下载对应的系统压缩包<br>4、在rec软件中安装压缩包即可。</p>]]></content:encoded>
-      
-      
-      
-      <category domain="http://singlewang.top/tags/%E5%88%B7%E6%9C%BA/">刷机</category>
-      
-      
-      <comments>http://singlewang.top/2022/05/03/%E5%88%B7%E6%9C%BA%E6%95%99%E7%A8%8B/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>Linux内核协议栈-cp2</title>
-      <link>http://singlewang.top/2022/05/03/linux/linux-kernal/linx-kernal-proto/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp2/</link>
-      <guid>http://singlewang.top/2022/05/03/linux/linux-kernal/linx-kernal-proto/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp2/</guid>
-      <pubDate>Tue, 03 May 2022 08:34:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;h2 id=&quot;2-系统初始化&quot;&gt;&lt;a href=&quot;#2-系统初始化&quot; class=&quot;headerlink&quot; title=&quot;2.系统初始化&quot;&gt;&lt;/a&gt;2.系统初始化&lt;/h2&gt;&lt;h3 id=&quot;2-1-系统初始化流程简介&quot;&gt;&lt;a href=&quot;#2-1-系统初始化流程简介&quot; class</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<h2 id="2-系统初始化"><a href="#2-系统初始化" class="headerlink" title="2.系统初始化"></a>2.系统初始化</h2><h3 id="2-1-系统初始化流程简介"><a href="#2-1-系统初始化流程简介" class="headerlink" title="2.1 系统初始化流程简介"></a>2.1 系统初始化流程简介</h3><p>在系统启动过程中，我们要关注这几个方面： </p><ol><li>中断系统及调度系统 </li><li>文件系统的初始化 </li><li>设备管理系统的初始化</li><li>网络协议的初始化</li></ol><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">kernel_thread</span><span class="params">(<span class="type">int</span> (*fn)(<span class="type">void</span> *), <span class="type">void</span> * arg, <span class="type">unsigned</span> <span class="type">long</span> flags)</span></span><br></pre></td></tr></table></figure><p><code>kernel_thread</code>创建一个线程，定义在arch&#x2F;i386&#x2F;kernel&#x2F;process.c中，Linux 的内核线程是没有虚拟存储空间的进程，它们运行在内核中，直接使用物理地址空间。</p><h3 id="2-2内核文件解读"><a href="#2-2内核文件解读" class="headerlink" title="2.2内核文件解读"></a>2.2内核文件解读</h3><h4 id="2-2-1ELF文件格式"><a href="#2-2-1ELF文件格式" class="headerlink" title="2.2.1ELF文件格式"></a>2.2.1ELF文件格式</h4><p>ELF 是*nix 系统上可执行文件的标准格式，它取代了out格式的可执行文件，原因在于它的可扩展性。<br>ELF文件有三种不同的形式：</p><ol><li>Relocatable：由编译器和汇编器生成，由 linker 处理它。 </li><li>Executable：所有的重定位和符号解析都完成了，也许共享库的符号要在运行时刻解析。</li><li>Shared Object：包含 linker 需要的符号信息和运行时刻所需的代码。</li></ol><p>ELF 文件有双重性质：一方面，编译器、汇编器、连接器都把它看作是逻辑段（sections）的集合， 另一方面 loader 把它看作段（segments）的集合。Section 是给 linker 做进一步处理的，而 segments 是被映射到内存中去的。</p><p>一个 segment 可以由几个 sections 组成。为了定位不同 segment&#x2F;section，可执行文件用一个 table 来记录各个 segment&#x2F;section 的位置和描述。</p><h4 id="2-2-2Link-Scripts知识"><a href="#2-2-2Link-Scripts知识" class="headerlink" title="2.2.2Link Scripts知识"></a>2.2.2Link Scripts知识</h4><p>为什么我们编出来的代码肯定是在用户地址空间运行，而内核编出来的代码 却一定是运行在内核空间？<br>主要是因为链接器的作用。不能简单地认为链接器仅仅完成将各 obj 文件拼在一起的任务，而且它还指定每个段被装入内存的真正地址。</p><p>可以用<code>ld -verbose</code>查看<code>ld script</code></p><h3 id="2-3中断及任务调度管理"><a href="#2-3中断及任务调度管理" class="headerlink" title="2.3中断及任务调度管理"></a>2.3中断及任务调度管理</h3><h4 id="2-3-1中断及软中断模型"><a href="#2-3-1中断及软中断模型" class="headerlink" title="2.3.1中断及软中断模型"></a>2.3.1中断及软中断模型</h4><p>Linux 支持 CPU 的外部硬件中断和内部中断。&#x3D;&#x3D;内部中断包含系统调用陷入和异常&#x3D;&#x3D;，在一般的嵌入式操作系统（比如 VxWorks）中是没有系统调用这个概念的。</p><ul><li>&#x3D;&#x3D;系统调用&#x3D;&#x3D;就是软件有计划地调用 CPU 提供的特殊指令，触发 CPU 内部产生一个中断，于是完成一次核内核外运行空间的切换，具体可以参考许多书籍。</li><li>&#x3D;&#x3D;异常&#x3D;&#x3D;就是软件无意的执行了一个非法指令（比如除 0）从而造成 CPU 内部引发一次中断。</li></ul><p>&#x3D;&#x3D;外部中断&#x3D;&#x3D;特指外部设备发出的中断信号。但这几种中断的 CPU 处理过程基本相同，即：在执行完当 前指令后，或在执行当前指令期间，根据中断源所提供的“中断向量”，在内存中找到相应的 ISR（中断<br>服务例程）然后调用之。</p><h5 id="2-3-1-1中断系统和软中断"><a href="#2-3-1-1中断系统和软中断" class="headerlink" title="2.3.1.1中断系统和软中断"></a>2.3.1.1中断系统和软中断</h5><p>IRQ 是设备相关的号码，一般生产厂商都会使自己的设备分配到一个合适的号码。<br>&#x3D;&#x3D;中断向量&#x3D;&#x3D;就是操作系统中关于如何处理中断的内存组织结构，它们之间存在某种映射关系，这种关系是由CPU体系结构以及操作系统决定的。</p><blockquote><p>中断向量号0x80是系统调用号</p></blockquote><p>软中断是在处理完所有的中断之后才会处理的。目前linux内核中定义了6种软中断。在<code>start_kernel</code>函数中调用的<code>softirp_init</code>只初始化了两个。</p><p>Tasklet机制是一种比较特殊的软中断。指一小段可以执行的代码。通常以函数的形式出现。从某种程度上讲tasklet机制是linux内核对BH机制的一种扩展。它呈现出以下两个特点:</p><ol><li>与一般的软中断不同，某一段 tasklet 代码在某个时刻只能在一个 CPU 上运行，而不像一般的软 中断服务函数（即 softirq_action 结构中的 action 函数指针）那样在同一时刻可以被多个 CPU 并发地执行。</li><li>与BH机制不同，不同的 tasklet 代码在同一时刻可以在多个 CPU上并发地执行，而不像BH机制 那样必须严格地串行化执行（也即在同一时刻系统中只能有一个 CPU 执行BH函数）。</li></ol><h3 id="2-4虚拟文件系统"><a href="#2-4虚拟文件系统" class="headerlink" title="2.4虚拟文件系统"></a>2.4虚拟文件系统</h3><p>VFS（虚拟文件系统）在 Linux 及Unix 家族中是非常重要的概念，可以说它是操作系统的骨架。VFS 只存在与内存中，它在系统启动时被创建，系统关闭时注销。<br>&#x3D;&#x3D;VFS 的作用就是屏蔽各类文件系统的差异， 给用户、应用程序、甚至 Linux 其他管理模块提供统一的接口集合。&#x3D;&#x3D;</p><p>VFS 描述文件系统使用超级块和 inode 的方式，所谓超级块就是对所有文件系统的管理机构，每种 文件系统都要把自己的信息挂到 <code>super_blocks</code> 这么一个全局链表上。内核中是分成 2 个步骤完成：首先 每个文件系统必须通过 <code>register_filesystem</code> 函数将自己的 <code>file_system_type</code> 挂接到 <code>file_systems</code> 这个全局变量上，然后调用 <code>kern_mount</code> 函数把自己的文件相关操作函数集合表挂到 <code>super_blocks</code> 上。</p><h3 id="2-5网络协议栈各部分初始化"><a href="#2-5网络协议栈各部分初始化" class="headerlink" title="2.5网络协议栈各部分初始化"></a>2.5网络协议栈各部分初始化</h3><p>初始化大致的顺序：</p><ol><li>core_initcall:sock_init()</li><li>fs_initcall:inet_init()</li><li>subsys_initcall:net_dev_init()</li><li>device_initcall:设备驱动初始化</li></ol><h4 id="2-5-1网络基础系统初始化"><a href="#2-5-1网络基础系统初始化" class="headerlink" title="2.5.1网络基础系统初始化"></a>2.5.1网络基础系统初始化</h4><p>第一个步骤使用<code>core_initcall</code>初始化宏修饰<code>sock_init</code>函数，此函数知识分配一些内存空间，以及创建一个sock_fs_type的二年间系统。</p><blockquote><p>基本的socket初始化必须在每一个TCP&#x2F;IP成员协议能注册到socket层之前完成。</p></blockquote><p>当执行<code>do_initcalls</code>时才是真正初始化那些特定协议。</p><h4 id="2-5-2网络内存管理"><a href="#2-5-2网络内存管理" class="headerlink" title="2.5.2网络内存管理"></a>2.5.2网络内存管理</h4><h5 id="2-5-2-1-sk-buff结构"><a href="#2-5-2-1-sk-buff结构" class="headerlink" title="2.5.2.1 sk_buff结构"></a>2.5.2.1 sk_buff结构</h5><p>数据包在应用层称为data，在TCP层成为segment，在IP层称为packet，在数据链路层称为frame。Linux内核中<code>sk_buff&#123;&#125;</code>存放网络接收到或需要发送的数据，因此其必须要有足够的扩展性。<br>当接收报文时，从网卡驱动开始，通过协议栈层层往上传送数据报，通过增加 <code>skb-&gt;data</code> 的值，来逐步剥离协议首部；<br>而要发送报文时，各协议创建<code>sk_buff&#123;&#125;</code>，在经过各下层协议时，通过减少 <code>skb-&gt;data</code><br>的值来增加协议首部。</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sk_buff_head</span>&#123;</span></span><br><span class="line">    <span class="comment">/*这两个成员必须放在前面*/</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sk_buff</span> *<span class="title">next</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sk_buff</span> *<span class="title">prev</span>;</span></span><br><span class="line"></span><br><span class="line">    _u32    qlen;<span class="comment">/*该sk_buff_head引导的一个链表的节点的个数*/</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>当接收一个报文时，创建一个<code>sk_buff&#123;&#125;</code>(sk_buff的内容过多，暂不列出),然后更具地址类型指定该skb实际属于哪一种的报文类型，然后上层协议栈采取相应的处理方式处理该skb。</p><p>其中<code>len</code>是指数据包全部数据的长度，包括<code>data</code>指向的数据和end后面的分片的数据的总长，而<code>data_len</code>只包括分片的数据的长度。<code>truesize</code>的最终值时<code>len+sizof(struct sk_buff)</code>。</p><p>两个后备高速缓存的区别：</p><ul><li><code>skbuff_head_cache</code> 在创建时指定的单位内存区域的大小是<code>sizeof(struct sk_buff)</code>，可以容纳任意数目的<code>struct sk_buff</code>。</li><li><code>skbuff_fclone_cache</code>在创建时指定的单位内存区域大小时<code>2*sizeof(struct sk_buff)+sizeof(atomic_t)</code>。</li></ul><p>创建一个套接字缓冲区，最常用的操作是<code>alloc_skb</code>。它是在<code>skbuff_head_cache</code>中创建。</p><blockquote><p>GSO(Generic Segmentation Offload):<br>协议栈的效率提高的一个策略：尽可能晚的推迟分段，最理想的是在网卡驱动里分段，在网卡驱动里把大包拆开，组成SG list，或在一块预先分配好的内存中重组分段，然后交给网卡。</p></blockquote><h5 id="2-5-2-2-内存管理函数"><a href="#2-5-2-2-内存管理函数" class="headerlink" title="2.5.2.2 内存管理函数"></a>2.5.2.2 内存管理函数</h5><p>在<code>sk_buff&#123;&#125;</code>中的 4 个指针 data、head、tail、end 初始化的时候，data、head、tail 都是指向申请到的 数据区的头部，end 指向数据区的尾部。一般都是通过 data 和 tail 来获得在 sk_buff中 可用的数据区的开始和结尾。而 head 和 end 就表示 sk_buff中存在的数据包最大可扩展的空间范围。</p><p> skb_clone 和 skb_copy 的区别：</p><ul><li>前者基本在 <code>skbuff_fclone_cache</code> 中分配内存，除非 一定要对一个不是可以被克隆的对象进行克隆，那么才会在 <code>skbuff_head_cache</code> 中分配内存，而且只是 <code>sk_buff&#123;&#125;</code>结构的复制，没有涉及到真正数据区（data）的复制；</li><li>后者必定在 <code>skbuff_head_cache</code> 中进行，<br>不仅复制 <code>sk_buff&#123;&#125;</code>，而且复制了数据区。</li></ul><h4 id="2-5-3-网络文件系统初始化"><a href="#2-5-3-网络文件系统初始化" class="headerlink" title="2.5.3 网络文件系统初始化"></a>2.5.3 网络文件系统初始化</h4><p>在 <code>linux</code> 系统中，<code>socket</code> 属于文件系统的一部分，网络通信可以被看作对文件的读取。这种特殊的文件系统叫 <code>sockfs</code>。</p><p>初始化文件系统，首先是调用 <code>register_filesystem(&amp;sock_fs_type)</code>;把文件系统类型注册到 <code>file_systems</code> 链表上，然后调用 <code>kern_mount(&amp;sock_fs_type)</code>;把该文件系统注册到 <code>super_blocks</code> 上。</p><p>在系统初始化的时候要通过 <code>kern_mount</code> 安装此文件系统。所谓创建一个套接字就是在 <code>sockfs</code>文件系统中创建一个特殊文件。</p><h4 id="2-5-4-网络协议初始化"><a href="#2-5-4-网络协议初始化" class="headerlink" title="2.5.4 网络协议初始化"></a>2.5.4 网络协议初始化</h4><p>初始化第二个大步骤就是使用 <code>fs_initcall</code> 初始化宏修饰 <code>inet_init</code> 函数，它初始化和协议本身相关的东西。这一步才真正设计到“栈”的概念。在这之前，必须要知道两个概念–地址族和套接字类型。Linux 将不同的地址族抽象统一为 BSD 套接字接口，应用程序关心的只是BSD套接字接口，通过参数来指定所使用的套接字地址族。</p><p>Linux 内核中为了支持多个地址族，定义了这么一个变量：<code>static struct net_proto_family *net_families[NPROTO]</code>，NPROTO 等于 32，也就是说 Linux 内核支持最多 32 种地址族。</p><p>我们常用的就是 PF_UNIX（1）、PF_INET（2）、PF_NETLINK（16），Linux 还有一个自有的 PF_PACKET（17）。</p><blockquote><p>网络协议的初始化是在网络设备的初始化之前完成的，在 Linux 系统中并不是说网络设备不存在就不需要网络协议了，而是在没有网络设备存在的时候，照样可以完成网络的工作，只不过网络系统物理上只存在于本机一台机器中而已。</p></blockquote><p>一进入初始化就调用 <code>proto_register</code>3次，先后为 tcp、udp、raw的 <code>proto&#123;&#125;</code>结构申请空间并将其挂到一 个全局链表 <code>proto_list</code> 上。这三个 proto 全局变量非常重要，是连接传输层和 IP 层的纽带。</p><p><code>sock_register</code>函数，它把 <code>inet_family_ops</code> 塞入 <code>net_families</code> 数组中，这个 <code>inet_family_ops</code>是如下定义的：</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="class"><span class="keyword">struct</span> <span class="title">net_proto_family</span> <span class="title">inet_family_ops</span> =</span> &#123; </span><br><span class="line">    .family = PF_INET, </span><br><span class="line">    .create = inet_create, </span><br><span class="line">    .owner = THIS_MODULE,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><p>用户创建 socket 时，先指定 INET 地址族，在指定套接字 类型。换句话说这是数据流发送的流向。</p><p>socket层必须区分哪一个用户应该接收这个包，这叫做<em><strong>socket解复用</strong></em>。</p><p>之后就是初始化第二个方面的必要步骤:注册接收函数<br>Linux 区分永久和非永久协议。永久协议包括像UDP和TCP，这是TCP&#x2F;IP 协议实现的基本部分，去掉一个永久协议是不允许的。所以，UDP和TCP是不能unregistered。此机制由2个函数和一个维护注册协议的数据结构组成。一个负责注册协议，另一个负责注销。每一个注册的协议都放在一个表里，叫<br><em><strong>协议切换表</strong></em>。</p><p>对于发送过程，直接调用IP层函数，而对于内核接收过程则分为2层：上层需要一个接收函数解复用传输协议报文，下层需要一个接收函数解复用网络层报文。报文从设备层送到上层之前，必须区分是IP报文还是ARP报文。</p><p>标识一个套接字的三元组:&lt;地址族，类型，具体协议&gt;。</p>]]></content:encoded>
-      
-      
-      <category domain="http://singlewang.top/categories/linux/">Linux</category>
-      
-      <category domain="http://singlewang.top/categories/linux/linux-kernal/">Linux内核</category>
-      
-      <category domain="http://singlewang.top/categories/linux/linux-kernal/linx-kernal-proto/">Linux内核协议栈</category>
-      
-      
-      <category domain="http://singlewang.top/tags/kernal/">kernal</category>
-      
-      <category domain="http://singlewang.top/tags/linux%E5%8D%8F%E8%AE%AE%E6%A0%88/">linux协议栈</category>
-      
-      <category domain="http://singlewang.top/tags/%E5%86%85%E6%A0%B8/">内核</category>
-      
-      
-      <comments>http://singlewang.top/2022/05/03/linux/linux-kernal/linx-kernal-proto/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp2/#disqus_thread</comments>
       
     </item>
     
