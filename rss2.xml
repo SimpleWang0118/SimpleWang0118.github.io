@@ -9,8 +9,68 @@
     <atom:link href="http://singlewang.top/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>智者不入爱河，愚者重蹈覆辙</description>
-    <pubDate>Thu, 19 May 2022 02:46:47 GMT</pubDate>
+    <pubDate>Fri, 20 May 2022 03:40:46 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>我真的有机会被爱吗</title>
+      <link>http://singlewang.top/2022/05/20/informal-essay/life/520%E9%9A%8F%E6%83%B3/</link>
+      <guid>http://singlewang.top/2022/05/20/informal-essay/life/520%E9%9A%8F%E6%83%B3/</guid>
+      <pubDate>Fri, 20 May 2022 03:06:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;p&gt;红豆生南国，&lt;br&gt;春来发几枝。&lt;br&gt;愿君多采撷，&lt;br&gt;此物最相思。&lt;br&gt;        –《相思》唐·王维&lt;br&gt;讲真，这个标题属实有点矫情了，但是仔细一想，其实也没那么肉麻，更多的是基于我目前现状的一种感叹吧。&lt;br&gt;今天恰好是5月20日，也就是不知道从什么时候演</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<p>红豆生南国，<br>春来发几枝。<br>愿君多采撷，<br>此物最相思。<br>        –《相思》唐·王维<br>讲真，这个标题属实有点矫情了，但是仔细一想，其实也没那么肉麻，更多的是基于我目前现状的一种感叹吧。<br>今天恰好是5月20日，也就是不知道从什么时候演变成一个节日的日期，在这一天，朋友圈，微博无处不在秀着各自的恩爱，在从前我还会有些许的羡慕，羡慕情侣之间的浪漫，也曾幻想着自己也能和自己心爱的姑娘在这一天过着属于自己二人世界，可如今我的羡慕之情却已暗淡，因为不知道什么时候起，爱情对我来说就像是不存在一般，仿佛神话故事中那些未曾见过的神兽般虚无缥缈。我不知道自己是否还需要它，因为就目前我的现状来看自己好像也并不是没它不行，一个人的生活也很潇洒，但是看着路边的情侣卿卿我我，也不免会从心底有一丝孤单。<br>我是一个沉默寡言的人，性格随和却又内向，想起昨天玩游戏的时候，碰见一对情侣很有意思，一边聊天一边玩，说找对象要靠口才，乍一听好像有些片面了，但是仔细想想，许多时候人们的邂逅不就是第一次打招呼开始吗，现实中那些滔滔不绝，口若悬河的人也往往更能获得女生的关注，而我则可能呆在角落里看他们嬉戏打闹，我并不是不想参与，只是性格的原因导致我放不开，看见一个心动的女生也不敢上前打招呼，唯一一个令自己心动了那么多年的女生还在前不久和我断联，只能说是我咎由自取吧。但是老实话少就该被嫌弃吗，又或者说得不到关注，说到这儿又想起实验室即将毕业的学长，和他女朋友谈了几年了，工作也找好了，华为的一年40多w，能力强，却在前不久分手了，女方给出的原因是他太没有情趣了，随后就和另一个男生无缝衔接（我也只是听实验室的同学所说），女生的脑回路真的想不明白，当然每个人都有自己的选择，孰是孰非作为一个旁观者不好做评论，只是为这个学长感到不值罢了。<br>我曾经给我爸妈说过，我反正是不会走相亲这条路的。如果找不到互相喜欢的，那就这样一个人挺好的，努力赚钱，做自己想做的事，虽然知道对不起爸妈，但是我实在不想在感情这件事上妥协，我实在做不到和一个自己不喜欢的人去共度余生，那真的会是一场灾难。<br>昨晚莫名其妙又梦见她了，也不知道她现在过的怎样，我努力克制自己不去想她，让自己变得忙碌起来，大概两个月的时间没有像她，可是昨晚又做了一个很清晰的梦，让我不愿醒来。看来还得继续努力忘了她。<br>今天就随便写写，感情这事遇见了说明是缘分，遇不见也可能是缘分未到，只能不断的提升自己，静待花开。</p>]]></content:encoded>
+      
+      
+      <category domain="http://singlewang.top/categories/informal-essay/">随笔</category>
+      
+      <category domain="http://singlewang.top/categories/informal-essay/life/">生活感悟</category>
+      
+      
+      <category domain="http://singlewang.top/tags/%E5%BF%83%E5%BE%97/">心得</category>
+      
+      <category domain="http://singlewang.top/tags/%E7%94%9F%E6%B4%BB%E6%84%9F%E6%82%9F/">生活感悟</category>
+      
+      
+      <comments>http://singlewang.top/2022/05/20/informal-essay/life/520%E9%9A%8F%E6%83%B3/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>深入浅出dpdk-ch6PCIe与包处理</title>
+      <link>http://singlewang.top/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch6/</link>
+      <guid>http://singlewang.top/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch6/</guid>
+      <pubDate>Thu, 19 May 2022 12:49:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;PCIe与包处理I-x2F-O&quot;&gt;&lt;a href=&quot;#PCIe与包处理I-x2F-O&quot; class=&quot;headerlink&quot; title=&quot;PCIe与包处理I&amp;#x2F;O&quot;&gt;&lt;/a&gt;PCIe与包处理I&amp;#x2F;O&lt;/h2&gt;&lt;h3 id=&quot;从PCIe事务的角度看</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="PCIe与包处理I-x2F-O"><a href="#PCIe与包处理I-x2F-O" class="headerlink" title="PCIe与包处理I&#x2F;O"></a>PCIe与包处理I&#x2F;O</h2><h3 id="从PCIe事务的角度看包处理"><a href="#从PCIe事务的角度看包处理" class="headerlink" title="从PCIe事务的角度看包处理"></a>从PCIe事务的角度看包处理</h3><h4 id="PCIe概览"><a href="#PCIe概览" class="headerlink" title="PCIe概览"></a>PCIe概览</h4><p>PCI Express（Peripheral Component Interconnect Express） 又称PCIe，是一种高速串行通信互联标准。<br>其规范遵循开放系统互联参考模型（OSI），自上而下分为事务传输层，数据链路层，物理层。把物理层朝PCIe根组件（Root Complex）方向的流量叫做上游流量（<code>upstream/inbound</code>）,反之叫做下游流量（<code>downstrean/outbound</code>）。</p><h4 id="PCIe事务传输"><a href="#PCIe事务传输" class="headerlink" title="PCIe事务传输"></a>PCIe事务传输</h4><p>在PCIe的线路上抓取一个TLP（Transaction Layer Packet，事务传输层数据包），它是一种分组形式，层层嵌套，最内层是事务传输层，有头部、数据和校验部分，头部定义了一组事务类型。从CPU网卡收发包来说，用到的PCIe的事务类型主要以<code>Memory Read/Write（MRd/MWr）</code>，<code>Completioin with Data</code>和次外层是数据链路层,最外层是物理层。</p>]]></content:encoded>
+      
+      
+      <category domain="http://singlewang.top/categories/dpdk/">DPDK</category>
+      
+      <category domain="http://singlewang.top/categories/dpdk/dpdk-advanced/">DPDK进阶</category>
+      
+      
+      <category domain="http://singlewang.top/tags/dpdk/">dpdk</category>
+      
+      <category domain="http://singlewang.top/tags/%E6%8A%A5%E6%96%87%E8%BD%AC%E5%8F%91/">报文转发</category>
+      
+      
+      <comments>http://singlewang.top/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch6/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>深入浅出dpdk-ch3并行计算</title>
@@ -72,6 +132,36 @@
       
       
       <comments>http://singlewang.top/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch4/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>深入浅出dpdk-ch5报文转发</title>
+      <link>http://singlewang.top/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch5/</link>
+      <guid>http://singlewang.top/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch5/</guid>
+      <pubDate>Thu, 19 May 2022 11:40:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;报文转发&quot;&gt;&lt;a href=&quot;#报文转发&quot; class=&quot;headerlink&quot; title=&quot;报文转发&quot;&gt;&lt;/a&gt;报文转发&lt;/h2&gt;&lt;h3 id=&quot;网络处理模块划分&quot;&gt;&lt;a href=&quot;#网络处理模块划分&quot; class=&quot;headerlink&quot; title=&quot;网</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="报文转发"><a href="#报文转发" class="headerlink" title="报文转发"></a>报文转发</h2><h3 id="网络处理模块划分"><a href="#网络处理模块划分" class="headerlink" title="网络处理模块划分"></a>网络处理模块划分</h3><p>网络报文的处理和转发主要分为硬件处理部分和软件处理部分：</p><ol><li>报文输入</li><li>对保温进行比较粗粒度的处理</li><li>对保温进行比较细粒度的分流</li><li>提供基于描述符的队列FIFO</li><li>根据队列优先级和CPU状态进行调度</li><li>提供加解密和压缩&#x2F;解压缩等硬件功能</li><li>在出口上根据QOS等级进行调度</li><li>后期报文处理释放缓存</li><li>从硬件上发送出去</li></ol><h3 id="转发框架介绍"><a href="#转发框架介绍" class="headerlink" title="转发框架介绍"></a>转发框架介绍</h3><p>传统的专用网络处理器转发的模型可以分为<code>run to completion</code>模型和<code>pipeline</code>模型</p><ol><li>pipeline模型<br>将一个功能分解成多个独立的阶段，不同阶段间通过队列传递。</li><li>run to completion模型<br><code>run to completion</code>（运行至终结）模型时主要针对DPDK一般程度的运行方法，一个程序中一般会分为几个不同的逻辑功能，但是这几个逻辑功能会在一个CPU的核上运行，我们可以进行水平扩展使得在SMP的系统中多个核上执行一个逻辑的程序，从而提高单位时间内事务处理的量。<h4 id="DPDK-run-to-completion模型"><a href="#DPDK-run-to-completion模型" class="headerlink" title="DPDK run to completion模型"></a>DPDK run to completion模型</h4>DPDK的轮询模式能够通过一些参数设置哪些核可以被DPDK使用，最后再把处理对应收发队列的线程绑定到对应的核上。每个报文的生命周期只可能再一个线程中出现。但是针对单个报文的处理始终集中在一个逻辑单元上，无法利用其他运算单元，并且逻辑的耦合性太强，而流水线模型正好解决了以上的问题。<h4 id="DPDK-pipeline模型"><a href="#DPDK-pipeline模型" class="headerlink" title="DPDK pipeline模型"></a>DPDK pipeline模型</h4>pipeline的主要思想就是不同的工作交给不同的模块，每个模块单独处理特定的事务，每个模块都有输入和输出，通过输入输出将这些模块联系起来，完成复杂的网络功能。<br>DPDK的pipeline是由三大部分组成，逻辑端口(port)、查找表（table）和处理逻辑（action）。DPDK的pipeline模型中把网络端口作为每个处理模块的输入，所有的报文输入都通过这个端口进行。查找表是每个处理模块的处理逻辑核心，转发逻辑指明了报文的流向和处理。<br>用户可以根据这三大类构建属于自己的pipeline。<br>现在DPDK支持的pipeline有以下几种：</li></ol><ul><li>Packet I&#x2F;O</li><li>Flow classification</li><li>Firewall</li><li>Routing</li><li>Metering</li><li>Traffic Mgmt</li></ul>]]></content:encoded>
+      
+      
+      <category domain="http://singlewang.top/categories/dpdk/">DPDK</category>
+      
+      <category domain="http://singlewang.top/categories/dpdk/dpdk-advanced/">DPDK进阶</category>
+      
+      
+      <category domain="http://singlewang.top/tags/dpdk/">dpdk</category>
+      
+      <category domain="http://singlewang.top/tags/%E6%8A%A5%E6%96%87%E8%BD%AC%E5%8F%91/">报文转发</category>
+      
+      
+      <comments>http://singlewang.top/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch5/#disqus_thread</comments>
       
     </item>
     
@@ -228,101 +318,6 @@
       
       
       <comments>http://singlewang.top/2022/05/05/cpp/cpp%E5%A4%9A%E6%80%81/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>Linux内核协议栈-cp3</title>
-      <link>http://singlewang.top/2022/05/04/linux/linux-kernal/linx-kernal-proto/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp3/</link>
-      <guid>http://singlewang.top/2022/05/04/linux/linux-kernal/linx-kernal-proto/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp3/</guid>
-      <pubDate>Wed, 04 May 2022 12:17:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;h2 id=&quot;3-配置系统&quot;&gt;&lt;a href=&quot;#3-配置系统&quot; class=&quot;headerlink&quot; title=&quot;3.配置系统&quot;&gt;&lt;/a&gt;3.配置系统&lt;/h2&gt;&lt;h3 id=&quot;3-1配置过程分析&quot;&gt;&lt;a href=&quot;#3-1配置过程分析&quot; class=&quot;headerlink</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<h2 id="3-配置系统"><a href="#3-配置系统" class="headerlink" title="3.配置系统"></a>3.配置系统</h2><h3 id="3-1配置过程分析"><a href="#3-1配置过程分析" class="headerlink" title="3.1配置过程分析"></a>3.1配置过程分析</h3><h4 id="3-1-1配置如何下达到内核"><a href="#3-1-1配置如何下达到内核" class="headerlink" title="3.1.1配置如何下达到内核"></a>3.1.1配置如何下达到内核</h4><p>我们假设在安装我们的 Linux 系统时，没有配置 IP 地址，也没有挂上网线，完完全全是一台“裸机”， 这样方便我们跟踪系统到底做了什么。<br>使用<code>ifconfig -a</code>查看网络配置<br>使用<code>strace ifconfig eth0 192.168.18.2 netmask 255.255.255.0</code>配置号ip和网络掩码<br>在大部分系统上是没有 ifconfig 的源代码的，那么为了查看 ifconfig 内部完成了什么操作时，可以用strace命令查看。<br>把 ifconfig 内部调用的系统接口整理如下：</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">main(<span class="type">int</span> argc, <span class="type">char</span> **argv ) &#123; </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr</span> <span class="title">sa</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> <span class="title">sin</span>;</span> </span><br><span class="line">    <span class="type">char</span> host[<span class="number">128</span>];</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">aftype</span> *<span class="title">ap</span>;</span> </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">hwtype</span> *<span class="title">hw</span>;</span> </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">ifreq</span> <span class="title">ifr</span>;</span> </span><br><span class="line">    <span class="type">char</span> **spp; </span><br><span class="line">    <span class="type">int</span> fd;</span><br><span class="line">    </span><br><span class="line">    fd = socket(PF_INET, SOCK_DGRAM, IPPROTO_IP);</span><br><span class="line">    ifr.ifr_name = “eth0”; </span><br><span class="line"> </span><br><span class="line">    ap = inet_aftype = &#123;</span><br><span class="line">    <span class="string">&quot;inet&quot;</span>, <span class="literal">NULL</span>, <span class="comment">/*&quot;DARPA Internet&quot;, */</span> AF_INET, <span class="keyword">sizeof</span>(<span class="type">unsigned</span> <span class="type">long</span>), INET_print, INET_sprint, INET_input, INET_reserror, <span class="literal">NULL</span> <span class="comment">/*INET_rprint */</span> , <span class="literal">NULL</span> <span class="comment">/*INET_rinput */</span> , INET_getnetmask,</span><br><span class="line"><span class="number">-1</span>, <span class="comment">/* 这个值会被赋成 fd，即刚才打开的 socket */</span> <span class="literal">NULL</span></span><br><span class="line">&#125;;</span><br><span class="line">    host = “<span class="number">192.168</span><span class="number">.18</span><span class="number">.2</span>”; </span><br><span class="line">    ap-&gt;input(<span class="number">0</span>, host, &amp;sa);<span class="comment">/* 在此 sa-&gt;sa_family=AF_INET，af-&gt;sa_data 已经被设置成 192.168.1.1 */</span></span><br><span class="line">    <span class="built_in">memcpy</span>((<span class="type">char</span> *) &amp;ifr.ifr_addr, (<span class="type">char</span> *) &amp;sa, <span class="keyword">sizeof</span>(<span class="keyword">struct</span> sockaddr)); </span><br><span class="line">    ioctl (fd, SIOCSIFADDR, &amp;ifr);</span><br><span class="line">    ioctl (skfd, SIOCGIFFLAGS, &amp;ifr); </span><br><span class="line">    ioctl (skfd, SIOCSIFFLAGS, &amp;ifr);</span><br><span class="line">    host = “<span class="number">255.255</span><span class="number">.255</span><span class="number">.0</span>”;</span><br><span class="line">    ioctl (skfd, SIOCSIFNETMASK, ifr);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>从上面的代码中可以看出 ifconfig 实际调用了 2 个系统函数：socket 和 ioctl。</p><h4 id="3-1-2socket系统调用"><a href="#3-1-2socket系统调用" class="headerlink" title="3.1.2socket系统调用"></a>3.1.2socket系统调用</h4><p>内核中与socket对应的系统调用时sys_socket,所谓的船舰套接字，就是在sockfs这个文件系统中创建一个节点。该节点是一个文件，不过这个文件具有非普通文件的属性，于是起名socket。<br>从进程角度看，一个套接口就是一个特殊的已打开文件。<br>socket函数本身经过glibc库对其封装，通过int 0x80产生一个软件中断，由内核导向执行sys_socket。</p>]]></content:encoded>
-      
-      
-      <category domain="http://singlewang.top/categories/linux/">Linux</category>
-      
-      <category domain="http://singlewang.top/categories/linux/linux-kernal/">Linux内核</category>
-      
-      <category domain="http://singlewang.top/categories/linux/linux-kernal/linx-kernal-proto/">Linux内核协议栈</category>
-      
-      
-      <category domain="http://singlewang.top/tags/linux%E5%8D%8F%E8%AE%AE%E6%A0%88/">linux协议栈</category>
-      
-      <category domain="http://singlewang.top/tags/%E5%86%85%E6%A0%B8/">内核</category>
-      
-      <category domain="http://singlewang.top/tags/kernal/">kernal</category>
-      
-      
-      <comments>http://singlewang.top/2022/05/04/linux/linux-kernal/linx-kernal-proto/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp3/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>c++遇到的bug-1</title>
-      <link>http://singlewang.top/2022/05/03/cpp/cpp-bug/c++bug-1/</link>
-      <guid>http://singlewang.top/2022/05/03/cpp/cpp-bug/c++bug-1/</guid>
-      <pubDate>Tue, 03 May 2022 12:54:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;ol&gt;
-&lt;li&gt;&lt;code&gt;reference to local variable ‘c’ returned [-Wreturn-local-addr]&lt;/code&gt;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;函数的返回值为函数内部定义变量的引用，但函数在调用完毕后，函数内部定义的变量空间被</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<ol><li><code>reference to local variable ‘c’ returned [-Wreturn-local-addr]</code></li></ol><p>函数的返回值为函数内部定义变量的引用，但函数在调用完毕后，函数内部定义的变量空间被释放，无法访问，从而造成的错误。</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Matrix&amp; Matrix::<span class="keyword">operator</span>+(<span class="type">const</span> Matrix&amp; rhs)</span><br><span class="line">&#123;</span><br><span class="line">    Matrix result;</span><br><span class="line"><span class="comment">//其他操作</span></span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p><em><strong>改正方法一</strong></em>：给返回变量定义加上static限定符，保证在函数调用完后不释放空间<br>Matrix&amp; Matrix::operator+(const Matrix&amp; rhs)<br>{<br>    static Matrix result;<br>    &#x2F;&#x2F;其他操作<br>    return result;<br>}</p><p><em><strong>改正方法二</strong></em>：去掉返回值的引用，保证函数外部无法访问返回值的空间，只能得到其内容<br>Matrix Matrix::operator+(const Matrix&amp; rhs)<br>{<br>    static Matrix result;<br>    &#x2F;&#x2F;其他操作<br>    return result;<br>}</p><ol start="2"><li><p>LNK2019<br>即使包含了头文件依然会报无法解析的命令,原因可能是没添加相应的.lib文件</p></li><li><p>不允许指针指向不完整的类类型<br>一般是没有包含相应的头文件</p></li></ol>]]></content:encoded>
-      
-      
-      <category domain="http://singlewang.top/categories/cpp/">C++</category>
-      
-      <category domain="http://singlewang.top/categories/cpp/cpp-bug/">C++BUG</category>
-      
-      
-      <category domain="http://singlewang.top/tags/cpp/">cpp</category>
-      
-      <category domain="http://singlewang.top/tags/bug/">bug</category>
-      
-      
-      <comments>http://singlewang.top/2022/05/03/cpp/cpp-bug/c++bug-1/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>git学习</title>
-      <link>http://singlewang.top/2022/05/03/git%E5%AD%A6%E4%B9%A0/</link>
-      <guid>http://singlewang.top/2022/05/03/git%E5%AD%A6%E4%B9%A0/</guid>
-      <pubDate>Tue, 03 May 2022 12:51:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;ol&gt;
-&lt;li&gt;初始化一个git目录    &lt;code&gt;git init&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;添加文件到Git仓库，分两步：&lt;br&gt; 使用命令&lt;code&gt;git add &amp;lt;file&amp;gt;&lt;/code&gt;，注意，可反复多次使用，添加多个文件；&lt;br&gt; 使用命令&lt;</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<ol><li>初始化一个git目录    <code>git init</code></li><li>添加文件到Git仓库，分两步：<br> 使用命令<code>git add &lt;file&gt;</code>，注意，可反复多次使用，添加多个文件；<br> 使用命令<code>git commit -m &lt;message&gt;</code>提交完成。-m后面输入的是本次提交的说明</li><li>要随时掌握工作区的状态，使用<code>git status</code>命令。<br> 如果<code>git status</code>告诉你有文件被修改过，用<code>git diff</code>可以查看修改内容。</li><li>添加远程库<code>git remote add origin git@github.com:SimpleWang0118/C-Game.git</code><br> 添加后，远程库的名字就是<code>origin</code><br> 把本地库的所有内容推送到远程库上（第一次）<code>git push -u origin master</code><br> 只要本地作了提交，就可以通过命令 <code>git push origin master</code>推送至远程库上</li><li>查看远程库信息<code>git remote -v</code></li><li>删除远程库<code>eg git remote rm origin</code></li><li><code>git commit</code>提示<code>Your branch is up-to-date with &#39;origin/master&#39;</code><br> 首先建立一个分支：<code>git branch new branch</code><br> 然后检查分支是否创建成功: <code>git branch</code> *代表的是当前你所在的工作分支<br> 然后切换到你的新分支: <code>git checkout newbranch</code><br> 然后将你的改动提交到新分支上: git add .     git commit -m “18.03.01”<br> 然后切换到主分支:<code>git checkout master</code><br> 然后将新分支提交的改动合并到主分支上:<code>git merge newbranch</code><br> 然后就可以push代码了:<code>git push -u origin master</code><br> 最后还可以删除这个分支:<code>git branch -D newbranch</code></li></ol>]]></content:encoded>
-      
-      
-      
-      <category domain="http://singlewang.top/tags/git/">git</category>
-      
-      <category domain="http://singlewang.top/tags/github/">github</category>
-      
-      
-      <comments>http://singlewang.top/2022/05/03/git%E5%AD%A6%E4%B9%A0/#disqus_thread</comments>
       
     </item>
     

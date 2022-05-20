@@ -24,15 +24,15 @@
 <link rel="stylesheet" href="/css/app.css?v=0.2.5">
 
   
-  <meta name="keywords" content="刷机" />
+  <meta name="keywords" content="dpdk,报文转发" />
 
 
-<link rel="canonical" href="http://singlewang.top/2022/05/03/%E5%88%B7%E6%9C%BA%E6%95%99%E7%A8%8B/">
+<link rel="canonical" href="http://singlewang.top/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch5/">
 
 
 
   <title>
-刷机教程 |
+深入浅出dpdk-ch5报文转发 - DPDK进阶 - DPDK |
 智者不入爱河 = Single Wang's Blog = 建设美丽中国</title>
 <meta name="generator" content="Hexo 6.1.0"></head>
 <body itemscope itemtype="http://schema.org/WebPage">
@@ -60,23 +60,23 @@
         <div id="brand">
           <div class="pjax">
           
-  <h1 itemprop="name headline">刷机教程
+  <h1 itemprop="name headline">深入浅出dpdk-ch5报文转发
   </h1>
   
 <div class="meta">
-  <span class="item" title="创建时间：2022-05-03 16:34:00">
+  <span class="item" title="创建时间：2022-05-19 19:40:00">
     <span class="icon">
       <i class="ic i-calendar"></i>
     </span>
     <span class="text">发表于</span>
-    <time itemprop="dateCreated datePublished" datetime="2022-05-03T16:34:00+08:00">2022-05-03</time>
+    <time itemprop="dateCreated datePublished" datetime="2022-05-19T19:40:00+08:00">2022-05-19</time>
   </span>
   <span class="item" title="本文字数">
     <span class="icon">
       <i class="ic i-pen"></i>
     </span>
     <span class="text">本文字数</span>
-    <span>107</span>
+    <span>910</span>
     <span class="text">字</span>
   </span>
   <span class="item" title="阅读时长">
@@ -117,12 +117,12 @@
       </div>
       <div id="imgs" class="pjax">
         <ul>
-          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gipewkhf1zj20zk0m81kx.jpg"></li>
-          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1giclhfehz7j20zk0m8u0x.jpg"></li>
-          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1giclg5ms2rj20zk0m8u0x.jpg"></li>
+          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gicli9lfebj20zk0m84qp.jpg"></li>
+          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gicitzannuj20zk0m8b29.jpg"></li>
           <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gipewr8iypj20zk0m8b29.jpg"></li>
-          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gipexj2jgzj20zk0m8b09.jpg"></li>
-          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1giph4fomxoj20zk0m8axp.jpg"></li>
+          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gipeubcbajj20zk0m8h1h.jpg"></li>
+          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1giclhtuo6nj20zk0m8ttm.jpg"></li>
+          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1giciryrr3rj20zk0m8nhk.jpg"></li>
         </ul>
       </div>
     </header>
@@ -147,11 +147,16 @@
     
 <div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
 <i class="ic i-home"></i>
-<span><a href="/">首页</a></span>
+<span><a href="/">首页</a></span><i class="ic i-angle-right"></i>
+<span  itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/categories/dpdk/" itemprop="item" rel="index" title="分类于 DPDK"><span itemprop="name">DPDK</span></a>
+<meta itemprop="position" content="1" /></span>
+<i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/categories/dpdk/dpdk-advanced/" itemprop="item" rel="index" title="分类于 DPDK进阶"><span itemprop="name">DPDK进阶</span></a>
+<meta itemprop="position" content="2" /></span>
 </div>
 
     <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
-  <link itemprop="mainEntityOfPage" href="http://singlewang.top/2022/05/03/%E5%88%B7%E6%9C%BA%E6%95%99%E7%A8%8B/">
+  <link itemprop="mainEntityOfPage" href="http://singlewang.top/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch5/">
 
   <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="image" content="/images/taizaizhi.jpg">
@@ -166,10 +171,35 @@
   <div class="body md" itemprop="articleBody">
     
 
-    <p>1、首先解锁手机BL锁，进入开发者选项，然后需要到相应的手机官网下载解锁工具。<br>2、安装对应手机的rec软件，之后进入rec，先双清，即首先清除数据，再格式化<br>3、下载对应的系统压缩包<br>4、在rec软件中安装压缩包即可。</p>
+    <h2 id="报文转发"><a href="#报文转发" class="headerlink" title="报文转发"></a>报文转发</h2><h3 id="网络处理模块划分"><a href="#网络处理模块划分" class="headerlink" title="网络处理模块划分"></a>网络处理模块划分</h3><p>网络报文的处理和转发主要分为硬件处理部分和软件处理部分：</p>
+<ol>
+<li>报文输入</li>
+<li>对保温进行比较粗粒度的处理</li>
+<li>对保温进行比较细粒度的分流</li>
+<li>提供基于描述符的队列FIFO</li>
+<li>根据队列优先级和CPU状态进行调度</li>
+<li>提供加解密和压缩&#x2F;解压缩等硬件功能</li>
+<li>在出口上根据QOS等级进行调度</li>
+<li>后期报文处理释放缓存</li>
+<li>从硬件上发送出去</li>
+</ol>
+<h3 id="转发框架介绍"><a href="#转发框架介绍" class="headerlink" title="转发框架介绍"></a>转发框架介绍</h3><p>传统的专用网络处理器转发的模型可以分为<code>run to completion</code>模型和<code>pipeline</code>模型</p>
+<ol>
+<li>pipeline模型<br>将一个功能分解成多个独立的阶段，不同阶段间通过队列传递。</li>
+<li>run to completion模型<br><code>run to completion</code>（运行至终结）模型时主要针对DPDK一般程度的运行方法，一个程序中一般会分为几个不同的逻辑功能，但是这几个逻辑功能会在一个CPU的核上运行，我们可以进行水平扩展使得在SMP的系统中多个核上执行一个逻辑的程序，从而提高单位时间内事务处理的量。<h4 id="DPDK-run-to-completion模型"><a href="#DPDK-run-to-completion模型" class="headerlink" title="DPDK run to completion模型"></a>DPDK run to completion模型</h4>DPDK的轮询模式能够通过一些参数设置哪些核可以被DPDK使用，最后再把处理对应收发队列的线程绑定到对应的核上。每个报文的生命周期只可能再一个线程中出现。但是针对单个报文的处理始终集中在一个逻辑单元上，无法利用其他运算单元，并且逻辑的耦合性太强，而流水线模型正好解决了以上的问题。<h4 id="DPDK-pipeline模型"><a href="#DPDK-pipeline模型" class="headerlink" title="DPDK pipeline模型"></a>DPDK pipeline模型</h4>pipeline的主要思想就是不同的工作交给不同的模块，每个模块单独处理特定的事务，每个模块都有输入和输出，通过输入输出将这些模块联系起来，完成复杂的网络功能。<br>DPDK的pipeline是由三大部分组成，逻辑端口(port)、查找表（table）和处理逻辑（action）。DPDK的pipeline模型中把网络端口作为每个处理模块的输入，所有的报文输入都通过这个端口进行。查找表是每个处理模块的处理逻辑核心，转发逻辑指明了报文的流向和处理。<br>用户可以根据这三大类构建属于自己的pipeline。<br>现在DPDK支持的pipeline有以下几种：</li>
+</ol>
+<ul>
+<li>Packet I&#x2F;O</li>
+<li>Flow classification</li>
+<li>Firewall</li>
+<li>Routing</li>
+<li>Metering</li>
+<li>Traffic Mgmt</li>
+</ul>
 
       <div class="tags">
-          <a href="/tags/%E5%88%B7%E6%9C%BA/" rel="tag"><i class="ic i-tag"></i> 刷机</a>
+          <a href="/tags/dpdk/" rel="tag"><i class="ic i-tag"></i> dpdk</a>
+          <a href="/tags/%E6%8A%A5%E6%96%87%E8%BD%AC%E5%8F%91/" rel="tag"><i class="ic i-tag"></i> 报文转发</a>
       </div>
   </div>
 
@@ -181,9 +211,9 @@
       <i class="ic i-calendar-check"></i>
     </span>
     <span class="text">更新于</span>
-    <time title="修改时间：2022-05-03 20:47:00" itemprop="dateModified" datetime="2022-05-03T20:47:00+08:00">2022-05-03</time>
+    <time title="修改时间：2022-05-19 20:21:18" itemprop="dateModified" datetime="2022-05-19T20:21:18+08:00">2022-05-19</time>
   </span>
-  <span id="2022/05/03/刷机教程/" class="item leancloud_visitors" data-flag-title="刷机教程" title="阅读次数">
+  <span id="2022/05/19/dpdk/dpdk-advanced/dpdk进阶-ch5/" class="item leancloud_visitors" data-flag-title="深入浅出dpdk-ch5报文转发" title="阅读次数">
       <span class="icon">
         <i class="ic i-eye"></i>
       </span>
@@ -220,7 +250,7 @@
   </li>
   <li class="link">
     <strong>本文链接：</strong>
-    <a href="http://singlewang.top/2022/05/03/%E5%88%B7%E6%9C%BA%E6%95%99%E7%A8%8B/" title="刷机教程">http://singlewang.top/2022/05/03/刷机教程/</a>
+    <a href="http://singlewang.top/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch5/" title="深入浅出dpdk-ch5报文转发">http://singlewang.top/2022/05/19/dpdk/dpdk-advanced/dpdk进阶-ch5/</a>
   </li>
   <li class="license">
     <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
@@ -239,20 +269,20 @@
     <div class="item left">
       
 
-  <a href="/2022/05/03/linux/linux-kernal/linx-kernal-proto/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp2/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva1.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1gicliwyw55j20zk0m8hdt.jpg" title="Linux内核协议栈-cp2">
+  <a href="/2022/05/11/linux/linux-kernal/linux-kernal-driver/linux%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva1.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giclfw2t96j20zk0m8x6p.jpg" title="Linux网络设备驱动">
   <span class="type">上一篇</span>
-  <span class="category"><i class="ic i-flag"></i> Linux内核协议栈</span>
-  <h3>Linux内核协议栈-cp2</h3>
+  <span class="category"><i class="ic i-flag"></i> Linux内核驱动</span>
+  <h3>Linux网络设备驱动</h3>
   </a>
 
     </div>
     <div class="item right">
       
 
-  <a href="/2022/05/03/git%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;tva1.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1gicitf0kl1j20zk0m87fe.jpg" title="git学习">
+  <a href="/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch4/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;tva1.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1gipesx5fdwj20zk0m81kx.jpg" title="深入浅出dpdk-ch4同步互斥机制">
   <span class="type">下一篇</span>
-  <span class="category"><i class="ic i-flag"></i> </span>
-  <h3>git学习</h3>
+  <span class="category"><i class="ic i-flag"></i> DPDK进阶</span>
+  <h3>深入浅出dpdk-ch4同步互斥机制</h3>
   </a>
 
     </div>
@@ -271,8 +301,12 @@
   <div class="panels">
     <div class="inner">
       <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%A5%E6%96%87%E8%BD%AC%E5%8F%91"><span class="toc-number">1.</span> <span class="toc-text">报文转发</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E5%A4%84%E7%90%86%E6%A8%A1%E5%9D%97%E5%88%92%E5%88%86"><span class="toc-number">1.1.</span> <span class="toc-text">网络处理模块划分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%AC%E5%8F%91%E6%A1%86%E6%9E%B6%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.2.</span> <span class="toc-text">转发框架介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#DPDK-run-to-completion%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.2.1.</span> <span class="toc-text">DPDK run to completion模型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DPDK-pipeline%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.2.2.</span> <span class="toc-text">DPDK pipeline模型</span></a></li></ol></li></ol></li></ol>
       </div>
       <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li><a href="/2022/05/03/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch2/" rel="bookmark" title="深入浅出dpdk-ch2Cache">深入浅出dpdk-ch2Cache</a></li><li class="active"><a href="/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch5/" rel="bookmark" title="深入浅出dpdk-ch5报文转发">深入浅出dpdk-ch5报文转发</a></li><li><a href="/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch3/" rel="bookmark" title="深入浅出dpdk-ch3并行计算">深入浅出dpdk-ch3并行计算</a></li><li><a href="/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch4/" rel="bookmark" title="深入浅出dpdk-ch4同步互斥机制">深入浅出dpdk-ch4同步互斥机制</a></li><li><a href="/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch6/" rel="bookmark" title="深入浅出dpdk-ch6PCIe与包处理">深入浅出dpdk-ch6PCIe与包处理</a></li>
+        </ul>
       </div>
       <div class="overview panel" data-title="站点概览">
         <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -348,12 +382,12 @@
 
   <ul id="quick">
     <li class="prev pjax">
-        <a href="/2022/05/03/linux/linux-kernal/linx-kernal-proto/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp2/" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+        <a href="/2022/05/11/linux/linux-kernal/linux-kernal-driver/linux%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8/" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
     </li>
     <li class="up"><i class="ic i-arrow-up"></i></li>
     <li class="down"><i class="ic i-arrow-down"></i></li>
     <li class="next pjax">
-        <a href="/2022/05/03/git%E5%AD%A6%E4%B9%A0/" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+        <a href="/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch4/" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
     </li>
     <li class="percent"></li>
   </ul>
@@ -375,44 +409,33 @@
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
+</div>
+
+    <span><a href="/2022/05/03/git%E5%AD%A6%E4%B9%A0/" title="git学习">git学习</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/markdown/" title="分类于 Markdown">Markdown</a>
 <i class="ic i-angle-right"></i>
-<a href="/categories/dpdk/dpdk-advanced/" title="分类于 DPDK进阶">DPDK进阶</a>
+<a href="/categories/markdown/markdown-base/" title="分类于 Markdown基础">Markdown基础</a>
 </div>
 
-    <span><a href="/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch3/" title="深入浅出dpdk-ch3并行计算">深入浅出dpdk-ch3并行计算</a></span>
+    <span><a href="/2022/05/11/markdown/markdown-base/markdown%E5%85%AC%E5%BC%8F%E7%BC%96%E8%BE%91/" title="Markdown公式编辑">Markdown公式编辑</a></span>
   </li>
 
       
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/CPP/" title="分类于 CPP">CPP</a>
-</div>
-
-    <span><a href="/2022/05/05/cpp/cpp%E5%A4%9A%E6%80%81/" title="cpp之虚函数与多态">cpp之虚函数与多态</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/mobile-communication/" title="分类于 移动通信">移动通信</a>
-</div>
-
-    <span><a href="/2022/05/10/mobile-communication/TCP%E7%AA%97%E5%8F%A3/" title="TCP窗口与拥塞控制">TCP窗口与拥塞控制</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
+<a href="/categories/linux/" title="分类于 Linux">Linux</a>
 <i class="ic i-angle-right"></i>
-<a href="/categories/dpdk/dpdk-advanced/" title="分类于 DPDK进阶">DPDK进阶</a>
+<a href="/categories/linux/linux-command/" title="分类于 Linux命令">Linux命令</a>
 </div>
 
-    <span><a href="/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch5/" title="深入浅出dpdk-ch5报文转发">深入浅出dpdk-ch5报文转发</a></span>
+    <span><a href="/2022/05/03/linux/linux-command/linux%E5%91%BD%E4%BB%A4/" title="Linux命令">Linux命令</a></span>
   </li>
 
       
@@ -433,14 +456,24 @@
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/linux/" title="分类于 Linux">Linux</a>
+<a href="/categories/informal-essay/" title="分类于 随笔">随笔</a>
 <i class="ic i-angle-right"></i>
-<a href="/categories/linux/linux-kernal/" title="分类于 Linux内核">Linux内核</a>
-<i class="ic i-angle-right"></i>
-<a href="/categories/linux/linux-kernal/linx-kernal-proto/" title="分类于 Linux内核协议栈">Linux内核协议栈</a>
+<a href="/categories/informal-essay/life/" title="分类于 生活感悟">生活感悟</a>
 </div>
 
-    <span><a href="/2022/05/03/linux/linux-kernal/linx-kernal-proto/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp1/" title="Linux内核协议栈-cp1">Linux内核协议栈-cp1</a></span>
+    <span><a href="/2022/05/20/informal-essay/life/520%E9%9A%8F%E6%83%B3/" title="我真的有机会被爱吗">我真的有机会被爱吗</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/dpdk/dpdk-base/" title="分类于 DPDK基础">DPDK基础</a>
+</div>
+
+    <span><a href="/2022/04/29/dpdk/dpdk-base/dpdk/" title="DPDK基础">DPDK基础</a></span>
   </li>
 
       
@@ -459,36 +492,38 @@
   <li class="item">
     
 <div class="breadcrumb">
+<a href="/categories/linux/" title="分类于 Linux">Linux</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/linux/linux-kernal/" title="分类于 Linux内核">Linux内核</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/linux/linux-kernal/linx-kernal-proto/" title="分类于 Linux内核协议栈">Linux内核协议栈</a>
+</div>
+
+    <span><a href="/2022/05/03/linux/linux-kernal/linx-kernal-proto/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp1/" title="Linux内核协议栈-cp1">Linux内核协议栈-cp1</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
 <a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
 <i class="ic i-angle-right"></i>
 <a href="/categories/dpdk/dpdk-advanced/" title="分类于 DPDK进阶">DPDK进阶</a>
 </div>
 
-    <span><a href="/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch6/" title="深入浅出dpdk-ch6PCIe与包处理">深入浅出dpdk-ch6PCIe与包处理</a></span>
+    <span><a href="/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch5/" title="深入浅出dpdk-ch5报文转发">深入浅出dpdk-ch5报文转发</a></span>
   </li>
 
       
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/informal-essay/" title="分类于 随笔">随笔</a>
+<a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
 <i class="ic i-angle-right"></i>
-<a href="/categories/informal-essay/life/" title="分类于 生活感悟">生活感悟</a>
+<a href="/categories/dpdk/dpdk-advanced/" title="分类于 DPDK进阶">DPDK进阶</a>
 </div>
 
-    <span><a href="/2022/04/29/informal-essay/life/start/" title="少年啊，前路漫漫">少年啊，前路漫漫</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/informal-essay/" title="分类于 随笔">随笔</a>
-<i class="ic i-angle-right"></i>
-<a href="/categories/informal-essay/life/" title="分类于 生活感悟">生活感悟</a>
-</div>
-
-    <span><a href="/2022/05/20/informal-essay/life/520%E9%9A%8F%E6%83%B3/" title="我真的有机会被爱吗">我真的有机会被爱吗</a></span>
+    <span><a href="/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch4/" title="深入浅出dpdk-ch4同步互斥机制">深入浅出dpdk-ch4同步互斥机制</a></span>
   </li>
 
   </ul>
@@ -531,7 +566,7 @@
   </div>
 <script data-config type="text/javascript">
   var LOCAL = {
-    path: '2022/05/03/刷机教程/',
+    path: '2022/05/19/dpdk/dpdk-advanced/dpdk进阶-ch5/',
     favicon: {
       show: "（●´3｀●）やれやれだぜ",
       hide: "(´Д｀)大変だ！"
