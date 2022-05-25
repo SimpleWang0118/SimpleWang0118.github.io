@@ -1,0 +1,642 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="Single Wang's Blog" href="http://singlewang.top/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="Single Wang's Blog" href="http://singlewang.top/atom.xml" />
+<link rel="alternate" type="application/json" title="Single Wang's Blog" href="http://singlewang.top/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/css/app.css?v=0.2.5">
+
+  
+  <meta name="keywords" content="Linux网络设备,Linux内核驱动" />
+
+
+<link rel="canonical" href="http://singlewang.top/2022/05/24/linux/linux-kernal/linux-kernal-driver/Linux%E4%B8%AD%E6%96%AD%E5%92%8C%E5%AE%9A%E6%97%B6%E5%99%A8/">
+
+
+
+  <title>
+Linux中断和定时器 - Linux内核驱动 - Linux内核 - Linux |
+智者不入爱河 = Single Wang's Blog = 建设美丽中国</title>
+<meta name="generator" content="Hexo 6.1.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">Linux中断和定时器
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="创建时间：2022-05-24 21:27:00">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="dateCreated datePublished" datetime="2022-05-24T21:27:00+08:00">2022-05-24</time>
+  </span>
+  <span class="item" title="本文字数">
+    <span class="icon">
+      <i class="ic i-pen"></i>
+    </span>
+    <span class="text">本文字数</span>
+    <span>2.2k</span>
+    <span class="text">字</span>
+  </span>
+  <span class="item" title="阅读时长">
+    <span class="icon">
+      <i class="ic i-clock"></i>
+    </span>
+    <span class="text">阅读时长</span>
+    <span>2 分钟</span>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/" rel="start">智者不入爱河</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gipevgoki5j20zk0m84qp.jpg"></li>
+          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1giclfw2t96j20zk0m8x6p.jpg"></li>
+          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gipetfk5zwj20zk0m8e81.jpg"></li>
+          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gipetlbztpj20zk0m84qp.jpg"></li>
+          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gicis3attqj20zk0m8k7l.jpg"></li>
+          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1giclx29mstj20zk0m8hdt.jpg"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/">首页</a></span><i class="ic i-angle-right"></i>
+<span  itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/categories/linux/" itemprop="item" rel="index" title="分类于 Linux"><span itemprop="name">Linux</span></a>
+<meta itemprop="position" content="1" /></span>
+<i class="ic i-angle-right"></i>
+<span  itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/categories/linux/linux-kernal/" itemprop="item" rel="index" title="分类于 Linux内核"><span itemprop="name">Linux内核</span></a>
+<meta itemprop="position" content="2" /></span>
+<i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/categories/linux/linux-kernal/linux-kernal-driver/" itemprop="item" rel="index" title="分类于 Linux内核驱动"><span itemprop="name">Linux内核驱动</span></a>
+<meta itemprop="position" content="3" /></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+  <link itemprop="mainEntityOfPage" href="http://singlewang.top/2022/05/24/linux/linux-kernal/linux-kernal-driver/Linux%E4%B8%AD%E6%96%AD%E5%92%8C%E5%AE%9A%E6%97%B6%E5%99%A8/">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/images/taizaizhi.jpg">
+    <meta itemprop="name" content="Single Wang">
+    <meta itemprop="description" content="建设美丽中国, 智者不入爱河，愚者重蹈覆辙">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Single Wang's Blog">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <h3 id="中断与定时器"><a href="#中断与定时器" class="headerlink" title="中断与定时器"></a>中断与定时器</h3><p><strong>中断</strong>：指CPU在指向程序的过程中，出现某些突发事件时，CPU必须暂停执行当前的程序，转去处理突发事件，处理完毕后又返回原程序被中断的位置并继续执行。</p>
+<ul>
+<li>根据中断的来源可分为：</li>
+</ul>
+<ol>
+<li>内部中断：中断源来自CPU内部，如软件中断指令、溢出等。</li>
+<li>外部中断：中断源来自CPU外部，由外设请求</li>
+</ol>
+<ul>
+<li>根据是否可以屏蔽分为：</li>
+</ul>
+<ol>
+<li>可屏蔽中断：通过屏蔽字相应，屏蔽后，该中断不再得到相应</li>
+<li>不屏蔽中断：不能被屏蔽</li>
+</ol>
+<ul>
+<li>根据中断入口跳转方法不同，可分为：</li>
+</ul>
+<ol>
+<li>向量中断：CPU通常为不同的中断分配不同的中断号。（硬件）</li>
+<li>非向量中断：多个中断共享一个入口地址，进入该入口地址后再通过软件判断中断标志来识别具体哪个中断。（软件）</li>
+</ol>
+<h3 id="Linux中断编程"><a href="#Linux中断编程" class="headerlink" title="Linux中断编程"></a>Linux中断编程</h3><h4 id="申请和释放中断"><a href="#申请和释放中断" class="headerlink" title="申请和释放中断"></a>申请和释放中断</h4><ol>
+<li>申请irq<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">request_irq</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> irq,</span></span><br><span class="line"><span class="params">                <span class="type">void</span> (*handler)(<span class="type">int</span> irq.<span class="type">void</span> *dev_id,<span class="keyword">struct</span> pt_regs *regs),</span></span><br><span class="line"><span class="params">                <span class="type">unsigned</span> <span class="type">long</span> irqflags,</span></span><br><span class="line"><span class="params">                <span class="type">const</span> <span class="type">char</span> * devname,</span></span><br><span class="line"><span class="params">                <span class="type">void</span> *dev_id)</span>;</span><br></pre></td></tr></table></figure>
+irq是要申请的硬件中断号。<br>handler是向系统等级的中断处理函数，是一个回调函数。<br>irqflags是中断处理的属性<blockquote>
+<p>SA_INTERRUPT 表示中断处理程序是快速处理程序<br>SA_SHIRQ 表示多个设备共享中断<br>request_irq()返回0表示成功，返回-INVAL表示中断号无效或函数指针为NULL，返回-EBUSY表示中断已经被占用。</p>
+</blockquote>
+</li>
+</ol>
+<p>2.释放IRQ</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">free_irq</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> irq,<span class="type">void</span> *dev_id)</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="使能和屏蔽中断"><a href="#使能和屏蔽中断" class="headerlink" title="使能和屏蔽中断"></a>使能和屏蔽中断</h4><p>以下三个函数用于屏蔽一个中断源</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">disable_irq</span><span class="params">(<span class="type">int</span> irq)</span>; <span class="comment">//立即返回</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">disable_irq_nosync</span><span class="params">(<span class="type">int</span> irq)</span>; <span class="comment">//等待目前的中断处理完成</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">enable_irq</span><span class="params">(<span class="type">int</span> irq)</span>; <span class="comment">//作用与可编程中断控制器，对系统内的所有CPU都生效。</span></span><br></pre></td></tr></table></figure>
+
+<p>以下两个函数将屏蔽本CPU内的所有中断</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">local_irq_save</span><span class="params">(<span class="type">unsigned</span> <span class="type">long</span> falgs)</span>;<span class="comment">//将目前的中断状态保留在flags中。</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">local_irq_diasble</span><span class="params">(<span class="type">void</span>)</span>; <span class="comment">//直接禁止中断</span></span><br></pre></td></tr></table></figure>
+
+<p>恢复中断：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">local_irq_restore</span><span class="params">(<span class="type">unsigned</span> <span class="type">long</span> flags)</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">local_irq_enable</span><span class="params">(<span class="type">void</span>)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>硬中断、软中断、信号的区别：</p>
+<ol>
+<li>硬中断是外部设备对&#x3D;&#x3D;CPU&#x3D;&#x3D;的中断</li>
+<li>软中断通常是硬中断服务程序对&#x3D;&#x3D;内核&#x3D;&#x3D;的中断</li>
+<li>信号则是由内核对某个&#x3D;&#x3D;进程&#x3D;&#x3D;的中断</li>
+</ol>
+<h3 id="内核定时器"><a href="#内核定时器" class="headerlink" title="内核定时器"></a>内核定时器</h3><h4 id="内核定时器编程"><a href="#内核定时器编程" class="headerlink" title="内核定时器编程"></a>内核定时器编程</h4><p>软件意义上的定时器最终依赖硬件定时器来实现，内核在时钟中断发生后检测各定时器是否到期，到期后的定时器处理函数将作为软中断在底半部执行。</p>
+<p>linux内核所提供的用于操作定时器的数据结构和函数如下：</p>
+<ol>
+<li>timer_list</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">timer_list</span>&#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> <span class="title">entry</span>;</span> <span class="comment">//定时器列表</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">long</span> expires; <span class="comment">//定时器到期时间</span></span><br><span class="line">    <span class="type">void</span> (*function)(<span class="type">unsigned</span> <span class="type">long</span>); <span class="comment">//定时器处理函数</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">long</span> data;  <span class="comment">//作为参数被传入</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">timer_base_s</span> *<span class="title">base</span>;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>eg:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">timer_list</span> <span class="title">my_timer</span>;</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>初始化定时器<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">init_timer</span><span class="params">(<span class="keyword">struct</span> timer_list *timer)</span>;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p><code>TIMER_INITIALIZER(_function,_expires,_data)</code>宏用于赋值定时结构体的function、expires、data、base成员。</p>
+<ol start="3">
+<li><p>增加定时器</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">add_timer</span><span class="params">(<span class="keyword">struct</span> timer_list *timer)</span>; <span class="comment">//注册内核定时器，将定时器加入到内核动态定时器链表中。</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>删除定时器</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">del_timer</span><span class="params">(sturct timer_list * timer)</span>;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="内核延时"><a href="#内核延时" class="headerlink" title="内核延时"></a>内核延时</h3><h4 id="短延时"><a href="#短延时" class="headerlink" title="短延时"></a>短延时</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">ndelay</span><span class="params">(<span class="type">unsigned</span> <span class="type">long</span> nsecs)</span>; <span class="comment">//纳秒</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">udelay</span><span class="params">(<span class="type">unsigned</span> <span class="type">long</span> usecs)</span>; <span class="comment">//微秒</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">mdelay</span><span class="params">(<span class="type">unsigned</span> <span class="type">long</span> msecs)</span>; <span class="comment">//毫秒</span></span><br></pre></td></tr></table></figure>
+<p>在内核中，最好不要直接使用毫秒级别的延时，这将无所谓地耗费CPU资源。对于毫秒级以上地时延，内核提供了下述函数：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">msleep</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> millisecs)</span>; <span class="comment">//不能被打断</span></span><br><span class="line"><span class="type">unsigned</span> <span class="type">long</span> <span class="title function_">msleep_interruptible</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> millisecs)</span>; <span class="comment">//可以被打断</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">ssleep</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> seconds)</span>; <span class="comment">//不能被打断</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="长延时"><a href="#长延时" class="headerlink" title="长延时"></a>长延时</h4><p>内核中进行延时地很直观地方法时比较当前地jiffies和目标jiffies，知道未来地jiffies达到目标jiffies。</p>
+<h4 id="睡着延时"><a href="#睡着延时" class="headerlink" title="睡着延时"></a>睡着延时</h4><p>睡着延时比忙等待更好，随着延迟在等待地时间到来之间进程处于睡眠状态，CPU资源被其他进程使用。<code>schedule_timeout()</code>可以使当前任务睡眠指定地jiffies之后重新被调度执行。<br>实际上<code>schedule_timeout()</code>地实现原理时向系统添加一个定时器，在定时器处理函数中唤醒参数对应地进程。</p>
+
+      <div class="tags">
+          <a href="/tags/Linux%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87/" rel="tag"><i class="ic i-tag"></i> Linux网络设备</a>
+          <a href="/tags/Linux%E5%86%85%E6%A0%B8%E9%A9%B1%E5%8A%A8/" rel="tag"><i class="ic i-tag"></i> Linux内核驱动</a>
+      </div>
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新于</span>
+    <time title="修改时间：2022-05-25 21:04:09" itemprop="dateModified" datetime="2022-05-25T21:04:09+08:00">2022-05-25</time>
+  </span>
+  <span id="2022/05/24/linux/linux-kernal/linux-kernal-driver/Linux中断和定时器/" class="item leancloud_visitors" data-flag-title="Linux中断和定时器" title="阅读次数">
+      <span class="icon">
+        <i class="ic i-eye"></i>
+      </span>
+      <span class="text">阅读次数</span>
+      <span class="leancloud-visitors-count"></span>
+      <span class="text">次</span>
+  </span>
+</div>
+
+      
+<div class="reward">
+  <button><i class="ic i-heartbeat"></i> 赞赏</button>
+  <p>听我说，谢谢你</p>
+  <div id="qr">
+      
+      <div>
+        <img data-src="/images/wepay.jpg" alt="Single Wang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div>
+        <img data-src="/images/zhipay.jpg" alt="Single Wang 支付宝">
+        <p>支付宝</p>
+      </div>
+  </div>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>本文作者： </strong>Single Wang <i class="ic i-at"><em>@</em></i>Single Wang's Blog
+  </li>
+  <li class="link">
+    <strong>本文链接：</strong>
+    <a href="http://singlewang.top/2022/05/24/linux/linux-kernal/linux-kernal-driver/Linux%E4%B8%AD%E6%96%AD%E5%92%8C%E5%AE%9A%E6%97%B6%E5%99%A8/" title="Linux中断和定时器">http://singlewang.top/2022/05/24/linux/linux-kernal/linux-kernal-driver/Linux中断和定时器/</a>
+  </li>
+  <li class="license">
+    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/2022/05/20/informal-essay/life/520%E9%9A%8F%E6%83%B3/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva1.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1gipexe4oykj20zk0m87ji.jpg" title="我真的有机会被爱吗">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> 生活感悟</span>
+  <h3>我真的有机会被爱吗</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%AD%E6%96%AD%E4%B8%8E%E5%AE%9A%E6%97%B6%E5%99%A8"><span class="toc-number">1.</span> <span class="toc-text">中断与定时器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Linux%E4%B8%AD%E6%96%AD%E7%BC%96%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">Linux中断编程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%94%B3%E8%AF%B7%E5%92%8C%E9%87%8A%E6%94%BE%E4%B8%AD%E6%96%AD"><span class="toc-number">2.1.</span> <span class="toc-text">申请和释放中断</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E8%83%BD%E5%92%8C%E5%B1%8F%E8%94%BD%E4%B8%AD%E6%96%AD"><span class="toc-number">2.2.</span> <span class="toc-text">使能和屏蔽中断</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E6%A0%B8%E5%AE%9A%E6%97%B6%E5%99%A8"><span class="toc-number">3.</span> <span class="toc-text">内核定时器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%85%E6%A0%B8%E5%AE%9A%E6%97%B6%E5%99%A8%E7%BC%96%E7%A8%8B"><span class="toc-number">3.1.</span> <span class="toc-text">内核定时器编程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E6%A0%B8%E5%BB%B6%E6%97%B6"><span class="toc-number">4.</span> <span class="toc-text">内核延时</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9F%AD%E5%BB%B6%E6%97%B6"><span class="toc-number">4.1.</span> <span class="toc-text">短延时</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%95%BF%E5%BB%B6%E6%97%B6"><span class="toc-number">4.2.</span> <span class="toc-text">长延时</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9D%A1%E7%9D%80%E5%BB%B6%E6%97%B6"><span class="toc-number">4.3.</span> <span class="toc-text">睡着延时</span></a></li></ol></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li><a href="/2022/05/09/linux/linux-kernal/linux-kernal-driver/linux%E9%94%81/" rel="bookmark" title="Linux驱动中的并发控制">Linux驱动中的并发控制</a></li><li><a href="/2022/05/11/linux/linux-kernal/linux-kernal-driver/linux%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8/" rel="bookmark" title="Linux网络设备驱动">Linux网络设备驱动</a></li><li class="active"><a href="/2022/05/24/linux/linux-kernal/linux-kernal-driver/Linux%E4%B8%AD%E6%96%AD%E5%92%8C%E5%AE%9A%E6%97%B6%E5%99%A8/" rel="bookmark" title="Linux中断和定时器">Linux中断和定时器</a></li>
+        </ul>
+      </div>
+      <div class="overview panel" data-title="站点概览">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="Single Wang"
+      data-src="/images/taizaizhi.jpg">
+  <p class="name" itemprop="name">Single Wang</p>
+  <div class="description" itemprop="description">智者不入爱河，愚者重蹈覆辙</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/archives/">
+        <span class="count">22</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+    <div class="item categories">
+      <a href="/categories/">
+        <span class="count">16</span>
+        <span class="name">分类</span>
+      </a>
+    </div>
+    <div class="item tags">
+      <a href="/tags/">
+        <span class="count">30</span>
+        <span class="name">标签</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+      <span class="exturl item github" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbXBsZVdhbmcwMTE4" title="https:&#x2F;&#x2F;github.com&#x2F;SimpleWang0118"><i class="ic i-github"></i></span>
+      <a href="/931346283@qq.com" title="931346283@qq.com" class="item email"><i class="ic i-envelope"></i></a>
+      <a href="/931346283@qq.com" title="931346283@qq.com" class="item QQ"><i class="ic i-qq"></i></a>
+      <a href="/WLH931346283" title="WLH931346283" class="item WeChat"><i class="ic i-weixin"></i></a>
+      <span class="exturl item music" data-url="aHR0cHM6Ly9tdXNpYy4xNjMuY29tLyMvdXNlci9ob21lP2lkPTEyODkyMjAwMjc=" title="https:&#x2F;&#x2F;music.163.com&#x2F;#&#x2F;user&#x2F;home?id&#x3D;1289220027"><i class="ic i-cloud-music"></i></span>
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/" rel="section"><i class="ic i-home"></i>首页</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/archives/" rel="section"><i class="ic i-list-alt"></i>归档</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/categories/" rel="section"><i class="ic i-th"></i>分类</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/tags/" rel="section"><i class="ic i-tags"></i>标签</a>
+  </li>
+
+  </ul>
+    
+  <li class="item">
+    <a href="/about/" rel="section"><i class="ic i-user"></i>关于</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>随机文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/mobile-communication/" title="分类于 移动通信">移动通信</a>
+</div>
+
+    <span><a href="/2022/05/10/mobile-communication/TCP%E7%AA%97%E5%8F%A3/" title="TCP窗口与拥塞控制">TCP窗口与拥塞控制</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/linux/" title="分类于 Linux">Linux</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/linux/linux-kernal/" title="分类于 Linux内核">Linux内核</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/linux/linux-kernal/linx-kernal-proto/" title="分类于 Linux内核协议栈">Linux内核协议栈</a>
+</div>
+
+    <span><a href="/2022/05/04/linux/linux-kernal/linx-kernal-proto/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp3/" title="Linux内核协议栈-cp3">Linux内核协议栈-cp3</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/linux/" title="分类于 Linux">Linux</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/linux/linux-kernal/" title="分类于 Linux内核">Linux内核</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/linux/linux-kernal/linux-kernal-driver/" title="分类于 Linux内核驱动">Linux内核驱动</a>
+</div>
+
+    <span><a href="/2022/05/11/linux/linux-kernal/linux-kernal-driver/linux%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8/" title="Linux网络设备驱动">Linux网络设备驱动</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/dpdk/dpdk-advanced/" title="分类于 DPDK进阶">DPDK进阶</a>
+</div>
+
+    <span><a href="/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch5/" title="深入浅出dpdk-ch5报文转发">深入浅出dpdk-ch5报文转发</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/markdown/" title="分类于 Markdown">Markdown</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/markdown/markdown-base/" title="分类于 Markdown基础">Markdown基础</a>
+</div>
+
+    <span><a href="/2022/04/29/markdown/markdown-base/markdownlearn/" title="Markdown教程">Markdown教程</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/markdown/" title="分类于 Markdown">Markdown</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/markdown/markdown-base/" title="分类于 Markdown基础">Markdown基础</a>
+</div>
+
+    <span><a href="/2022/05/11/markdown/markdown-base/markdown%E5%85%AC%E5%BC%8F%E7%BC%96%E8%BE%91/" title="Markdown公式编辑">Markdown公式编辑</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/linux/" title="分类于 Linux">Linux</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/linux/linux-kernal/" title="分类于 Linux内核">Linux内核</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/linux/linux-kernal/linux-kernal-driver/" title="分类于 Linux内核驱动">Linux内核驱动</a>
+</div>
+
+    <span><a href="/2022/05/24/linux/linux-kernal/linux-kernal-driver/Linux%E4%B8%AD%E6%96%AD%E5%92%8C%E5%AE%9A%E6%97%B6%E5%99%A8/" title="Linux中断和定时器">Linux中断和定时器</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/cpp/" title="分类于 C++">C++</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/cpp/cpp-bug/" title="分类于 C++BUG">C++BUG</a>
+</div>
+
+    <span><a href="/2022/05/03/cpp/cpp-bug/c++bug-1/" title="c++遇到的bug-1">c++遇到的bug-1</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2022/05/03/%E5%88%B7%E6%9C%BA%E6%95%99%E7%A8%8B/" title="刷机教程">刷机教程</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/CPP/" title="分类于 CPP">CPP</a>
+</div>
+
+    <span><a href="/2022/05/05/cpp/cpp%E5%A4%9A%E6%80%81/" title="cpp之虚函数与多态">cpp之虚函数与多态</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新评论</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2022-04 – 
+    <span itemprop="copyrightYear">2022</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Single Wang @ 智者不入爱河</span>
+  </div>
+  <div class="count">
+    <span class="post-meta-item-icon">
+      <i class="ic i-chart-area"></i>
+    </span>
+    <span title="站点总字数">61k 字</span>
+
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="ic i-coffee"></i>
+    </span>
+    <span title="站点阅读时长">55 分钟</span>
+  </div>
+  <div class="powered-by">
+    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: '2022/05/24/linux/linux-kernal/linux-kernal-driver/Linux中断和定时器/',
+    favicon: {
+      show: "（●´3｀●）やれやれだぜ",
+      hide: "(´Д｀)大変だ！"
+    },
+    search : {
+      placeholder: "文章搜索",
+      empty: "关于 「 ${query} 」，什么也没搜到",
+      stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    valine: true,fancybox: true,
+    copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/js/app.js?v=0.2.5"></script>
+
+
+
+
+</body>
+</html>
