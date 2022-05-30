@@ -9,8 +9,36 @@
     <atom:link href="http://singlewang.top/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>智者不入爱河，愚者重蹈覆辙</description>
-    <pubDate>Wed, 25 May 2022 13:04:09 GMT</pubDate>
+    <pubDate>Mon, 30 May 2022 12:27:23 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>WIFI基本知识</title>
+      <link>http://singlewang.top/2022/05/30/mobile-communication/WIFI%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/</link>
+      <guid>http://singlewang.top/2022/05/30/mobile-communication/WIFI%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/</guid>
+      <pubDate>Mon, 30 May 2022 11:47:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;WIFI的连接过程&quot;&gt;&lt;a href=&quot;#WIFI的连接过程&quot; class=&quot;headerlink&quot; title=&quot;WIFI的连接过程&quot;&gt;&lt;/a&gt;WIFI的连接过程&lt;/h2&gt;&lt;p&gt;一般如果STA要和AP建立连接，要经过三个阶段才能够接入：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="WIFI的连接过程"><a href="#WIFI的连接过程" class="headerlink" title="WIFI的连接过程"></a>WIFI的连接过程</h2><p>一般如果STA要和AP建立连接，要经过三个阶段才能够接入：</p><ol><li>扫描阶段(SCAN)</li><li>认证关联(Authentication)</li><li>关联(Association)</li></ol><h3 id="WIFI扫描"><a href="#WIFI扫描" class="headerlink" title="WIFI扫描"></a>WIFI扫描</h3><p>STA在加入任何网络之前必须识别现有网络，这个过程称为扫描，扫描又分为 <strong>主动扫描</strong> 和 <strong>被动扫描</strong>。</p><ol><li>主动扫描：STA会在每个信道上发出<code>Probe request</code>,携带相关的SSID信息，寻找相同SSID的AP，若找不到，一直扫描下去，找到后等待接收<code>Probe response</code>。</li><li>被动扫描：STA会在各个信道之间不断切换，通过监听AP定期发送的<code>Beacon</code>帧来发现网络，<code>Beacon</code>帧标示了相关的BSS信息（可以理解为对应的路由器的信息就是BSS信息）</li></ol><p>选网原则：</p><ul><li>选择相同SSID的网络做认证</li><li>优先选择信号强度最强或最近使用的网络</li></ul><h3 id="WIFI认证"><a href="#WIFI认证" class="headerlink" title="WIFI认证"></a>WIFI认证</h3><blockquote><p>只有通过STA和AP之间的认证，才能进一步接入无线网络<br>认证可以通过MAC地址认证，或者用户名和密码口令认证</p></blockquote><p>认证的方式有两种：</p><ol><li>开放式认证：STA发送认证请求，AP直接通过认证请求，安全风险较高</li><li>共享密钥认证：STA向AP 发送认证请求，AP随机产生字符串，STA接收到字符串后进行密钥加密后发给AP，AP收到信息后用密钥解密得到随机字符串，如果AP判断字符串与原始发的字符串相同，则认证通过。</li></ol><h3 id="WIFI关联"><a href="#WIFI关联" class="headerlink" title="WIFI关联"></a>WIFI关联</h3><p>STA一旦完成身份认证，便可以发送<code>Association Request</code>,请求获得网络的完全访问权。关联能让AP记录每个STA的位置，以便将帧正确送达。</p><ul><li>STA与AP认证成功后，就可以向AP发送关联请求</li><li>AP将STA的信息添加到数据库，并向STA发出关联响应，则注册成功，完成关联</li><li>关联建立后，即可接入无线网络，实现数据通信</li><li>当STA需要接入新的网络时，需要去关联后，重新认证，和新AP再关联。</li><li>每个STA只能关联到一个AP，但是关联总是由STA发起。</li></ul><p><strong>去关联</strong>是一个单向的，无需确认的过程，可由STA发起也可以由AP发起。只需发送一个通知性质的<code>deauth</code>帧或者<code>disassoc</code>帧，因此容易造成状态不同步</p>]]></content:encoded>
+      
+      
+      <category domain="http://singlewang.top/categories/mobile-communication/">移动通信</category>
+      
+      
+      <category domain="http://singlewang.top/tags/WIFI/">WIFI</category>
+      
+      
+      <comments>http://singlewang.top/2022/05/30/mobile-communication/WIFI%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>Linux中断和定时器</title>
@@ -75,10 +103,40 @@
     </item>
     
     <item>
+      <title>深入浅出dpdk-ch7网卡性能优化</title>
+      <link>http://singlewang.top/2022/05/17/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch7/</link>
+      <guid>http://singlewang.top/2022/05/17/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch7/</guid>
+      <pubDate>Tue, 17 May 2022 12:49:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h3 id=&quot;网卡性能优化&quot;&gt;&lt;a href=&quot;#网卡性能优化&quot; class=&quot;headerlink&quot; title=&quot;网卡性能优化&quot;&gt;&lt;/a&gt;网卡性能优化&lt;/h3&gt;&lt;h4 id=&quot;DPDK的轮询模式&quot;&gt;&lt;a href=&quot;#DPDK的轮询模式&quot; class=&quot;headerlink</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h3 id="网卡性能优化"><a href="#网卡性能优化" class="headerlink" title="网卡性能优化"></a>网卡性能优化</h3><h4 id="DPDK的轮询模式"><a href="#DPDK的轮询模式" class="headerlink" title="DPDK的轮询模式"></a>DPDK的轮询模式</h4><p>DPDK采用了轮询或者轮询混杂中断的模式来进行收包和发包，此 前主流运行在操作系统内核态的网卡驱动程序基本都是基于异步中断处理模式。</p><h5 id="异步中断模式"><a href="#异步中断模式" class="headerlink" title="异步中断模式"></a>异步中断模式</h5><p>当有包进入网卡收包队列后，网卡会产生硬件中断，进而触发CPU中断，进入中断服务程序，在中断服务程序中完成收包的处理。<br>基于异步中断信号处理模式的收包，不断地在做中断处理，在CPU比I&#x2F;O速率高很多时，处理地负荷可以被忽略，但是如果是高速网卡且I&#x2F;O频繁，开销就会很大。中断是异步方式，因此CPU无需等待，有效利用率高。<br>当有包需要发送出去地时候，基于异步中断信号地驱动程序会准备奥需要发送地包，配置号发送队列地各个描述符。包被真正发送完成时，网卡同样会产生硬件中断信号，进而触发CPU中断，进入中断服务。</p><h5 id="轮询模式"><a href="#轮询模式" class="headerlink" title="轮询模式"></a>轮询模式</h5><p>DPDK最初地纯轮询模式指收发包完全不使用任何中断，集中所有运算资源用于报文处理，但这不是意味着DPDK部可以支持任何中断。</p><p>DPDK所有地收发包有关的中断在物理端口初始化的时候都会关闭，也就是说，CPU在任何时候都不会收到中断。</p><p>每一个收包队列，DPDK都会有一个对应的软件线程负责轮询里面的收包描述符的收包成功的标志。一旦发现某一个收包描述符的收包成功标志被硬件置位了，驱动程序会解析相应的收包描述符，提取各种有用的信息，然后填充对应的缓冲内存块头部。然后把收包缓冲内存块存放到收包函数提供的数组里面，同时分配好一个新的缓冲内存块给这个描述符，以便下一次收包。</p><p>每一个发包队列，DPDK都会有一个对应的软件线程负责设置需要发送出去的包，DPDK的驱动程序负责提取发包缓冲内存块的有效信息。DPDK的轮询驱动程序根据内存缓存块中的包的内容来负责初始化好每一个发包描述符，驱动程序会把每个包翻译成为一个或者多个发包描述符里能够理解的内容，然后写入发包描述符。最关键的有两个，一个是标识完整的包结束的标志<code>EOP(End Of Packet)</code>,另一个就是请求报告发送状态<code>RS(Report Status)</code>。EOP就是驱动程序用来通知网卡硬件一个完整的包结束的标志。RS是驱动程序告诉网卡什么时候需要报告发送结果的标志。</p><p>发包的轮询就是轮询发包结束的硬件标志位。</p><h5 id="混合中断轮询模式"><a href="#混合中断轮询模式" class="headerlink" title="混合中断轮询模式"></a>混合中断轮询模式</h5><p>由于实际网络应用中可能存在的潮汐效应，在某些时间段网络数据流量可能很低，甚至完全没有需要处理的包，这样就会出现在高速端口下低负荷运行的场景，而完全轮询的方式会让处理器一直全速运行，明显浪费处理能力和不节能。<br>因此DPDK引入了收包中断与轮询的混合模式的支持，用户可以根据实际应用场景来选择完全轮询模式，或者混合中断轮询模式。<br>PDK的混合中断轮询机制是基于UIO或VFIO来实现其收包中断通知与处理流程的。如果是基于VFIO的实现，该中断机制是可以支持队列级别的，即一个接收队列对应一个中断号，这是因为VFIO支持多MSI-X 中断号。但如果是基于UIO的实现，该中断机制就只支持一个中断号，所有的队列共享一个中断号。</p><h4 id="网卡I-x2F-O性能优化"><a href="#网卡I-x2F-O性能优化" class="headerlink" title="网卡I&#x2F;O性能优化"></a>网卡I&#x2F;O性能优化</h4><h5 id="Burst收发包的优点"><a href="#Burst收发包的优点" class="headerlink" title="Burst收发包的优点"></a>Burst收发包的优点</h5><p>Burst收发包是DPDK的优化模式，它把收发包复杂的处理过程进行分解，使之成为相对较小的处理阶段，把相邻的数据访问、相似的数据运算集中处理。</p><p>Burst可以理解为突发模式，是一次完成多个数据包的收发，由DPDK函数调用者来决定。</p><p>网卡的收发包描述符一般为16或32字节，而网卡对收包描述符的回写都会一次处理4个或者8个。处理器缓存的预取机制会每次存取相邻的多个缓存单位，Burst充分利用这种机制，明显提高收发包效率。</p><p>Burst收发包是DPDK普遍使用的软件接口，用户可以设定每次收发包函数调用所处理的包的个数，具体函数接口如下：</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">uint16_t</span> <span class="title function_">rte_eth_rx_burst</span><span class="params">(<span class="type">uint8_t</span> port_id,<span class="type">uint16_t</span> queue_id,<span class="keyword">struct</span> rte_mbuf  **rx_pkts,<span class="type">const</span> <span class="type">uint16_t</span> nb_pkts)</span>;</span><br><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">uint16_t</span> <span class="title function_">rte_eth_tx_burst</span><span class="params">(<span class="type">uint8_t</span> port_id,<span class="type">uint16_t</span> queue_id,<span class="keyword">struct</span> rte_mbuf  **tx_pkts,<span class="type">const</span> <span class="type">uint16_t</span> nb_pkts)</span>;</span><br></pre></td></tr></table></figure><h5 id="批处理和时延隐藏"><a href="#批处理和时延隐藏" class="headerlink" title="批处理和时延隐藏"></a>批处理和时延隐藏</h5><p><strong>时延</strong>：处理器核心执行单元完成一条指令所需要的时钟周期数<br><strong>吞吐</strong>：处理器指令发射端口再次允许接受相同指令所需等待的时钟周期数。<br>时延描述了前后两个关联操作的等待时间，吞吐则描述了指令的并发能力。</p><p>利用CPU指令乱序多发的能力，掩藏指令延迟的一个有效方法是批量处理无数据前后依赖关系的独立事务。对于重复事务执行，通常采用循环逐次操作。对于较复杂的事务，编译器很难大量地区乱序不同迭代序列下地指令。常用到的做法是在一个序列中铺开执行多个事务，以一个合理地步进迭代。</p><h4 id="队列长度及各种阈值地设置"><a href="#队列长度及各种阈值地设置" class="headerlink" title="队列长度及各种阈值地设置"></a>队列长度及各种阈值地设置</h4><h5 id="收包队列长度"><a href="#收包队列长度" class="headerlink" title="收包队列长度"></a>收包队列长度</h5><p>收包队列的长度就是每个收包队列分配的收包描述符的个数，每个收包描述符都会分配有对应的Mbuf缓存块。<br>网卡硬件本身限定了可以使用的最大的队列长度。DPDK的默认的收包队列长度是128，是一个适应大多数场景的经验值。但是在某些更高速率的网卡收包或者在某些场景下丢包比较容易地时候，需考虑使用更长地收包队列如512或1024。</p><h5 id="发包队列长度"><a href="#发包队列长度" class="headerlink" title="发包队列长度"></a>发包队列长度</h5><p>发包队列的长度就是每个发包队列分配的发包描述符的个数，每个发包描述符都会分配有对应的Mbuf缓存块。<br>DPDK实力中常用地发包队列长度是512。</p><h5 id="收包队列可释放描述符数量阈值（rx-free-thresh）"><a href="#收包队列可释放描述符数量阈值（rx-free-thresh）" class="headerlink" title="收包队列可释放描述符数量阈值（rx_free_thresh）"></a>收包队列可释放描述符数量阈值（rx_free_thresh）</h5><p>在DPDK驱动女程序收包过程中，每一次收包函数的调用都可能成功读取0、1或者多个包。每读出一个包，与之对应的收包描述符就可以释放。DPDK驱动程序并没有每次收包都更新收包队列尾部索引寄存器，而是在可释放的收包描述符数量达到一个阈值(<code>rx_free_thresh</code>)的时候才真正更新收包队列尾部索引寄存器。这个值一般是32。</p><h5 id="发包队列发送结果报告阈值（tx-rs-thresh）"><a href="#发包队列发送结果报告阈值（tx-rs-thresh）" class="headerlink" title="发包队列发送结果报告阈值（tx_rs_thresh）"></a>发包队列发送结果报告阈值（tx_rs_thresh）</h5><p>任何发包处理完成后，需要有网卡硬件通过一定机制通知软件发包动作已经完成，对应的发包描述符就可以再次使用，对应的Mbuf可以释放或者做其他用途。一般都是通过回写发包描述符特定的字段完成通知，但是每个包发完都回写效率很低，因此<code>tx_rs_thresh</code>出现辽，只有在有回写标记的发包描述符才会回写，而这个标记会每个这个阈值才会设置。<br>阈值太小，回写频繁，性能低；阈值太大占用发包描述符时间长，可能会造成丢包。</p><h5 id="发包描述符释放阈值（tx-free-thresh）"><a href="#发包描述符释放阈值（tx-free-thresh）" class="headerlink" title="发包描述符释放阈值（tx_free_thresh）"></a>发包描述符释放阈值（tx_free_thresh）</h5><p>当网卡硬件读取完发包描述符，并且DMA完成整个包的内容的传送后，硬件会根据发送结果回写标记来通知软件发包完成，可以释放。只有放可以用来重新配置的发包描述符数量少于阈值的时候才会启动描述符和Mbuf的释放动作。DPDK驱动程序中默认是32.</p>]]></content:encoded>
+      
+      
+      <category domain="http://singlewang.top/categories/dpdk/">DPDK</category>
+      
+      <category domain="http://singlewang.top/categories/dpdk/dpdk-advanced/">DPDK进阶</category>
+      
+      
+      <category domain="http://singlewang.top/tags/dpdk/">dpdk</category>
+      
+      <category domain="http://singlewang.top/tags/%E6%8A%A5%E6%96%87%E8%BD%AC%E5%8F%91/">报文转发</category>
+      
+      
+      <comments>http://singlewang.top/2022/05/17/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch7/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
       <title>深入浅出dpdk-ch6PCIe与包处理</title>
-      <link>http://singlewang.top/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch6/</link>
-      <guid>http://singlewang.top/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch6/</guid>
-      <pubDate>Thu, 19 May 2022 12:49:00 GMT</pubDate>
+      <link>http://singlewang.top/2022/05/16/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch6/</link>
+      <guid>http://singlewang.top/2022/05/16/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch6/</guid>
+      <pubDate>Mon, 16 May 2022 12:49:00 GMT</pubDate>
       
         
         
@@ -100,24 +158,24 @@
       <category domain="http://singlewang.top/tags/%E6%8A%A5%E6%96%87%E8%BD%AC%E5%8F%91/">报文转发</category>
       
       
-      <comments>http://singlewang.top/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch6/#disqus_thread</comments>
+      <comments>http://singlewang.top/2022/05/16/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch6/#disqus_thread</comments>
       
     </item>
     
     <item>
-      <title>深入浅出dpdk-ch7网卡性能优化</title>
-      <link>http://singlewang.top/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch7/</link>
-      <guid>http://singlewang.top/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch7/</guid>
-      <pubDate>Thu, 19 May 2022 12:49:00 GMT</pubDate>
+      <title>深入浅出dpdk-ch5报文转发</title>
+      <link>http://singlewang.top/2022/05/15/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch5/</link>
+      <guid>http://singlewang.top/2022/05/15/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch5/</guid>
+      <pubDate>Sun, 15 May 2022 11:40:00 GMT</pubDate>
       
         
         
-      <description>&lt;h3 id=&quot;网卡性能优化&quot;&gt;&lt;a href=&quot;#网卡性能优化&quot; class=&quot;headerlink&quot; title=&quot;网卡性能优化&quot;&gt;&lt;/a&gt;网卡性能优化&lt;/h3&gt;&lt;h4 id=&quot;DPDK的轮询模式&quot;&gt;&lt;a href=&quot;#DPDK的轮询模式&quot; class=&quot;headerlink</description>
+      <description>&lt;h2 id=&quot;报文转发&quot;&gt;&lt;a href=&quot;#报文转发&quot; class=&quot;headerlink&quot; title=&quot;报文转发&quot;&gt;&lt;/a&gt;报文转发&lt;/h2&gt;&lt;h3 id=&quot;网络处理模块划分&quot;&gt;&lt;a href=&quot;#网络处理模块划分&quot; class=&quot;headerlink&quot; title=&quot;网</description>
         
       
       
       
-      <content:encoded><![CDATA[<h3 id="网卡性能优化"><a href="#网卡性能优化" class="headerlink" title="网卡性能优化"></a>网卡性能优化</h3><h4 id="DPDK的轮询模式"><a href="#DPDK的轮询模式" class="headerlink" title="DPDK的轮询模式"></a>DPDK的轮询模式</h4><p>DPDK采用了轮询或者轮询混杂中断的模式来进行收包和发包，此 前主流运行在操作系统内核态的网卡驱动程序基本都是基于异步中断处理模式。</p><h5 id="异步中断模式"><a href="#异步中断模式" class="headerlink" title="异步中断模式"></a>异步中断模式</h5><p>当有包进入网卡收包队列后，网卡会产生硬件中断，进而触发CPU中断，进入中断服务程序，在中断服务程序中完成收包的处理。<br>基于异步中断信号处理模式的收包，不断地在做中断处理，在CPU比I&#x2F;O速率高很多时，处理地负荷可以被忽略，但是如果是高速网卡且I&#x2F;O频繁，开销就会很大。中断是异步方式，因此CPU无需等待，有效利用率高。<br>当有包需要发送出去地时候，基于异步中断信号地驱动程序会准备奥需要发送地包，配置号发送队列地各个描述符。包被真正发送完成时，网卡同样会产生硬件中断信号，进而触发CPU中断，进入中断服务。</p><h5 id="轮询模式"><a href="#轮询模式" class="headerlink" title="轮询模式"></a>轮询模式</h5><p>DPDK最初地纯轮询模式指收发包完全不使用任何中断，集中所有运算资源用于报文处理，但这不是意味着DPDK部可以支持任何中断。</p><p>DPDK所有地收发包有关的中断在物理端口初始化的时候都会关闭，也就是说，CPU在任何时候都不会收到中断。</p><p>每一个收包队列，DPDK都会有一个对应的软件线程负责轮询里面的收包描述符的收包成功的标志。一旦发现某一个收包描述符的收包成功标志被硬件置位了，驱动程序会解析相应的收包描述符，提取各种有用的信息，然后填充对应的缓冲内存块头部。然后把收包缓冲内存块存放到收包函数提供的数组里面，同时分配好一个新的缓冲内存块给这个描述符，以便下一次收包。</p><p>每一个发包队列，DPDK都会有一个对应的软件线程负责设置需要发送出去的包，DPDK的驱动程序负责提取发包缓冲内存块的有效信息。DPDK的轮询驱动程序根据内存缓存块中的包的内容来负责初始化好每一个发包描述符，驱动程序会把每个包翻译成为一个或者多个发包描述符里能够理解的内容，然后写入发包描述符。最关键的有两个，一个是标识完整的包结束的标志<code>EOP(End Of Packet)</code>,另一个就是请求报告发送状态<code>RS(Report Status)</code>。EOP就是驱动程序用来通知网卡硬件一个完整的包结束的标志。RS是驱动程序告诉网卡什么时候需要报告发送结果的标志。</p><p>发包的轮询就是轮询发包结束的硬件标志位。</p><h5 id="混合中断轮询模式"><a href="#混合中断轮询模式" class="headerlink" title="混合中断轮询模式"></a>混合中断轮询模式</h5><p>由于实际网络应用中可能存在的潮汐效应，在某些时间段网络数据流量可能很低，甚至完全没有需要处理的包，这样就会出现在高速端口下低负荷运行的场景，而完全轮询的方式会让处理器一直全速运行，明显浪费处理能力和不节能。<br>因此DPDK引入了收包中断与轮询的混合模式的支持，用户可以根据实际应用场景来选择完全轮询模式，或者混合中断轮询模式。<br>PDK的混合中断轮询机制是基于UIO或VFIO来实现其收包中断通知与处理流程的。如果是基于VFIO的实现，该中断机制是可以支持队列级别的，即一个接收队列对应一个中断号，这是因为VFIO支持多MSI-X 中断号。但如果是基于UIO的实现，该中断机制就只支持一个中断号，所有的队列共享一个中断号。</p><h4 id="网卡I-x2F-O性能优化"><a href="#网卡I-x2F-O性能优化" class="headerlink" title="网卡I&#x2F;O性能优化"></a>网卡I&#x2F;O性能优化</h4><h5 id="Burst收发包的优点"><a href="#Burst收发包的优点" class="headerlink" title="Burst收发包的优点"></a>Burst收发包的优点</h5><p>Burst收发包是DPDK的优化模式，它把收发包复杂的处理过程进行分解，使之成为相对较小的处理阶段，把相邻的数据访问、相似的数据运算集中处理。</p><p>Burst可以理解为突发模式，是一次完成多个数据包的收发，由DPDK函数调用者来决定。</p><p>网卡的收发包描述符一般为16或32字节，而网卡对收包描述符的回写都会一次处理4个或者8个。处理器缓存的预取机制会每次存取相邻的多个缓存单位，Burst充分利用这种机制，明显提高收发包效率。</p><p>Burst收发包是DPDK普遍使用的软件接口，用户可以设定每次收发包函数调用所处理的包的个数，具体函数接口如下：</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">uint16_t</span> <span class="title function_">rte_eth_rx_burst</span><span class="params">(<span class="type">uint8_t</span> port_id,<span class="type">uint16_t</span> queue_id,<span class="keyword">struct</span> rte_mbuf  **rx_pkts,<span class="type">const</span> <span class="type">uint16_t</span> nb_pkts)</span>;</span><br><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">uint16_t</span> <span class="title function_">rte_eth_tx_burst</span><span class="params">(<span class="type">uint8_t</span> port_id,<span class="type">uint16_t</span> queue_id,<span class="keyword">struct</span> rte_mbuf  **tx_pkts,<span class="type">const</span> <span class="type">uint16_t</span> nb_pkts)</span>;</span><br></pre></td></tr></table></figure><h5 id="批处理和时延隐藏"><a href="#批处理和时延隐藏" class="headerlink" title="批处理和时延隐藏"></a>批处理和时延隐藏</h5><p><strong>时延</strong>：处理器核心执行单元完成一条指令所需要的时钟周期数<br><strong>吞吐</strong>：处理器指令发射端口再次允许接受相同指令所需等待的时钟周期数。<br>时延描述了前后两个关联操作的等待时间，吞吐则描述了指令的并发能力。</p><p>利用CPU指令乱序多发的能力，掩藏指令延迟的一个有效方法是批量处理无数据前后依赖关系的独立事务。对于重复事务执行，通常采用循环逐次操作。对于较复杂的事务，编译器很难大量地区乱序不同迭代序列下地指令。常用到的做法是在一个序列中铺开执行多个事务，以一个合理地步进迭代。</p>]]></content:encoded>
+      <content:encoded><![CDATA[<h2 id="报文转发"><a href="#报文转发" class="headerlink" title="报文转发"></a>报文转发</h2><h3 id="网络处理模块划分"><a href="#网络处理模块划分" class="headerlink" title="网络处理模块划分"></a>网络处理模块划分</h3><p>网络报文的处理和转发主要分为硬件处理部分和软件处理部分：</p><ol><li>报文输入</li><li>对保温进行比较粗粒度的处理</li><li>对保温进行比较细粒度的分流</li><li>提供基于描述符的队列FIFO</li><li>根据队列优先级和CPU状态进行调度</li><li>提供加解密和压缩&#x2F;解压缩等硬件功能</li><li>在出口上根据QOS等级进行调度</li><li>后期报文处理释放缓存</li><li>从硬件上发送出去</li></ol><h3 id="转发框架介绍"><a href="#转发框架介绍" class="headerlink" title="转发框架介绍"></a>转发框架介绍</h3><p>传统的专用网络处理器转发的模型可以分为<code>run to completion</code>模型和<code>pipeline</code>模型</p><ol><li>pipeline模型<br>将一个功能分解成多个独立的阶段，不同阶段间通过队列传递。</li><li>run to completion模型<br><code>run to completion</code>（运行至终结）模型时主要针对DPDK一般程度的运行方法，一个程序中一般会分为几个不同的逻辑功能，但是这几个逻辑功能会在一个CPU的核上运行，我们可以进行水平扩展使得在SMP的系统中多个核上执行一个逻辑的程序，从而提高单位时间内事务处理的量。<h4 id="DPDK-run-to-completion模型"><a href="#DPDK-run-to-completion模型" class="headerlink" title="DPDK run to completion模型"></a>DPDK run to completion模型</h4>DPDK的轮询模式能够通过一些参数设置哪些核可以被DPDK使用，最后再把处理对应收发队列的线程绑定到对应的核上。每个报文的生命周期只可能再一个线程中出现。但是针对单个报文的处理始终集中在一个逻辑单元上，无法利用其他运算单元，并且逻辑的耦合性太强，而流水线模型正好解决了以上的问题。<h4 id="DPDK-pipeline模型"><a href="#DPDK-pipeline模型" class="headerlink" title="DPDK pipeline模型"></a>DPDK pipeline模型</h4>pipeline的主要思想就是不同的工作交给不同的模块，每个模块单独处理特定的事务，每个模块都有输入和输出，通过输入输出将这些模块联系起来，完成复杂的网络功能。<br>DPDK的pipeline是由三大部分组成，逻辑端口(port)、查找表（table）和处理逻辑（action）。DPDK的pipeline模型中把网络端口作为每个处理模块的输入，所有的报文输入都通过这个端口进行。查找表是每个处理模块的处理逻辑核心，转发逻辑指明了报文的流向和处理。<br>用户可以根据这三大类构建属于自己的pipeline。<br>现在DPDK支持的pipeline有以下几种：</li></ol><ul><li>Packet I&#x2F;O</li><li>Flow classification</li><li>Firewall</li><li>Routing</li><li>Metering</li><li>Traffic Mgmt</li></ul>]]></content:encoded>
       
       
       <category domain="http://singlewang.top/categories/dpdk/">DPDK</category>
@@ -130,15 +188,45 @@
       <category domain="http://singlewang.top/tags/%E6%8A%A5%E6%96%87%E8%BD%AC%E5%8F%91/">报文转发</category>
       
       
-      <comments>http://singlewang.top/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch7/#disqus_thread</comments>
+      <comments>http://singlewang.top/2022/05/15/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch5/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>深入浅出dpdk-ch4同步互斥机制</title>
+      <link>http://singlewang.top/2022/05/14/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch4/</link>
+      <guid>http://singlewang.top/2022/05/14/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch4/</guid>
+      <pubDate>Sat, 14 May 2022 12:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h3 id=&quot;DPDK原子操作实现和应用&quot;&gt;&lt;a href=&quot;#DPDK原子操作实现和应用&quot; class=&quot;headerlink&quot; title=&quot;DPDK原子操作实现和应用&quot;&gt;&lt;/a&gt;DPDK原子操作实现和应用&lt;/h3&gt;&lt;p&gt;原子操作在DPD代码中的定义都在&lt;code&gt;rte_</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h3 id="DPDK原子操作实现和应用"><a href="#DPDK原子操作实现和应用" class="headerlink" title="DPDK原子操作实现和应用"></a>DPDK原子操作实现和应用</h3><p>原子操作在DPD代码中的定义都在<code>rte_atomic.h</code>中，主要包含两部分：<strong>内存屏蔽和原16、32和64位的原子操作API</strong></p><blockquote><p>Linux内核的原子操作见linux驱动</p></blockquote><h4 id="内存屏障API"><a href="#内存屏障API" class="headerlink" title="内存屏障API"></a>内存屏障API</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rte_mb()  <span class="comment">//内存屏障读写API</span></span><br><span class="line">rte_wmb()  <span class="comment">//内存屏障写API</span></span><br><span class="line">rte_rmb()  <span class="comment">//内存屏障读API</span></span><br></pre></td></tr></table></figure><h3 id="DPDK读写锁实现和应用"><a href="#DPDK读写锁实现和应用" class="headerlink" title="DPDK读写锁实现和应用"></a>DPDK读写锁实现和应用</h3><p>DPDK的读写锁的定义在<code>rte_rwlock.h</code>中，</p><blockquote><p>linux读写锁的API见linux驱动</p></blockquote><p><code>rte_rwlock_init(rte_rwlock_t *rwl)</code>:初始化读写锁到unlocked状态<br><code>rte_rwlock_read_lock(rte_rwlock_t *rwl)</code>:尝试获取读锁直到锁被占用<br><code>rte_rwlock_read_unlock(rte_rwlock_t *rwl)</code>:释放读锁<br><code>rte_rwlock_write_lock(rte_rwlock_t *rwl)</code>:获取写锁<br><code>rte_rwlock_write_unlock(rte_rwlock_t *rwl)</code>:释放写锁</p><p>读写锁在DPDK中主要应用在如下几个地方：</p><ol><li>在查找空闲的<code>memory segment</code>的时候，使用读写锁来保护<code>memseg</code>结构，LPM表的创建、查找和释放</li><li><code>Memory ring</code>的创建、查找、释放</li><li>ACL表的创建、查找、释放</li><li>Memzone的创建、查找、释放</li></ol><h3 id="DPDK自旋锁实现和应用"><a href="#DPDK自旋锁实现和应用" class="headerlink" title="DPDK自旋锁实现和应用"></a>DPDK自旋锁实现和应用</h3><p>DPDK自旋锁API的定义在<code>rte_spinlock.h</code>中，下面三个API被广泛应用在告警、日志、中断机制、内存共享、link bonding中用于临界资源的保护</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rte_spinlock_init(<span class="type">rte_spinlock_t</span> *sl)</span><br><span class="line">rte_spinlock_lock(<span class="type">rte_spinlock_t</span> *sl)</span><br><span class="line">rte_spinlock_unlock(<span class="type">rte_spinlock_t</span> *sl)</span><br></pre></td></tr></table></figure><h3 id="DPDK无锁环形缓冲"><a href="#DPDK无锁环形缓冲" class="headerlink" title="DPDK无锁环形缓冲"></a>DPDK无锁环形缓冲</h3><p>DPDK提供了一套无锁环形缓冲区队列管理代码，支持单生产者产品入队，单消费者产品出队；多生产者入队，多消费者出队</p><blockquote><p>见DPDK基础</p></blockquote><p>单生产者单消费者模型不需要加锁<br>（一）多对多（一）模型中正常逻辑操作是要对队列操作进行加锁处理。加锁的性能开销较大，一般采用无锁实现。</p>]]></content:encoded>
+      
+      
+      <category domain="http://singlewang.top/categories/dpdk/">DPDK</category>
+      
+      <category domain="http://singlewang.top/categories/dpdk/dpdk-advanced/">DPDK进阶</category>
+      
+      
+      <category domain="http://singlewang.top/tags/dpdk/">dpdk</category>
+      
+      <category domain="http://singlewang.top/tags/%E5%90%8C%E6%AD%A5%E4%BA%92%E6%96%A5/">同步互斥</category>
+      
+      
+      <comments>http://singlewang.top/2022/05/14/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch4/#disqus_thread</comments>
       
     </item>
     
     <item>
       <title>深入浅出dpdk-ch3并行计算</title>
-      <link>http://singlewang.top/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch3/</link>
-      <guid>http://singlewang.top/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch3/</guid>
-      <pubDate>Thu, 19 May 2022 12:00:00 GMT</pubDate>
+      <link>http://singlewang.top/2022/05/12/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch3/</link>
+      <guid>http://singlewang.top/2022/05/12/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch3/</guid>
+      <pubDate>Thu, 12 May 2022 12:00:00 GMT</pubDate>
       
         
         
@@ -163,67 +251,7 @@
       <category domain="http://singlewang.top/tags/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/">并行计算</category>
       
       
-      <comments>http://singlewang.top/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch3/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>深入浅出dpdk-ch4同步互斥机制</title>
-      <link>http://singlewang.top/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch4/</link>
-      <guid>http://singlewang.top/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch4/</guid>
-      <pubDate>Thu, 19 May 2022 12:00:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;h3 id=&quot;DPDK原子操作实现和应用&quot;&gt;&lt;a href=&quot;#DPDK原子操作实现和应用&quot; class=&quot;headerlink&quot; title=&quot;DPDK原子操作实现和应用&quot;&gt;&lt;/a&gt;DPDK原子操作实现和应用&lt;/h3&gt;&lt;p&gt;原子操作在DPD代码中的定义都在&lt;code&gt;rte_</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<h3 id="DPDK原子操作实现和应用"><a href="#DPDK原子操作实现和应用" class="headerlink" title="DPDK原子操作实现和应用"></a>DPDK原子操作实现和应用</h3><p>原子操作在DPD代码中的定义都在<code>rte_atomic.h</code>中，主要包含两部分：<strong>内存屏蔽和原16、32和64位的原子操作API</strong></p><blockquote><p>Linux内核的原子操作见linux驱动</p></blockquote><h4 id="内存屏障API"><a href="#内存屏障API" class="headerlink" title="内存屏障API"></a>内存屏障API</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rte_mb()  <span class="comment">//内存屏障读写API</span></span><br><span class="line">rte_wmb()  <span class="comment">//内存屏障写API</span></span><br><span class="line">rte_rmb()  <span class="comment">//内存屏障读API</span></span><br></pre></td></tr></table></figure><h3 id="DPDK读写锁实现和应用"><a href="#DPDK读写锁实现和应用" class="headerlink" title="DPDK读写锁实现和应用"></a>DPDK读写锁实现和应用</h3><p>DPDK的读写锁的定义在<code>rte_rwlock.h</code>中，</p><blockquote><p>linux读写锁的API见linux驱动</p></blockquote><p><code>rte_rwlock_init(rte_rwlock_t *rwl)</code>:初始化读写锁到unlocked状态<br><code>rte_rwlock_read_lock(rte_rwlock_t *rwl)</code>:尝试获取读锁直到锁被占用<br><code>rte_rwlock_read_unlock(rte_rwlock_t *rwl)</code>:释放读锁<br><code>rte_rwlock_write_lock(rte_rwlock_t *rwl)</code>:获取写锁<br><code>rte_rwlock_write_unlock(rte_rwlock_t *rwl)</code>:释放写锁</p><p>读写锁在DPDK中主要应用在如下几个地方：</p><ol><li>在查找空闲的<code>memory segment</code>的时候，使用读写锁来保护<code>memseg</code>结构，LPM表的创建、查找和释放</li><li><code>Memory ring</code>的创建、查找、释放</li><li>ACL表的创建、查找、释放</li><li>Memzone的创建、查找、释放</li></ol><h3 id="DPDK自旋锁实现和应用"><a href="#DPDK自旋锁实现和应用" class="headerlink" title="DPDK自旋锁实现和应用"></a>DPDK自旋锁实现和应用</h3><p>DPDK自旋锁API的定义在<code>rte_spinlock.h</code>中，下面三个API被广泛应用在告警、日志、中断机制、内存共享、link bonding中用于临界资源的保护</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rte_spinlock_init(<span class="type">rte_spinlock_t</span> *sl)</span><br><span class="line">rte_spinlock_lock(<span class="type">rte_spinlock_t</span> *sl)</span><br><span class="line">rte_spinlock_unlock(<span class="type">rte_spinlock_t</span> *sl)</span><br></pre></td></tr></table></figure><h3 id="DPDK无锁环形缓冲"><a href="#DPDK无锁环形缓冲" class="headerlink" title="DPDK无锁环形缓冲"></a>DPDK无锁环形缓冲</h3><p>DPDK提供了一套无锁环形缓冲区队列管理代码，支持单生产者产品入队，单消费者产品出队；多生产者入队，多消费者出队</p><blockquote><p>见DPDK基础</p></blockquote><p>单生产者单消费者模型不需要加锁<br>（一）多对多（一）模型中正常逻辑操作是要对队列操作进行加锁处理。加锁的性能开销较大，一般采用无锁实现。</p>]]></content:encoded>
-      
-      
-      <category domain="http://singlewang.top/categories/dpdk/">DPDK</category>
-      
-      <category domain="http://singlewang.top/categories/dpdk/dpdk-advanced/">DPDK进阶</category>
-      
-      
-      <category domain="http://singlewang.top/tags/dpdk/">dpdk</category>
-      
-      <category domain="http://singlewang.top/tags/%E5%90%8C%E6%AD%A5%E4%BA%92%E6%96%A5/">同步互斥</category>
-      
-      
-      <comments>http://singlewang.top/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch4/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>深入浅出dpdk-ch5报文转发</title>
-      <link>http://singlewang.top/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch5/</link>
-      <guid>http://singlewang.top/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch5/</guid>
-      <pubDate>Thu, 19 May 2022 11:40:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;h2 id=&quot;报文转发&quot;&gt;&lt;a href=&quot;#报文转发&quot; class=&quot;headerlink&quot; title=&quot;报文转发&quot;&gt;&lt;/a&gt;报文转发&lt;/h2&gt;&lt;h3 id=&quot;网络处理模块划分&quot;&gt;&lt;a href=&quot;#网络处理模块划分&quot; class=&quot;headerlink&quot; title=&quot;网</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<h2 id="报文转发"><a href="#报文转发" class="headerlink" title="报文转发"></a>报文转发</h2><h3 id="网络处理模块划分"><a href="#网络处理模块划分" class="headerlink" title="网络处理模块划分"></a>网络处理模块划分</h3><p>网络报文的处理和转发主要分为硬件处理部分和软件处理部分：</p><ol><li>报文输入</li><li>对保温进行比较粗粒度的处理</li><li>对保温进行比较细粒度的分流</li><li>提供基于描述符的队列FIFO</li><li>根据队列优先级和CPU状态进行调度</li><li>提供加解密和压缩&#x2F;解压缩等硬件功能</li><li>在出口上根据QOS等级进行调度</li><li>后期报文处理释放缓存</li><li>从硬件上发送出去</li></ol><h3 id="转发框架介绍"><a href="#转发框架介绍" class="headerlink" title="转发框架介绍"></a>转发框架介绍</h3><p>传统的专用网络处理器转发的模型可以分为<code>run to completion</code>模型和<code>pipeline</code>模型</p><ol><li>pipeline模型<br>将一个功能分解成多个独立的阶段，不同阶段间通过队列传递。</li><li>run to completion模型<br><code>run to completion</code>（运行至终结）模型时主要针对DPDK一般程度的运行方法，一个程序中一般会分为几个不同的逻辑功能，但是这几个逻辑功能会在一个CPU的核上运行，我们可以进行水平扩展使得在SMP的系统中多个核上执行一个逻辑的程序，从而提高单位时间内事务处理的量。<h4 id="DPDK-run-to-completion模型"><a href="#DPDK-run-to-completion模型" class="headerlink" title="DPDK run to completion模型"></a>DPDK run to completion模型</h4>DPDK的轮询模式能够通过一些参数设置哪些核可以被DPDK使用，最后再把处理对应收发队列的线程绑定到对应的核上。每个报文的生命周期只可能再一个线程中出现。但是针对单个报文的处理始终集中在一个逻辑单元上，无法利用其他运算单元，并且逻辑的耦合性太强，而流水线模型正好解决了以上的问题。<h4 id="DPDK-pipeline模型"><a href="#DPDK-pipeline模型" class="headerlink" title="DPDK pipeline模型"></a>DPDK pipeline模型</h4>pipeline的主要思想就是不同的工作交给不同的模块，每个模块单独处理特定的事务，每个模块都有输入和输出，通过输入输出将这些模块联系起来，完成复杂的网络功能。<br>DPDK的pipeline是由三大部分组成，逻辑端口(port)、查找表（table）和处理逻辑（action）。DPDK的pipeline模型中把网络端口作为每个处理模块的输入，所有的报文输入都通过这个端口进行。查找表是每个处理模块的处理逻辑核心，转发逻辑指明了报文的流向和处理。<br>用户可以根据这三大类构建属于自己的pipeline。<br>现在DPDK支持的pipeline有以下几种：</li></ol><ul><li>Packet I&#x2F;O</li><li>Flow classification</li><li>Firewall</li><li>Routing</li><li>Metering</li><li>Traffic Mgmt</li></ul>]]></content:encoded>
-      
-      
-      <category domain="http://singlewang.top/categories/dpdk/">DPDK</category>
-      
-      <category domain="http://singlewang.top/categories/dpdk/dpdk-advanced/">DPDK进阶</category>
-      
-      
-      <category domain="http://singlewang.top/tags/dpdk/">dpdk</category>
-      
-      <category domain="http://singlewang.top/tags/%E6%8A%A5%E6%96%87%E8%BD%AC%E5%8F%91/">报文转发</category>
-      
-      
-      <comments>http://singlewang.top/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch5/#disqus_thread</comments>
+      <comments>http://singlewang.top/2022/05/12/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch3/#disqus_thread</comments>
       
     </item>
     
@@ -281,40 +309,12 @@
       <category domain="http://singlewang.top/categories/markdown/markdown-base/">Markdown基础</category>
       
       
-      <category domain="http://singlewang.top/tags/Markdown%E5%85%AC%E5%BC%8F/">Markdown公式</category>
-      
       <category domain="http://singlewang.top/tags/%E6%95%99%E7%A8%8B/">教程</category>
+      
+      <category domain="http://singlewang.top/tags/Markdown%E5%85%AC%E5%BC%8F/">Markdown公式</category>
       
       
       <comments>http://singlewang.top/2022/05/11/markdown/markdown-base/markdown%E5%85%AC%E5%BC%8F%E7%BC%96%E8%BE%91/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>TCP窗口与拥塞控制</title>
-      <link>http://singlewang.top/2022/05/10/mobile-communication/TCP%E7%AA%97%E5%8F%A3/</link>
-      <guid>http://singlewang.top/2022/05/10/mobile-communication/TCP%E7%AA%97%E5%8F%A3/</guid>
-      <pubDate>Tue, 10 May 2022 11:47:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;h3 id=&quot;TCP的特点及其目的&quot;&gt;&lt;a href=&quot;#TCP的特点及其目的&quot; class=&quot;headerlink&quot; title=&quot;TCP的特点及其目的&quot;&gt;&lt;/a&gt;TCP的特点及其目的&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;TCP&lt;/strong&gt;和&lt;strong&gt;UDP&lt;/stro</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<h3 id="TCP的特点及其目的"><a href="#TCP的特点及其目的" class="headerlink" title="TCP的特点及其目的"></a>TCP的特点及其目的</h3><p><strong>TCP</strong>和<strong>UDP</strong>协议都位于传输层中，TCP主要提供可靠的通信传输，而UDP则常被用于让广播和细节控制交给应用的通信传输。</p><p><em>TCP是面向连接的可靠的流协议，流就是指不简短的数据结构。采用TCP发送消息时，虽然可以保证发送的顺序，但是还是犹如没有任何间隔的数据流发送给接收端</em></p><blockquote><p><strong>连接</strong>是指各种设备，线路，或网络中进行通信的两个应用程序为了相互传递消息而转悠的、虚拟的通信线路，也叫虚拟电路。</p></blockquote><p>TCP为提供可靠性传输，实行“顺序控制”或“重传控制”机制。此外还有“流控制”，“拥塞控制”等众多功能。</p><h3 id="通过序列号与确认应答提高可靠性"><a href="#通过序列号与确认应答提高可靠性" class="headerlink" title="通过序列号与确认应答提高可靠性"></a>通过序列号与确认应答提高可靠性</h3><p>在TCP中，当发送端的数据到达接收主机时，接收端主机会返回一个已收到消息的通知，这个消息叫做<strong>确认应答（ACK）</strong>,如果有确认应答，说明数据已经成功到达对端，反之，则数据丢失的可能性很大，倘若在一段时间内没有ACK,则发送端进行数据的重发。</p><p>未收到ACK,有如下几种情况：</p><ol><li>发出去的数据包丢失</li><li>接收端发回来的ACK在途中丢失。</li></ol><p>虽然在发送端可以按照机制重传，但是对于接收端会重复收到相同的数据，为了对上层应用提供可靠的传输，必须放弃重复的数据包。需要引入一种机制识别是否已经接收数据，判断是否需要接收。</p><p>使用<strong>序列号</strong>解决上述问题。</p><p>序列号时按顺序发送给数据的每一个字节都标上号码的编号。接收端查询接收数据TCP首部中的序列号和数据的长度，将自己下一步应该接收的序号作为ACK返回，这样就可以是心啊可靠传输。</p><h3 id="重发超时如何确定"><a href="#重发超时如何确定" class="headerlink" title="重发超时如何确定"></a>重发超时如何确定</h3><p><strong>重发超时</strong>指在重发数据之前，等待ACK的那个特定时间间隔，如果超过了这个时间还未收到ACK，发送端就进行数据重发。</p><p>最理想的时间是，找一个最小时间，能保证 <em><strong>确认应答一定能在这个时间内返回</strong></em>。但是TCP要求在任何网络环境下都要提供高性能通信，无论网络拥塞情况如何，都要保持这一特性。因此每次发包时都会计算<strong>往返时间（RTT）</strong>及其偏差，将这个RTT和偏差相加，重发超时的时间就是比这个总和稍微大一点的值。</p><p>在linux系统中，一般以0.5秒为单位进行控制。最初的数据包的重发超时一般设置为6s。<br>数据被重发之后还是收不到ACK，则进行再次重发，但是等待的时间以2倍，4倍指数函数进行增长。达到一定次数后，如果仍然欸有收到ACK，则通知应用通信异常，强行关闭。</p><h3 id="TCP以段为单位发送数据"><a href="#TCP以段为单位发送数据" class="headerlink" title="TCP以段为单位发送数据"></a>TCP以段为单位发送数据</h3><p>建立TCP连接的同时，可以确定发送数据包的单位，称其为<strong>最大消息长度</strong>(MSS)。最理想的情况时最大消息长度正好是IP中不会被分片处理的最大数据长度。</p><p>MSS实在三次握手的时候，在两端主机之间被计算得出。两端主机在建立连接的时候，在TCP首部写入MSS选项，告诉对方自己的接口能适应的MSS的大小，然后选一个较小的值使用。</p><h3 id="利用窗口控制提高速度"><a href="#利用窗口控制提高速度" class="headerlink" title="利用窗口控制提高速度"></a>利用窗口控制提高速度</h3><p>TCP以段为单位，每发一个段进行一次ACK的处理。但是这样一来，包的往返时间越长通信性能就越低。</p><p>于是乎，TCP引入<strong>窗口</strong>这个概念，即发送端主机，发送了一个段后不必一直等待ACK,而是继续发送。<br><strong>窗口大小</strong>就是指无需等待确认应答就可以继续阿松数据的最大值。这个机制实现使用了大量的<strong>缓冲区</strong>。<br>在窗口内的数据即便没有收到确认应答也可以发送出去。而在滑动窗口以外的部分包括尚未发送的数据以及已经确认对端已收到的数据。当数据发出后若收到确认则不必重发，此时数据就可以从缓冲区清除。<br>这种机制也被称为 <strong>滑动窗口控制</strong>。</p><h3 id="窗口控制与重发控制"><a href="#窗口控制与重发控制" class="headerlink" title="窗口控制与重发控制"></a>窗口控制与重发控制</h3><p>窗口控制时，若出现段丢失该怎么办？</p><ol><li><p><strong>确认应答未能返回的情况</strong><br>这种情况下，数据已经到达对端，不需要进行重发，窗口在一定程度上较大时，即使有少部分的确认应答丢失也不会进行数据重发。可以通过下一个确认应答进行确认。</p></li><li><p><strong>报文段丢失的情况</strong><br>当某一报文段丢失后，发送段会一直收到某个序号的ACK，同一个序号的ACK会被重复不断地返回。而发送端主机如果连续三次收到同一个ACK，就会将其对应的数据进行重发。这种机制被称为 <strong>高速重发控制</strong></p></li></ol><h3 id="流控制"><a href="#流控制" class="headerlink" title="流控制"></a>流控制</h3><p><strong>流控制</strong>是一种可以让发送端根据接收端的实际接收能力控制发送的数据量的机制。具体操作是接收端主机向发送店主机通知自己可以接收数据的大小，于是发送端会发送不超过这个限度的数据。该大小限度被称为<strong>窗口大小</strong>。</p><p>TCP首部中，专门有一个字段来通知窗口大小，<em><strong>这个字段的值越大，说明网络的吞吐量越高</strong></em>。</p><h3 id="拥塞控制"><a href="#拥塞控制" class="headerlink" title="拥塞控制"></a>拥塞控制</h3><p>一般来说，计算机网络都处在一个共享的环境，如果当其他主机之间的通信使得网络拥堵，此时如果突然发送大量的数据，极有可能导致网络瘫痪。</p><p>TCP为了防止此类问题的出现，通信一开始通过一个<strong>慢启动</strong>的算法，对发送数据量进行控制。</p><p>为了在发送端调节要发送的数据量，定义了一个<strong>拥塞窗口</strong>的概念。于是慢启动的时候，将这个拥塞窗口的大小设置为1个数据段发送数据，之后每收到一次ACK，拥塞窗口的值就加1。发送数据包时，将拥塞窗口的大小和接收端通知的窗口大小作比较，按照二者中的较小值，发送比其还要小的数据量。</p><blockquote><p>连续发包的情况也叫<strong>爆发（burst）</strong>，慢启动真是减少爆发等网络拥堵情况的一种机制。</p></blockquote><p>随着包的每次往返，拥塞窗口以指数函数增长，就有可能导致网络拥塞的发生，为了防止此类情况，引入<strong>慢启动阈值</strong>。只要拥塞窗口超过这个阈值，每次收到ACK时，只允许以如下比例放大拥塞窗口：$$\frac{1个数据段的字节数}{拥塞窗口(字节)}*1个数据段字节数$$</p><p>TCP通信开始时，并没有设置相应的慢启动阈值，而是在超时重发时，才会设置为当时拥塞窗口一半的大小。</p>]]></content:encoded>
-      
-      
-      <category domain="http://singlewang.top/categories/mobile-communication/">移动通信</category>
-      
-      
-      <category domain="http://singlewang.top/tags/TCP/">TCP</category>
-      
-      <category domain="http://singlewang.top/tags/%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6/">拥塞控制</category>
-      
-      
-      <comments>http://singlewang.top/2022/05/10/mobile-communication/TCP%E7%AA%97%E5%8F%A3/#disqus_thread</comments>
       
     </item>
     

@@ -24,15 +24,15 @@
 <link rel="stylesheet" href="/css/app.css?v=0.2.5">
 
   
-  <meta name="keywords" content="dpdk,同步互斥" />
+  <meta name="keywords" content="WIFI" />
 
 
-<link rel="canonical" href="http://singlewang.top/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch4/">
+<link rel="canonical" href="http://singlewang.top/2022/05/30/mobile-communication/WIFI%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/">
 
 
 
   <title>
-深入浅出dpdk-ch4同步互斥机制 - DPDK进阶 - DPDK |
+WIFI基本知识 - 移动通信 |
 智者不入爱河 = Single Wang's Blog = 建设美丽中国</title>
 <meta name="generator" content="Hexo 6.1.0"></head>
 <body itemscope itemtype="http://schema.org/WebPage">
@@ -60,23 +60,23 @@
         <div id="brand">
           <div class="pjax">
           
-  <h1 itemprop="name headline">深入浅出dpdk-ch4同步互斥机制
+  <h1 itemprop="name headline">WIFI基本知识
   </h1>
   
 <div class="meta">
-  <span class="item" title="创建时间：2022-05-19 20:00:00">
+  <span class="item" title="创建时间：2022-05-30 19:47:00">
     <span class="icon">
       <i class="ic i-calendar"></i>
     </span>
     <span class="text">发表于</span>
-    <time itemprop="dateCreated datePublished" datetime="2022-05-19T20:00:00+08:00">2022-05-19</time>
+    <time itemprop="dateCreated datePublished" datetime="2022-05-30T19:47:00+08:00">2022-05-30</time>
   </span>
   <span class="item" title="本文字数">
     <span class="icon">
       <i class="ic i-pen"></i>
     </span>
     <span class="text">本文字数</span>
-    <span>922</span>
+    <span>844</span>
     <span class="text">字</span>
   </span>
   <span class="item" title="阅读时长">
@@ -117,12 +117,12 @@
       </div>
       <div id="imgs" class="pjax">
         <ul>
-          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1giclgrvbd6j20zk0m8qv5.jpg"></li>
-          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1giciszlczyj20zk0m816d.jpg"></li>
-          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1gicli3sbvtj20zk0m8x6p.jpg"></li>
-          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1gipeu1usa7j20zk0m8b29.jpg"></li>
-          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1giclfdu6exj20zk0m87hw.jpg"></li>
-          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1giph4fomxoj20zk0m8axp.jpg"></li>
+          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1gipexj2jgzj20zk0m8b09.jpg"></li>
+          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1gicit31ffoj20zk0m8naf.jpg"></li>
+          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1giclhfehz7j20zk0m8u0x.jpg"></li>
+          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1gipexw3o58j20zk0m8e81.jpg"></li>
+          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1gicljitigmj20zk0m87fp.jpg"></li>
+          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1gipesng5oej20zk0m87d4.jpg"></li>
         </ul>
       </div>
     </header>
@@ -148,15 +148,12 @@
 <div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
 <i class="ic i-home"></i>
 <span><a href="/">首页</a></span><i class="ic i-angle-right"></i>
-<span  itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/categories/dpdk/" itemprop="item" rel="index" title="分类于 DPDK"><span itemprop="name">DPDK</span></a>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/categories/mobile-communication/" itemprop="item" rel="index" title="分类于 移动通信"><span itemprop="name">移动通信</span></a>
 <meta itemprop="position" content="1" /></span>
-<i class="ic i-angle-right"></i>
-<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/categories/dpdk/dpdk-advanced/" itemprop="item" rel="index" title="分类于 DPDK进阶"><span itemprop="name">DPDK进阶</span></a>
-<meta itemprop="position" content="2" /></span>
 </div>
 
     <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
-  <link itemprop="mainEntityOfPage" href="http://singlewang.top/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch4/">
+  <link itemprop="mainEntityOfPage" href="http://singlewang.top/2022/05/30/mobile-communication/WIFI%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/">
 
   <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="image" content="/images/taizaizhi.jpg">
@@ -171,36 +168,42 @@
   <div class="body md" itemprop="articleBody">
     
 
-    <h3 id="DPDK原子操作实现和应用"><a href="#DPDK原子操作实现和应用" class="headerlink" title="DPDK原子操作实现和应用"></a>DPDK原子操作实现和应用</h3><p>原子操作在DPD代码中的定义都在<code>rte_atomic.h</code>中，主要包含两部分：<strong>内存屏蔽和原16、32和64位的原子操作API</strong></p>
-<blockquote>
-<p>Linux内核的原子操作见linux驱动</p>
-</blockquote>
-<h4 id="内存屏障API"><a href="#内存屏障API" class="headerlink" title="内存屏障API"></a>内存屏障API</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rte_mb()  <span class="comment">//内存屏障读写API</span></span><br><span class="line">rte_wmb()  <span class="comment">//内存屏障写API</span></span><br><span class="line">rte_rmb()  <span class="comment">//内存屏障读API</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="DPDK读写锁实现和应用"><a href="#DPDK读写锁实现和应用" class="headerlink" title="DPDK读写锁实现和应用"></a>DPDK读写锁实现和应用</h3><p>DPDK的读写锁的定义在<code>rte_rwlock.h</code>中，</p>
-<blockquote>
-<p>linux读写锁的API见linux驱动</p>
-</blockquote>
-<p><code>rte_rwlock_init(rte_rwlock_t *rwl)</code>:初始化读写锁到unlocked状态<br><code>rte_rwlock_read_lock(rte_rwlock_t *rwl)</code>:尝试获取读锁直到锁被占用<br><code>rte_rwlock_read_unlock(rte_rwlock_t *rwl)</code>:释放读锁<br><code>rte_rwlock_write_lock(rte_rwlock_t *rwl)</code>:获取写锁<br><code>rte_rwlock_write_unlock(rte_rwlock_t *rwl)</code>:释放写锁</p>
-<p>读写锁在DPDK中主要应用在如下几个地方：</p>
+    <h2 id="WIFI的连接过程"><a href="#WIFI的连接过程" class="headerlink" title="WIFI的连接过程"></a>WIFI的连接过程</h2><p>一般如果STA要和AP建立连接，要经过三个阶段才能够接入：</p>
 <ol>
-<li>在查找空闲的<code>memory segment</code>的时候，使用读写锁来保护<code>memseg</code>结构，LPM表的创建、查找和释放</li>
-<li><code>Memory ring</code>的创建、查找、释放</li>
-<li>ACL表的创建、查找、释放</li>
-<li>Memzone的创建、查找、释放</li>
+<li>扫描阶段(SCAN)</li>
+<li>认证关联(Authentication)</li>
+<li>关联(Association)</li>
 </ol>
-<h3 id="DPDK自旋锁实现和应用"><a href="#DPDK自旋锁实现和应用" class="headerlink" title="DPDK自旋锁实现和应用"></a>DPDK自旋锁实现和应用</h3><p>DPDK自旋锁API的定义在<code>rte_spinlock.h</code>中，下面三个API被广泛应用在告警、日志、中断机制、内存共享、link bonding中用于临界资源的保护</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rte_spinlock_init(<span class="type">rte_spinlock_t</span> *sl)</span><br><span class="line">rte_spinlock_lock(<span class="type">rte_spinlock_t</span> *sl)</span><br><span class="line">rte_spinlock_unlock(<span class="type">rte_spinlock_t</span> *sl)</span><br></pre></td></tr></table></figure>
-
-<h3 id="DPDK无锁环形缓冲"><a href="#DPDK无锁环形缓冲" class="headerlink" title="DPDK无锁环形缓冲"></a>DPDK无锁环形缓冲</h3><p>DPDK提供了一套无锁环形缓冲区队列管理代码，支持单生产者产品入队，单消费者产品出队；多生产者入队，多消费者出队</p>
-<blockquote>
-<p>见DPDK基础</p>
+<h3 id="WIFI扫描"><a href="#WIFI扫描" class="headerlink" title="WIFI扫描"></a>WIFI扫描</h3><p>STA在加入任何网络之前必须识别现有网络，这个过程称为扫描，扫描又分为 <strong>主动扫描</strong> 和 <strong>被动扫描</strong>。</p>
+<ol>
+<li>主动扫描：STA会在每个信道上发出<code>Probe request</code>,携带相关的SSID信息，寻找相同SSID的AP，若找不到，一直扫描下去，找到后等待接收<code>Probe response</code>。</li>
+<li>被动扫描：STA会在各个信道之间不断切换，通过监听AP定期发送的<code>Beacon</code>帧来发现网络，<code>Beacon</code>帧标示了相关的BSS信息（可以理解为对应的路由器的信息就是BSS信息）</li>
+</ol>
+<p>选网原则：</p>
+<ul>
+<li>选择相同SSID的网络做认证</li>
+<li>优先选择信号强度最强或最近使用的网络</li>
+</ul>
+<h3 id="WIFI认证"><a href="#WIFI认证" class="headerlink" title="WIFI认证"></a>WIFI认证</h3><blockquote>
+<p>只有通过STA和AP之间的认证，才能进一步接入无线网络<br>认证可以通过MAC地址认证，或者用户名和密码口令认证</p>
 </blockquote>
-<p>单生产者单消费者模型不需要加锁<br>（一）多对多（一）模型中正常逻辑操作是要对队列操作进行加锁处理。加锁的性能开销较大，一般采用无锁实现。</p>
+<p>认证的方式有两种：</p>
+<ol>
+<li>开放式认证：STA发送认证请求，AP直接通过认证请求，安全风险较高</li>
+<li>共享密钥认证：STA向AP 发送认证请求，AP随机产生字符串，STA接收到字符串后进行密钥加密后发给AP，AP收到信息后用密钥解密得到随机字符串，如果AP判断字符串与原始发的字符串相同，则认证通过。</li>
+</ol>
+<h3 id="WIFI关联"><a href="#WIFI关联" class="headerlink" title="WIFI关联"></a>WIFI关联</h3><p>STA一旦完成身份认证，便可以发送<code>Association Request</code>,请求获得网络的完全访问权。关联能让AP记录每个STA的位置，以便将帧正确送达。</p>
+<ul>
+<li>STA与AP认证成功后，就可以向AP发送关联请求</li>
+<li>AP将STA的信息添加到数据库，并向STA发出关联响应，则注册成功，完成关联</li>
+<li>关联建立后，即可接入无线网络，实现数据通信</li>
+<li>当STA需要接入新的网络时，需要去关联后，重新认证，和新AP再关联。</li>
+<li>每个STA只能关联到一个AP，但是关联总是由STA发起。</li>
+</ul>
+<p><strong>去关联</strong>是一个单向的，无需确认的过程，可由STA发起也可以由AP发起。只需发送一个通知性质的<code>deauth</code>帧或者<code>disassoc</code>帧，因此容易造成状态不同步</p>
 
       <div class="tags">
-          <a href="/tags/dpdk/" rel="tag"><i class="ic i-tag"></i> dpdk</a>
-          <a href="/tags/%E5%90%8C%E6%AD%A5%E4%BA%92%E6%96%A5/" rel="tag"><i class="ic i-tag"></i> 同步互斥</a>
+          <a href="/tags/WIFI/" rel="tag"><i class="ic i-tag"></i> WIFI</a>
       </div>
   </div>
 
@@ -212,9 +215,9 @@
       <i class="ic i-calendar-check"></i>
     </span>
     <span class="text">更新于</span>
-    <time title="修改时间：2022-05-19 15:02:02" itemprop="dateModified" datetime="2022-05-19T15:02:02+08:00">2022-05-19</time>
+    <time title="修改时间：2022-05-30 20:27:23" itemprop="dateModified" datetime="2022-05-30T20:27:23+08:00">2022-05-30</time>
   </span>
-  <span id="2022/05/19/dpdk/dpdk-advanced/dpdk进阶-ch4/" class="item leancloud_visitors" data-flag-title="深入浅出dpdk-ch4同步互斥机制" title="阅读次数">
+  <span id="2022/05/30/mobile-communication/WIFI基本知识/" class="item leancloud_visitors" data-flag-title="WIFI基本知识" title="阅读次数">
       <span class="icon">
         <i class="ic i-eye"></i>
       </span>
@@ -251,7 +254,7 @@
   </li>
   <li class="link">
     <strong>本文链接：</strong>
-    <a href="http://singlewang.top/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch4/" title="深入浅出dpdk-ch4同步互斥机制">http://singlewang.top/2022/05/19/dpdk/dpdk-advanced/dpdk进阶-ch4/</a>
+    <a href="http://singlewang.top/2022/05/30/mobile-communication/WIFI%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/" title="WIFI基本知识">http://singlewang.top/2022/05/30/mobile-communication/WIFI基本知识/</a>
   </li>
   <li class="license">
     <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
@@ -270,22 +273,14 @@
     <div class="item left">
       
 
-  <a href="/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch5/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva2.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1gipexw3o58j20zk0m8e81.jpg" title="深入浅出dpdk-ch5报文转发">
+  <a href="/2022/05/24/linux/linux-kernal/linux-kernal-driver/Linux%E4%B8%AD%E6%96%AD%E5%92%8C%E5%AE%9A%E6%97%B6%E5%99%A8/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva2.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1gipeu1usa7j20zk0m8b29.jpg" title="Linux中断和定时器">
   <span class="type">上一篇</span>
-  <span class="category"><i class="ic i-flag"></i> DPDK进阶</span>
-  <h3>深入浅出dpdk-ch5报文转发</h3>
+  <span class="category"><i class="ic i-flag"></i> Linux内核驱动</span>
+  <h3>Linux中断和定时器</h3>
   </a>
 
     </div>
     <div class="item right">
-      
-
-  <a href="/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch3/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;tva2.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1gipeyvx1d4j20zk0m8hdt.jpg" title="深入浅出dpdk-ch3并行计算">
-  <span class="type">下一篇</span>
-  <span class="category"><i class="ic i-flag"></i> DPDK进阶</span>
-  <h3>深入浅出dpdk-ch3并行计算</h3>
-  </a>
-
     </div>
 </div>
 
@@ -302,11 +297,11 @@
   <div class="panels">
     <div class="inner">
       <div class="contents panel pjax" data-title="文章目录">
-          <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#DPDK%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C%E5%AE%9E%E7%8E%B0%E5%92%8C%E5%BA%94%E7%94%A8"><span class="toc-number">1.</span> <span class="toc-text">DPDK原子操作实现和应用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E5%B1%8F%E9%9A%9CAPI"><span class="toc-number">1.1.</span> <span class="toc-text">内存屏障API</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DPDK%E8%AF%BB%E5%86%99%E9%94%81%E5%AE%9E%E7%8E%B0%E5%92%8C%E5%BA%94%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">DPDK读写锁实现和应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DPDK%E8%87%AA%E6%97%8B%E9%94%81%E5%AE%9E%E7%8E%B0%E5%92%8C%E5%BA%94%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text">DPDK自旋锁实现和应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DPDK%E6%97%A0%E9%94%81%E7%8E%AF%E5%BD%A2%E7%BC%93%E5%86%B2"><span class="toc-number">4.</span> <span class="toc-text">DPDK无锁环形缓冲</span></a></li></ol>
+          <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#WIFI%E7%9A%84%E8%BF%9E%E6%8E%A5%E8%BF%87%E7%A8%8B"><span class="toc-number">1.</span> <span class="toc-text">WIFI的连接过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#WIFI%E6%89%AB%E6%8F%8F"><span class="toc-number">1.1.</span> <span class="toc-text">WIFI扫描</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#WIFI%E8%AE%A4%E8%AF%81"><span class="toc-number">1.2.</span> <span class="toc-text">WIFI认证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#WIFI%E5%85%B3%E8%81%94"><span class="toc-number">1.3.</span> <span class="toc-text">WIFI关联</span></a></li></ol></li></ol>
       </div>
       <div class="related panel pjax" data-title="系列文章">
         <ul>
-          <li><a href="/2022/05/03/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch2/" rel="bookmark" title="深入浅出dpdk-ch2Cache">深入浅出dpdk-ch2Cache</a></li><li><a href="/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch5/" rel="bookmark" title="深入浅出dpdk-ch5报文转发">深入浅出dpdk-ch5报文转发</a></li><li><a href="/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch3/" rel="bookmark" title="深入浅出dpdk-ch3并行计算">深入浅出dpdk-ch3并行计算</a></li><li class="active"><a href="/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch4/" rel="bookmark" title="深入浅出dpdk-ch4同步互斥机制">深入浅出dpdk-ch4同步互斥机制</a></li><li><a href="/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch6/" rel="bookmark" title="深入浅出dpdk-ch6PCIe与包处理">深入浅出dpdk-ch6PCIe与包处理</a></li><li><a href="/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch7/" rel="bookmark" title="深入浅出dpdk-ch7网卡性能优化">深入浅出dpdk-ch7网卡性能优化</a></li>
+          <li><a href="/2022/05/10/mobile-communication/TCP%E7%AA%97%E5%8F%A3/" rel="bookmark" title="TCP窗口与拥塞控制">TCP窗口与拥塞控制</a></li><li class="active"><a href="/2022/05/30/mobile-communication/WIFI%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/" rel="bookmark" title="WIFI基本知识">WIFI基本知识</a></li>
         </ul>
       </div>
       <div class="overview panel" data-title="站点概览">
@@ -320,7 +315,7 @@
 <nav class="state">
     <div class="item posts">
       <a href="/archives/">
-        <span class="count">23</span>
+        <span class="count">24</span>
         <span class="name">文章</span>
       </a>
     </div>
@@ -332,7 +327,7 @@
     </div>
     <div class="item tags">
       <a href="/tags/">
-        <span class="count">30</span>
+        <span class="count">31</span>
         <span class="name">标签</span>
       </a>
     </div>
@@ -383,12 +378,10 @@
 
   <ul id="quick">
     <li class="prev pjax">
-        <a href="/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch5/" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
     </li>
     <li class="up"><i class="ic i-arrow-up"></i></li>
     <li class="down"><i class="ic i-arrow-down"></i></li>
     <li class="next pjax">
-        <a href="/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch3/" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
     </li>
     <li class="percent"></li>
   </ul>
@@ -414,10 +407,58 @@
 <i class="ic i-angle-right"></i>
 <a href="/categories/linux/linux-kernal/" title="分类于 Linux内核">Linux内核</a>
 <i class="ic i-angle-right"></i>
-<a href="/categories/linux/linux-kernal/linx-kernal-proto/" title="分类于 Linux内核协议栈">Linux内核协议栈</a>
+<a href="/categories/linux/linux-kernal/linux-kernal-driver/" title="分类于 Linux内核驱动">Linux内核驱动</a>
 </div>
 
-    <span><a href="/2022/05/03/linux/linux-kernal/linx-kernal-proto/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp1/" title="Linux内核协议栈-cp1">Linux内核协议栈-cp1</a></span>
+    <span><a href="/2022/05/09/linux/linux-kernal/linux-kernal-driver/linux%E9%94%81/" title="Linux驱动中的并发控制">Linux驱动中的并发控制</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/cpp/" title="分类于 C++">C++</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/cpp/cpp-bug/" title="分类于 C++BUG">C++BUG</a>
+</div>
+
+    <span><a href="/2022/05/03/cpp/cpp-bug/c++bug-1/" title="c++遇到的bug-1">c++遇到的bug-1</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/informal-essay/" title="分类于 随笔">随笔</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/informal-essay/life/" title="分类于 生活感悟">生活感悟</a>
+</div>
+
+    <span><a href="/2022/04/29/informal-essay/life/start/" title="少年啊，前路漫漫">少年啊，前路漫漫</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/dpdk/dpdk-advanced/" title="分类于 DPDK进阶">DPDK进阶</a>
+</div>
+
+    <span><a href="/2022/05/17/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch7/" title="深入浅出dpdk-ch7网卡性能优化">深入浅出dpdk-ch7网卡性能优化</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/dpdk/dpdk-advanced/" title="分类于 DPDK进阶">DPDK进阶</a>
+</div>
+
+    <span><a href="/2022/05/12/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch3/" title="深入浅出dpdk-ch3并行计算">深入浅出dpdk-ch3并行计算</a></span>
   </li>
 
       
@@ -431,29 +472,19 @@
 <a href="/categories/linux/linux-kernal/linux-kernal-driver/" title="分类于 Linux内核驱动">Linux内核驱动</a>
 </div>
 
-    <span><a href="/2022/05/11/linux/linux-kernal/linux-kernal-driver/linux%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8/" title="Linux网络设备驱动">Linux网络设备驱动</a></span>
+    <span><a href="/2022/05/24/linux/linux-kernal/linux-kernal-driver/Linux%E4%B8%AD%E6%96%AD%E5%92%8C%E5%AE%9A%E6%97%B6%E5%99%A8/" title="Linux中断和定时器">Linux中断和定时器</a></span>
   </li>
 
       
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/CPP/" title="分类于 CPP">CPP</a>
-</div>
-
-    <span><a href="/2022/05/05/cpp/cpp%E5%A4%9A%E6%80%81/" title="cpp之虚函数与多态">cpp之虚函数与多态</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/informal-essay/" title="分类于 随笔">随笔</a>
+<a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
 <i class="ic i-angle-right"></i>
-<a href="/categories/informal-essay/life/" title="分类于 生活感悟">生活感悟</a>
+<a href="/categories/dpdk/dpdk-advanced/" title="分类于 DPDK进阶">DPDK进阶</a>
 </div>
 
-    <span><a href="/2022/05/20/informal-essay/life/520%E9%9A%8F%E6%83%B3/" title="我真的有机会被爱吗">我真的有机会被爱吗</a></span>
+    <span><a href="/2022/05/03/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch2/" title="深入浅出dpdk-ch2Cache">深入浅出dpdk-ch2Cache</a></span>
   </li>
 
       
@@ -474,46 +505,9 @@
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
-<i class="ic i-angle-right"></i>
-<a href="/categories/dpdk/dpdk-advanced/" title="分类于 DPDK进阶">DPDK进阶</a>
 </div>
 
-    <span><a href="/2022/05/03/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch2/" title="深入浅出dpdk-ch2Cache">深入浅出dpdk-ch2Cache</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
-<i class="ic i-angle-right"></i>
-<a href="/categories/dpdk/dpdk-advanced/" title="分类于 DPDK进阶">DPDK进阶</a>
-</div>
-
-    <span><a href="/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch7/" title="深入浅出dpdk-ch7网卡性能优化">深入浅出dpdk-ch7网卡性能优化</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
-<i class="ic i-angle-right"></i>
-<a href="/categories/dpdk/dpdk-advanced/" title="分类于 DPDK进阶">DPDK进阶</a>
-</div>
-
-    <span><a href="/2022/05/19/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch3/" title="深入浅出dpdk-ch3并行计算">深入浅出dpdk-ch3并行计算</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/mobile-communication/" title="分类于 移动通信">移动通信</a>
-</div>
-
-    <span><a href="/2022/05/10/mobile-communication/TCP%E7%AA%97%E5%8F%A3/" title="TCP窗口与拥塞控制">TCP窗口与拥塞控制</a></span>
+    <span><a href="/2022/05/03/%E5%88%B7%E6%9C%BA%E6%95%99%E7%A8%8B/" title="刷机教程">刷机教程</a></span>
   </li>
 
       
@@ -522,10 +516,12 @@
 <div class="breadcrumb">
 <a href="/categories/linux/" title="分类于 Linux">Linux</a>
 <i class="ic i-angle-right"></i>
-<a href="/categories/linux/linux-command/" title="分类于 Linux命令">Linux命令</a>
+<a href="/categories/linux/linux-kernal/" title="分类于 Linux内核">Linux内核</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/linux/linux-kernal/linux-kernal-driver/" title="分类于 Linux内核驱动">Linux内核驱动</a>
 </div>
 
-    <span><a href="/2022/05/03/linux/linux-command/linux%E5%91%BD%E4%BB%A4/" title="Linux命令">Linux命令</a></span>
+    <span><a href="/2022/05/11/linux/linux-kernal/linux-kernal-driver/linux%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8/" title="Linux网络设备驱动">Linux网络设备驱动</a></span>
   </li>
 
   </ul>
@@ -550,13 +546,13 @@
     <span class="post-meta-item-icon">
       <i class="ic i-chart-area"></i>
     </span>
-    <span title="站点总字数">63k 字</span>
+    <span title="站点总字数">65k 字</span>
 
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="ic i-coffee"></i>
     </span>
-    <span title="站点阅读时长">57 分钟</span>
+    <span title="站点阅读时长">59 分钟</span>
   </div>
   <div class="powered-by">
     基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
@@ -568,7 +564,7 @@
   </div>
 <script data-config type="text/javascript">
   var LOCAL = {
-    path: '2022/05/19/dpdk/dpdk-advanced/dpdk进阶-ch4/',
+    path: '2022/05/30/mobile-communication/WIFI基本知识/',
     favicon: {
       show: "（●´3｀●）やれやれだぜ",
       hide: "(´Д｀)大変だ！"
