@@ -1,0 +1,587 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="Single Wang's Blog" href="http://singlewang.top/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="Single Wang's Blog" href="http://singlewang.top/atom.xml" />
+<link rel="alternate" type="application/json" title="Single Wang's Blog" href="http://singlewang.top/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/css/app.css?v=0.2.5">
+
+  
+  <meta name="keywords" content="dpdk,硬件加速" />
+
+
+<link rel="canonical" href="http://singlewang.top/2022/06/09/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch9/">
+
+
+
+  <title>
+深入浅出dpdk-ch9硬件加速与功能卸载 - DPDK进阶 - DPDK |
+智者不入爱河 = Single Wang's Blog = 建设美丽中国</title>
+<meta name="generator" content="Hexo 6.1.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">深入浅出dpdk-ch9硬件加速与功能卸载
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="创建时间：2022-06-09 19:22:00">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="dateCreated datePublished" datetime="2022-06-09T19:22:00+08:00">2022-06-09</time>
+  </span>
+  <span class="item" title="本文字数">
+    <span class="icon">
+      <i class="ic i-pen"></i>
+    </span>
+    <span class="text">本文字数</span>
+    <span>1.7k</span>
+    <span class="text">字</span>
+  </span>
+  <span class="item" title="阅读时长">
+    <span class="icon">
+      <i class="ic i-clock"></i>
+    </span>
+    <span class="text">阅读时长</span>
+    <span>2 分钟</span>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/" rel="start">智者不入爱河</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1giclhpw3lwj20zk0m8gvw.jpg"></li>
+          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1gipexoj0moj20zk0m8kgu.jpg"></li>
+          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1gicliwyw55j20zk0m8hdt.jpg"></li>
+          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1gipeybxm1pj20zk0m8niv.jpg"></li>
+          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1giclhfehz7j20zk0m8u0x.jpg"></li>
+          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1gipet8c1a2j20zk0m8kct.jpg"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/">首页</a></span><i class="ic i-angle-right"></i>
+<span  itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/categories/dpdk/" itemprop="item" rel="index" title="分类于 DPDK"><span itemprop="name">DPDK</span></a>
+<meta itemprop="position" content="1" /></span>
+<i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/categories/dpdk/dpdk-advanced/" itemprop="item" rel="index" title="分类于 DPDK进阶"><span itemprop="name">DPDK进阶</span></a>
+<meta itemprop="position" content="2" /></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+  <link itemprop="mainEntityOfPage" href="http://singlewang.top/2022/06/09/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch9/">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/images/taizaizhi.jpg">
+    <meta itemprop="name" content="Single Wang">
+    <meta itemprop="description" content="建设美丽中国, 智者不入爱河，愚者重蹈覆辙">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Single Wang's Blog">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <h3 id="硬件加速与功能卸载"><a href="#硬件加速与功能卸载" class="headerlink" title="硬件加速与功能卸载"></a>硬件加速与功能卸载</h3><blockquote>
+<p>硬件的缺点：资源局限，功能固化，设计与发布的时间长，更新周期长。</p>
+</blockquote>
+<h4 id="硬件卸载"><a href="#硬件卸载" class="headerlink" title="硬件卸载"></a>硬件卸载</h4><p>硬件卸载就是将某些功能下移到硬件实现。这些功能原先一般是由软件承担的。<br>对于专有网络设备，为了提高处理数据包的速度，常常将数据面与控制面分离。控制面主要对复杂的数据包进行复杂的控制处理，数据面就是进行简单类似的包处理。<br>基于专门设计的硬件，快速执行数据包的转发和一些简单的报文修改处理可以有效地提高数据的吞吐量和降低发送时延。</p>
+<h4 id="DPDK软件接口"><a href="#DPDK软件接口" class="headerlink" title="DPDK软件接口"></a>DPDK软件接口</h4><p>网卡的硬件卸载功能可能是基于端口设置，也有可能是基于每个包使能设置，需要仔细区分。在包粒度而言，每个包都对应一个或者多个Mbuf，DPDK软件利用<code>rte_mbuf</code>数据结构里的64位的标识(<code>ol_flags</code>)来表征卸载和状态</p>
+<h4 id="硬件与软件功能实现"><a href="#硬件与软件功能实现" class="headerlink" title="硬件与软件功能实现"></a>硬件与软件功能实现</h4><p>如果需要使用硬件卸载功能，网卡驱动需要提供相应的API给上层应用，通过调用API驱动硬件完成相应的工作。<br>硬件提供的接口一般包括寄存器(<code>Register</code>)和描述符(<code>Descriptor</code>)。寄存器是全局的设置，一般用于开启某项功能或者为某项功能设置全局性的参数配置。<br>描述符可以看作是每个数据包的属性，和数据包一起发送给硬件，一般用于携带单个数据包的参数或设置。<br>按照功能的相似性，硬件卸载功能大致可分为三类，分别是&#x3D;&#x3D;计算及更新功能&#x3D;&#x3D;、&#x3D;&#x3D;分片功能&#x3D;&#x3D;、&#x3D;&#x3D;组包功能&#x3D;&#x3D;。</p>
+<h4 id="计算及更新功能卸载"><a href="#计算及更新功能卸载" class="headerlink" title="计算及更新功能卸载"></a>计算及更新功能卸载</h4><h5 id="VLAN硬件卸载"><a href="#VLAN硬件卸载" class="headerlink" title="VLAN硬件卸载"></a>VLAN硬件卸载</h5><p>VLAN只有四个字节，可以实现以太网中逻辑网络隔离功能。<br>如果由软件完成VLAN Tag的插入将给CPU带来额外的负荷，设计一次额外的内存拷贝。VLAN Tag的插入和剥离由网卡硬件完成，可以减轻服务器CPU的负荷。<br><strong>收包时VLAN Tag的过滤</strong><br>VLAN定义了虚拟网络，只有属于相同VLAN的报文，才需要被进一步处理，不属于VLAN的报文会被直接丢弃，网卡最典型的卸载功能之一就是在接收侧针对VLAN进行包过滤。比较典型的实现实在网卡硬件端口设计VLAN过滤表，无法在过滤表中匹配的VLAN包会被丢弃。<br><strong>收包时VLAN Tag的剥离</strong><br>网卡硬件能够对接收到的包的VLAN Tag进行剥离。首先硬件能够对VLAN包进行识别，之后需要在网卡端口的队列上设置使能标志，将剥离特性打开，对应到软件，是驱动写配置入相应的寄存器。网卡硬件会从此寄存器中提取配置信息，用于判断是否对收到的以太网数据进行VLAN剥离。<br>网卡硬件将4字节的VLAN Tag从数据包中剥离，但是 VLAN Tag不能丢弃。DPDK中，驱动对每个接收的数据包进行检测，会依据硬件描述符信息，如果剥离动作发生需要将<code>rte_mbuf</code>中的<code>PKT_RX_VLAN_PKT</code>置位，并且将被剥离的VLAN Tag写入下列字段，供上层使用</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">rte_mbuf</span>&#123;</span></span><br><span class="line">    <span class="type">uint16_t</span> vlan_tci;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>发包时VLAN Tag的插入</strong><br>VLAN Tag由两部分组成：<code>TPID(Tag Protocol Identifier)</code>，也就是VLAN的<code>Ether type</code>,和<code>TCI(Tag Control Information)</code>。TPID是一个固定的值，作为一个全局范围内起作用的值，可以通过寄存器进行设置。TCI是每个包相关的，需要逐包设置，在DPDK中，在调用发送函数前，必须提前设置mbuf数据结构。</p>
+<h4 id="分片功能卸载"><a href="#分片功能卸载" class="headerlink" title="分片功能卸载"></a>分片功能卸载</h4><p><strong>TSO</strong><br><code>TSO(TCP Segment Offload)</code>是TCP分片功能的硬件卸载，是发送方向的功能。对于从应用层获取的较大的数据，TCP需要根据下层网络的报文大小限制，将其切分成较小的分片发送。<br>硬件提供的TCP分片硬件卸载功能可以大幅减轻软件对TCP分片的负担。<br>在dpdk&#x2F;testpmd中提供了两条TSO相关的命令行：</p>
+<ol>
+<li>tso set 14000:用于设置tso分片大小</li>
+<li>tso show 0：用于查看tso分片大小</li>
+</ol>
+<h4 id="组包功能卸载"><a href="#组包功能卸载" class="headerlink" title="组包功能卸载"></a>组包功能卸载</h4><p><strong>RSC</strong><br><code>RSC(Receive Side Coalescing，接收方聚合)</code>是TCP组包功能的硬件卸载。硬件组包功能实际上是硬件拆包功能的逆向功能。属于接收方向的功能，可以将拆分的TCP分片聚合成一个大的分片，从而减轻软件的处理。</p>
+
+      <div class="tags">
+          <a href="/tags/dpdk/" rel="tag"><i class="ic i-tag"></i> dpdk</a>
+          <a href="/tags/%E7%A1%AC%E4%BB%B6%E5%8A%A0%E9%80%9F/" rel="tag"><i class="ic i-tag"></i> 硬件加速</a>
+      </div>
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新于</span>
+    <time title="修改时间：2022-06-09 20:34:40" itemprop="dateModified" datetime="2022-06-09T20:34:40+08:00">2022-06-09</time>
+  </span>
+  <span id="2022/06/09/dpdk/dpdk-advanced/dpdk进阶-ch9/" class="item leancloud_visitors" data-flag-title="深入浅出dpdk-ch9硬件加速与功能卸载" title="阅读次数">
+      <span class="icon">
+        <i class="ic i-eye"></i>
+      </span>
+      <span class="text">阅读次数</span>
+      <span class="leancloud-visitors-count"></span>
+      <span class="text">次</span>
+  </span>
+</div>
+
+      
+<div class="reward">
+  <button><i class="ic i-heartbeat"></i> 赞赏</button>
+  <p>听我说，谢谢你</p>
+  <div id="qr">
+      
+      <div>
+        <img data-src="/images/wepay.jpg" alt="Single Wang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div>
+        <img data-src="/images/zhipay.jpg" alt="Single Wang 支付宝">
+        <p>支付宝</p>
+      </div>
+  </div>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>本文作者： </strong>Single Wang <i class="ic i-at"><em>@</em></i>Single Wang's Blog
+  </li>
+  <li class="link">
+    <strong>本文链接：</strong>
+    <a href="http://singlewang.top/2022/06/09/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch9/" title="深入浅出dpdk-ch9硬件加速与功能卸载">http://singlewang.top/2022/06/09/dpdk/dpdk-advanced/dpdk进阶-ch9/</a>
+  </li>
+  <li class="license">
+    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/2022/05/31/mobile-communication/VLAN/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva2.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1gipev1x5e4j20zk0m8b29.jpg" title="VLAN基本知识">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> 移动通信</span>
+  <h3>VLAN基本知识</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A1%AC%E4%BB%B6%E5%8A%A0%E9%80%9F%E4%B8%8E%E5%8A%9F%E8%83%BD%E5%8D%B8%E8%BD%BD"><span class="toc-number">1.</span> <span class="toc-text">硬件加速与功能卸载</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A1%AC%E4%BB%B6%E5%8D%B8%E8%BD%BD"><span class="toc-number">1.1.</span> <span class="toc-text">硬件卸载</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DPDK%E8%BD%AF%E4%BB%B6%E6%8E%A5%E5%8F%A3"><span class="toc-number">1.2.</span> <span class="toc-text">DPDK软件接口</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A1%AC%E4%BB%B6%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.3.</span> <span class="toc-text">硬件与软件功能实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E5%8F%8A%E6%9B%B4%E6%96%B0%E5%8A%9F%E8%83%BD%E5%8D%B8%E8%BD%BD"><span class="toc-number">1.4.</span> <span class="toc-text">计算及更新功能卸载</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#VLAN%E7%A1%AC%E4%BB%B6%E5%8D%B8%E8%BD%BD"><span class="toc-number">1.4.1.</span> <span class="toc-text">VLAN硬件卸载</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E7%89%87%E5%8A%9F%E8%83%BD%E5%8D%B8%E8%BD%BD"><span class="toc-number">1.5.</span> <span class="toc-text">分片功能卸载</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%84%E5%8C%85%E5%8A%9F%E8%83%BD%E5%8D%B8%E8%BD%BD"><span class="toc-number">1.6.</span> <span class="toc-text">组包功能卸载</span></a></li></ol></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li><a href="/2022/05/03/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch2/" rel="bookmark" title="深入浅出dpdk-ch2Cache">深入浅出dpdk-ch2Cache</a></li><li><a href="/2022/05/12/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch3/" rel="bookmark" title="深入浅出dpdk-ch3并行计算">深入浅出dpdk-ch3并行计算</a></li><li><a href="/2022/05/14/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch4/" rel="bookmark" title="深入浅出dpdk-ch4同步互斥机制">深入浅出dpdk-ch4同步互斥机制</a></li><li><a href="/2022/05/15/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch5/" rel="bookmark" title="深入浅出dpdk-ch5报文转发">深入浅出dpdk-ch5报文转发</a></li><li><a href="/2022/05/16/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch6/" rel="bookmark" title="深入浅出dpdk-ch6PCIe与包处理">深入浅出dpdk-ch6PCIe与包处理</a></li><li><a href="/2022/05/17/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch7/" rel="bookmark" title="深入浅出dpdk-ch7网卡性能优化">深入浅出dpdk-ch7网卡性能优化</a></li><li><a href="/2022/05/31/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch8/" rel="bookmark" title="深入浅出dpdk-ch7多队列与流分类">深入浅出dpdk-ch7多队列与流分类</a></li><li class="active"><a href="/2022/06/09/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch9/" rel="bookmark" title="深入浅出dpdk-ch9硬件加速与功能卸载">深入浅出dpdk-ch9硬件加速与功能卸载</a></li>
+        </ul>
+      </div>
+      <div class="overview panel" data-title="站点概览">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="Single Wang"
+      data-src="/images/taizaizhi.jpg">
+  <p class="name" itemprop="name">Single Wang</p>
+  <div class="description" itemprop="description">智者不入爱河，愚者重蹈覆辙</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/archives/">
+        <span class="count">27</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+    <div class="item categories">
+      <a href="/categories/">
+        <span class="count">16</span>
+        <span class="name">分类</span>
+      </a>
+    </div>
+    <div class="item tags">
+      <a href="/tags/">
+        <span class="count">35</span>
+        <span class="name">标签</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+      <span class="exturl item github" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbXBsZVdhbmcwMTE4" title="https:&#x2F;&#x2F;github.com&#x2F;SimpleWang0118"><i class="ic i-github"></i></span>
+      <a href="/931346283@qq.com" title="931346283@qq.com" class="item email"><i class="ic i-envelope"></i></a>
+      <a href="/931346283@qq.com" title="931346283@qq.com" class="item QQ"><i class="ic i-qq"></i></a>
+      <a href="/WLH931346283" title="WLH931346283" class="item WeChat"><i class="ic i-weixin"></i></a>
+      <span class="exturl item music" data-url="aHR0cHM6Ly9tdXNpYy4xNjMuY29tLyMvdXNlci9ob21lP2lkPTEyODkyMjAwMjc=" title="https:&#x2F;&#x2F;music.163.com&#x2F;#&#x2F;user&#x2F;home?id&#x3D;1289220027"><i class="ic i-cloud-music"></i></span>
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/" rel="section"><i class="ic i-home"></i>首页</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/archives/" rel="section"><i class="ic i-list-alt"></i>归档</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/categories/" rel="section"><i class="ic i-th"></i>分类</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/tags/" rel="section"><i class="ic i-tags"></i>标签</a>
+  </li>
+
+  </ul>
+    
+  <li class="item">
+    <a href="/about/" rel="section"><i class="ic i-user"></i>关于</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>随机文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/linux/" title="分类于 Linux">Linux</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/linux/linux-kernal/" title="分类于 Linux内核">Linux内核</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/linux/linux-kernal/linx-kernal-proto/" title="分类于 Linux内核协议栈">Linux内核协议栈</a>
+</div>
+
+    <span><a href="/2022/05/03/linux/linux-kernal/linx-kernal-proto/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp1/" title="Linux内核协议栈-cp1">Linux内核协议栈-cp1</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/markdown/" title="分类于 Markdown">Markdown</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/markdown/markdown-base/" title="分类于 Markdown基础">Markdown基础</a>
+</div>
+
+    <span><a href="/2022/04/29/markdown/markdown-base/markdownlearn/" title="Markdown教程">Markdown教程</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/linux/" title="分类于 Linux">Linux</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/linux/linux-kernal/" title="分类于 Linux内核">Linux内核</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/linux/linux-kernal/linux-kernal-driver/" title="分类于 Linux内核驱动">Linux内核驱动</a>
+</div>
+
+    <span><a href="/2022/05/11/linux/linux-kernal/linux-kernal-driver/linux%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8/" title="Linux网络设备驱动">Linux网络设备驱动</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/informal-essay/" title="分类于 随笔">随笔</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/informal-essay/life/" title="分类于 生活感悟">生活感悟</a>
+</div>
+
+    <span><a href="/2022/05/20/informal-essay/life/520%E9%9A%8F%E6%83%B3/" title="我真的有机会被爱吗">我真的有机会被爱吗</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/dpdk/dpdk-advanced/" title="分类于 DPDK进阶">DPDK进阶</a>
+</div>
+
+    <span><a href="/2022/05/03/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch2/" title="深入浅出dpdk-ch2Cache">深入浅出dpdk-ch2Cache</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2022/05/03/git%E5%AD%A6%E4%B9%A0/" title="git学习">git学习</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/linux/" title="分类于 Linux">Linux</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/linux/linux-kernal/" title="分类于 Linux内核">Linux内核</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/linux/linux-kernal/linx-kernal-proto/" title="分类于 Linux内核协议栈">Linux内核协议栈</a>
+</div>
+
+    <span><a href="/2022/05/03/linux/linux-kernal/linx-kernal-proto/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp2/" title="Linux内核协议栈-cp2">Linux内核协议栈-cp2</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/linux/" title="分类于 Linux">Linux</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/linux/linux-command/" title="分类于 Linux命令">Linux命令</a>
+</div>
+
+    <span><a href="/2022/05/03/linux/linux-command/linux%E5%91%BD%E4%BB%A4/" title="Linux命令">Linux命令</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/dpdk/dpdk-base/" title="分类于 DPDK基础">DPDK基础</a>
+</div>
+
+    <span><a href="/2022/04/29/dpdk/dpdk-base/dpdk/" title="DPDK基础">DPDK基础</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/linux/" title="分类于 Linux">Linux</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/linux/linux-kernal/" title="分类于 Linux内核">Linux内核</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/linux/linux-kernal/linux-kernal-driver/" title="分类于 Linux内核驱动">Linux内核驱动</a>
+</div>
+
+    <span><a href="/2022/05/24/linux/linux-kernal/linux-kernal-driver/Linux%E4%B8%AD%E6%96%AD%E5%92%8C%E5%AE%9A%E6%97%B6%E5%99%A8/" title="Linux中断和定时器">Linux中断和定时器</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新评论</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2022-04 – 
+    <span itemprop="copyrightYear">2022</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Single Wang @ 智者不入爱河</span>
+  </div>
+  <div class="count">
+    <span class="post-meta-item-icon">
+      <i class="ic i-chart-area"></i>
+    </span>
+    <span title="站点总字数">70k 字</span>
+
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="ic i-coffee"></i>
+    </span>
+    <span title="站点阅读时长">1:03</span>
+  </div>
+  <div class="powered-by">
+    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: '2022/06/09/dpdk/dpdk-advanced/dpdk进阶-ch9/',
+    favicon: {
+      show: "（●´3｀●）やれやれだぜ",
+      hide: "(´Д｀)大変だ！"
+    },
+    search : {
+      placeholder: "文章搜索",
+      empty: "关于 「 ${query} 」，什么也没搜到",
+      stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    valine: true,fancybox: true,
+    copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/js/app.js?v=0.2.5"></script>
+
+
+
+
+</body>
+</html>

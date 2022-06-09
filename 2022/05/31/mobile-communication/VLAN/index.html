@@ -76,7 +76,7 @@ VLAN基本知识 - 移动通信 |
       <i class="ic i-pen"></i>
     </span>
     <span class="text">本文字数</span>
-    <span>827</span>
+    <span>1.9k</span>
     <span class="text">字</span>
   </span>
   <span class="item" title="阅读时长">
@@ -84,7 +84,7 @@ VLAN基本知识 - 移动通信 |
       <i class="ic i-clock"></i>
     </span>
     <span class="text">阅读时长</span>
-    <span>1 分钟</span>
+    <span>2 分钟</span>
   </span>
 </div>
 
@@ -117,12 +117,12 @@ VLAN基本知识 - 移动通信 |
       </div>
       <div id="imgs" class="pjax">
         <ul>
-          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicm0n457cj20zk0m8e81.jpg"></li>
-          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giclxxcb6rj20zk0m8b29.jpg"></li>
-          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giclhtuo6nj20zk0m8ttm.jpg"></li>
-          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gicmnywqgpj20zk0m8dwx.jpg"></li>
-          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipeybxm1pj20zk0m8niv.jpg"></li>
-          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipeu1usa7j20zk0m8b29.jpg"></li>
+          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1gipexj2jgzj20zk0m8b09.jpg"></li>
+          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1giclgi503lj20zk0m8hdt.jpg"></li>
+          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1gipexoj0moj20zk0m8kgu.jpg"></li>
+          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1giciryrr3rj20zk0m8nhk.jpg"></li>
+          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1giciukx8a7j20zk0m8aio.jpg"></li>
+          <li class="item" data-background-image="https://tva2.sinaimg.cn/large/6833939bly1gicliierfjj20zk0m8npd.jpg"></li>
         </ul>
       </div>
     </header>
@@ -188,6 +188,49 @@ VLAN基本知识 - 移动通信 |
 <ul>
 <li>同一个VLAN内可以划分一个或多个网段，同一子网内，可以划分一个或多个VLAN。</li>
 </ul>
+<h2 id="VLAN的基本概念"><a href="#VLAN的基本概念" class="headerlink" title="VLAN的基本概念"></a>VLAN的基本概念</h2><h3 id="VLAN-Tag"><a href="#VLAN-Tag" class="headerlink" title="VLAN Tag"></a>VLAN Tag</h3><p>为了使设备能够分辨不同VLAN的报文，需要在报文中添加VLAN信息的字段。802.11Q协议规定，在以太网数据帧的目的MAC地址和源MAC地址字段之后、协议类型字段之前加入四个字节的VLAN tag，用来标识VLAN信息。</p>
+<h3 id="VLAN帧格式"><a href="#VLAN帧格式" class="headerlink" title="VLAN帧格式"></a>VLAN帧格式</h3><table>
+<thead>
+<tr>
+<th align="center">Destination address</th>
+<th align="center">Source address</th>
+<th align="center">VLAN tag</th>
+<th align="center">length&#x2F;type</th>
+<th align="center">Data</th>
+<th align="center">FCS</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">6Byte</td>
+<td align="center">6Byte</td>
+<td align="center">4Byte</td>
+<td align="center">2Byte</td>
+<td align="center">46-1500Byte</td>
+<td align="center">4Byte</td>
+</tr>
+</tbody></table>
+<p>VLAN tag包括TPID（数据帧类型）、PRI（数据帧的优先级，0~7，值越大优先级越高）、CFI（标准格式指示位）、VID（VLAN ID）</p>
+<blockquote>
+<p>设备利用VLAN标签中的VID来识别数据帧所属的VLAN,广播帧只在同一VLAN内转发，这就将广播域限制在一个VLAN内。VLAN ID取值范围使0<del>4095，有效范围使1</del>4094。</p>
+</blockquote>
+<h3 id="链路类型和接口类型"><a href="#链路类型和接口类型" class="headerlink" title="链路类型和接口类型"></a>链路类型和接口类型</h3><p>在一个VLAN交换网络中，以太网帧主要有以下两种格式：</p>
+<ul>
+<li><strong>有标记帧（Tagged帧）</strong>：加入了4字节VLAN标签的帧</li>
+<li><strong>无标记帧（untagged帧）</strong>：原始的、未加入4字节VLAN标签的帧</li>
+</ul>
+<p>设备内部处理的数据帧一律都是Tagged帧。</p>
+<p>为了适应不同的连接和组网，设备定义了<strong>Access</strong>接口、<strong>Trunk</strong>接口、<strong>Hybrid</strong>接口，以及<strong>接入链路（Access Link）</strong>和<strong>干道链路（Trunk Link）</strong>。</p>
+<h4 id="链路类型"><a href="#链路类型" class="headerlink" title="链路类型"></a>链路类型</h4><p>根据链路中需要承载的VLAN数目的不同，以太网链路分为：</p>
+<ul>
+<li>接入链路<br>接入链路只可以承载1个VLAN的数据帧，用于连接设备和用户终端，用户终端并不需要知道自己属于哪个VLAN，也不能识别带有Tag的帧，所以在接入链路上传输的帧都是untagged帧</li>
+<li>干道链路<br>干道链路可以承载多个不同VLAN的数据帧，用于设备间互联。因此需要给数据帧加VLAN Tag。</li>
+</ul>
+<h4 id="接口类型"><a href="#接口类型" class="headerlink" title="接口类型"></a>接口类型</h4><p>根据接口连接对象以及对收发数据帧处理的不同，以太网接口分别为：</p>
+<ul>
+<li>Access接口<br>Access接口一般用于和不能识别Tag的用户终端相连，或者不需要区分不同VLAN成员时使用，只能收发Untagged帧。</li>
+<li>Trunk接口<br>Trunk接口一般用于连接交换机、路由器、AP以及可同时收发Tagged帧和Untagged帧的语音终端。它可以允许多个VLAN的帧带Tag通过，但只允许一个VLAN的帧从该类接口上发出时不带Tag。</li>
+<li>Hybrid接口<br>Hybrid接口同时综合了以上两种接口的方式，且允许从该类接口发出的某些帧带Tag，某些帧不带Tag。</li>
+</ul>
 
       <div class="tags">
           <a href="/tags/VLAN/" rel="tag"><i class="ic i-tag"></i> VLAN</a>
@@ -202,7 +245,7 @@ VLAN基本知识 - 移动通信 |
       <i class="ic i-calendar-check"></i>
     </span>
     <span class="text">更新于</span>
-    <time title="修改时间：2022-05-31 21:42:58" itemprop="dateModified" datetime="2022-05-31T21:42:58+08:00">2022-05-31</time>
+    <time title="修改时间：2022-06-01 20:49:37" itemprop="dateModified" datetime="2022-06-01T20:49:37+08:00">2022-06-01</time>
   </span>
   <span id="2022/05/31/mobile-communication/VLAN/" class="item leancloud_visitors" data-flag-title="VLAN基本知识" title="阅读次数">
       <span class="icon">
@@ -260,7 +303,7 @@ VLAN基本知识 - 移动通信 |
     <div class="item left">
       
 
-  <a href="/2022/05/31/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch8/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giclfb3vzhj20zk0m8wny.jpg" title="深入浅出dpdk-ch7多队列与流分类">
+  <a href="/2022/05/31/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch8/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva2.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1gicli9lfebj20zk0m84qp.jpg" title="深入浅出dpdk-ch7多队列与流分类">
   <span class="type">上一篇</span>
   <span class="category"><i class="ic i-flag"></i> DPDK进阶</span>
   <h3>深入浅出dpdk-ch7多队列与流分类</h3>
@@ -268,6 +311,14 @@ VLAN基本知识 - 移动通信 |
 
     </div>
     <div class="item right">
+      
+
+  <a href="/2022/06/09/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch9/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;tva2.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giph4wqtg4j20zk0m8x6p.jpg" title="深入浅出dpdk-ch9硬件加速与功能卸载">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> DPDK进阶</span>
+  <h3>深入浅出dpdk-ch9硬件加速与功能卸载</h3>
+  </a>
+
     </div>
 </div>
 
@@ -284,7 +335,7 @@ VLAN基本知识 - 移动通信 |
   <div class="panels">
     <div class="inner">
       <div class="contents panel pjax" data-title="文章目录">
-          <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFVLAN"><span class="toc-number">1.</span> <span class="toc-text">什么是VLAN</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81VLAN"><span class="toc-number">2.</span> <span class="toc-text">为什么需要VLAN</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#VLAN%E4%B8%8E%E5%AD%90%E7%BD%91"><span class="toc-number">3.</span> <span class="toc-text">VLAN与子网</span></a></li></ol>
+          <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFVLAN"><span class="toc-number">1.</span> <span class="toc-text">什么是VLAN</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81VLAN"><span class="toc-number">2.</span> <span class="toc-text">为什么需要VLAN</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#VLAN%E4%B8%8E%E5%AD%90%E7%BD%91"><span class="toc-number">3.</span> <span class="toc-text">VLAN与子网</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#VLAN%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">4.</span> <span class="toc-text">VLAN的基本概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#VLAN-Tag"><span class="toc-number">4.1.</span> <span class="toc-text">VLAN Tag</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#VLAN%E5%B8%A7%E6%A0%BC%E5%BC%8F"><span class="toc-number">4.2.</span> <span class="toc-text">VLAN帧格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%BE%E8%B7%AF%E7%B1%BB%E5%9E%8B%E5%92%8C%E6%8E%A5%E5%8F%A3%E7%B1%BB%E5%9E%8B"><span class="toc-number">4.3.</span> <span class="toc-text">链路类型和接口类型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%93%BE%E8%B7%AF%E7%B1%BB%E5%9E%8B"><span class="toc-number">4.3.1.</span> <span class="toc-text">链路类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8E%A5%E5%8F%A3%E7%B1%BB%E5%9E%8B"><span class="toc-number">4.3.2.</span> <span class="toc-text">接口类型</span></a></li></ol></li></ol></li></ol>
       </div>
       <div class="related panel pjax" data-title="系列文章">
         <ul>
@@ -302,7 +353,7 @@ VLAN基本知识 - 移动通信 |
 <nav class="state">
     <div class="item posts">
       <a href="/archives/">
-        <span class="count">26</span>
+        <span class="count">27</span>
         <span class="name">文章</span>
       </a>
     </div>
@@ -314,7 +365,7 @@ VLAN基本知识 - 移动通信 |
     </div>
     <div class="item tags">
       <a href="/tags/">
-        <span class="count">33</span>
+        <span class="count">35</span>
         <span class="name">标签</span>
       </a>
     </div>
@@ -365,10 +416,12 @@ VLAN基本知识 - 移动通信 |
 
   <ul id="quick">
     <li class="prev pjax">
+        <a href="/2022/05/31/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch8/" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
     </li>
     <li class="up"><i class="ic i-arrow-up"></i></li>
     <li class="down"><i class="ic i-arrow-down"></i></li>
     <li class="next pjax">
+        <a href="/2022/06/09/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch9/" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
     </li>
     <li class="percent"></li>
   </ul>
@@ -397,7 +450,7 @@ VLAN基本知识 - 移动通信 |
 <a href="/categories/linux/linux-kernal/linx-kernal-proto/" title="分类于 Linux内核协议栈">Linux内核协议栈</a>
 </div>
 
-    <span><a href="/2022/05/03/linux/linux-kernal/linx-kernal-proto/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp2/" title="Linux内核协议栈-cp2">Linux内核协议栈-cp2</a></span>
+    <span><a href="/2022/05/03/linux/linux-kernal/linx-kernal-proto/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp1/" title="Linux内核协议栈-cp1">Linux内核协议栈-cp1</a></span>
   </li>
 
       
@@ -408,10 +461,22 @@ VLAN基本知识 - 移动通信 |
 <i class="ic i-angle-right"></i>
 <a href="/categories/linux/linux-kernal/" title="分类于 Linux内核">Linux内核</a>
 <i class="ic i-angle-right"></i>
-<a href="/categories/linux/linux-kernal/linx-kernal-proto/" title="分类于 Linux内核协议栈">Linux内核协议栈</a>
+<a href="/categories/linux/linux-kernal/linux-kernal-driver/" title="分类于 Linux内核驱动">Linux内核驱动</a>
 </div>
 
-    <span><a href="/2022/05/03/linux/linux-kernal/linx-kernal-proto/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp1/" title="Linux内核协议栈-cp1">Linux内核协议栈-cp1</a></span>
+    <span><a href="/2022/05/11/linux/linux-kernal/linux-kernal-driver/linux%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8/" title="Linux网络设备驱动">Linux网络设备驱动</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/dpdk/dpdk-advanced/" title="分类于 DPDK进阶">DPDK进阶</a>
+</div>
+
+    <span><a href="/2022/05/03/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch2/" title="深入浅出dpdk-ch2Cache">深入浅出dpdk-ch2Cache</a></span>
   </li>
 
       
@@ -430,12 +495,48 @@ VLAN基本知识 - 移动通信 |
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/cpp/" title="分类于 C++">C++</a>
-<i class="ic i-angle-right"></i>
-<a href="/categories/cpp/cpp-bug/" title="分类于 C++BUG">C++BUG</a>
+<a href="/categories/mobile-communication/" title="分类于 移动通信">移动通信</a>
 </div>
 
-    <span><a href="/2022/05/03/cpp/cpp-bug/c++bug-1/" title="c++遇到的bug-1">c++遇到的bug-1</a></span>
+    <span><a href="/2022/05/10/mobile-communication/TCP%E7%AA%97%E5%8F%A3/" title="TCP窗口与拥塞控制">TCP窗口与拥塞控制</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/dpdk/dpdk-advanced/" title="分类于 DPDK进阶">DPDK进阶</a>
+</div>
+
+    <span><a href="/2022/05/12/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch3/" title="深入浅出dpdk-ch3并行计算">深入浅出dpdk-ch3并行计算</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/linux/" title="分类于 Linux">Linux</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/linux/linux-kernal/" title="分类于 Linux内核">Linux内核</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/linux/linux-kernal/linux-kernal-driver/" title="分类于 Linux内核驱动">Linux内核驱动</a>
+</div>
+
+    <span><a href="/2022/05/09/linux/linux-kernal/linux-kernal-driver/linux%E9%94%81/" title="Linux驱动中的并发控制">Linux驱动中的并发控制</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/informal-essay/" title="分类于 随笔">随笔</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/informal-essay/life/" title="分类于 生活感悟">生活感悟</a>
+</div>
+
+    <span><a href="/2022/04/29/informal-essay/life/start/" title="少年啊，前路漫漫">少年啊，前路漫漫</a></span>
   </li>
 
       
@@ -454,57 +555,14 @@ VLAN基本知识 - 移动通信 |
   <li class="item">
     
 <div class="breadcrumb">
-</div>
-
-    <span><a href="/2022/05/03/%E5%88%B7%E6%9C%BA%E6%95%99%E7%A8%8B/" title="刷机教程">刷机教程</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/mobile-communication/" title="分类于 移动通信">移动通信</a>
-</div>
-
-    <span><a href="/2022/05/31/mobile-communication/VLAN/" title="VLAN基本知识">VLAN基本知识</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
-<i class="ic i-angle-right"></i>
-<a href="/categories/dpdk/dpdk-advanced/" title="分类于 DPDK进阶">DPDK进阶</a>
-</div>
-
-    <span><a href="/2022/05/17/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch7/" title="深入浅出dpdk-ch7网卡性能优化">深入浅出dpdk-ch7网卡性能优化</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
 <a href="/categories/linux/" title="分类于 Linux">Linux</a>
 <i class="ic i-angle-right"></i>
 <a href="/categories/linux/linux-kernal/" title="分类于 Linux内核">Linux内核</a>
 <i class="ic i-angle-right"></i>
-<a href="/categories/linux/linux-kernal/linx-kernal-proto/" title="分类于 Linux内核协议栈">Linux内核协议栈</a>
+<a href="/categories/linux/linux-kernal/linux-kernal-driver/" title="分类于 Linux内核驱动">Linux内核驱动</a>
 </div>
 
-    <span><a href="/2022/05/04/linux/linux-kernal/linx-kernal-proto/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp3/" title="Linux内核协议栈-cp3">Linux内核协议栈-cp3</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/informal-essay/" title="分类于 随笔">随笔</a>
-<i class="ic i-angle-right"></i>
-<a href="/categories/informal-essay/life/" title="分类于 生活感悟">生活感悟</a>
-</div>
-
-    <span><a href="/2022/04/29/informal-essay/life/start/" title="少年啊，前路漫漫">少年啊，前路漫漫</a></span>
+    <span><a href="/2022/05/24/linux/linux-kernal/linux-kernal-driver/Linux%E4%B8%AD%E6%96%AD%E5%92%8C%E5%AE%9A%E6%97%B6%E5%99%A8/" title="Linux中断和定时器">Linux中断和定时器</a></span>
   </li>
 
   </ul>
@@ -529,13 +587,13 @@ VLAN基本知识 - 移动通信 |
     <span class="post-meta-item-icon">
       <i class="ic i-chart-area"></i>
     </span>
-    <span title="站点总字数">67k 字</span>
+    <span title="站点总字数">70k 字</span>
 
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="ic i-coffee"></i>
     </span>
-    <span title="站点阅读时长">1:01</span>
+    <span title="站点阅读时长">1:03</span>
   </div>
   <div class="powered-by">
     基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>

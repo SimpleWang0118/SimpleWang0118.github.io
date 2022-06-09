@@ -9,8 +9,39 @@
     <atom:link href="http://singlewang.top/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>智者不入爱河，愚者重蹈覆辙</description>
-    <pubDate>Tue, 31 May 2022 13:42:58 GMT</pubDate>
+    <pubDate>Thu, 09 Jun 2022 12:34:40 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>深入浅出dpdk-ch9硬件加速与功能卸载</title>
+      <link>http://singlewang.top/2022/06/09/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch9/</link>
+      <guid>http://singlewang.top/2022/06/09/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch9/</guid>
+      <pubDate>Thu, 09 Jun 2022 11:22:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h3 id=&quot;硬件加速与功能卸载&quot;&gt;&lt;a href=&quot;#硬件加速与功能卸载&quot; class=&quot;headerlink&quot; title=&quot;硬件加速与功能卸载&quot;&gt;&lt;/a&gt;硬件加速与功能卸载&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;硬件的缺点：资源局限，功能固化，设计与发布的时间长，更新周</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h3 id="硬件加速与功能卸载"><a href="#硬件加速与功能卸载" class="headerlink" title="硬件加速与功能卸载"></a>硬件加速与功能卸载</h3><blockquote><p>硬件的缺点：资源局限，功能固化，设计与发布的时间长，更新周期长。</p></blockquote><h4 id="硬件卸载"><a href="#硬件卸载" class="headerlink" title="硬件卸载"></a>硬件卸载</h4><p>硬件卸载就是将某些功能下移到硬件实现。这些功能原先一般是由软件承担的。<br>对于专有网络设备，为了提高处理数据包的速度，常常将数据面与控制面分离。控制面主要对复杂的数据包进行复杂的控制处理，数据面就是进行简单类似的包处理。<br>基于专门设计的硬件，快速执行数据包的转发和一些简单的报文修改处理可以有效地提高数据的吞吐量和降低发送时延。</p><h4 id="DPDK软件接口"><a href="#DPDK软件接口" class="headerlink" title="DPDK软件接口"></a>DPDK软件接口</h4><p>网卡的硬件卸载功能可能是基于端口设置，也有可能是基于每个包使能设置，需要仔细区分。在包粒度而言，每个包都对应一个或者多个Mbuf，DPDK软件利用<code>rte_mbuf</code>数据结构里的64位的标识(<code>ol_flags</code>)来表征卸载和状态</p><h4 id="硬件与软件功能实现"><a href="#硬件与软件功能实现" class="headerlink" title="硬件与软件功能实现"></a>硬件与软件功能实现</h4><p>如果需要使用硬件卸载功能，网卡驱动需要提供相应的API给上层应用，通过调用API驱动硬件完成相应的工作。<br>硬件提供的接口一般包括寄存器(<code>Register</code>)和描述符(<code>Descriptor</code>)。寄存器是全局的设置，一般用于开启某项功能或者为某项功能设置全局性的参数配置。<br>描述符可以看作是每个数据包的属性，和数据包一起发送给硬件，一般用于携带单个数据包的参数或设置。<br>按照功能的相似性，硬件卸载功能大致可分为三类，分别是&#x3D;&#x3D;计算及更新功能&#x3D;&#x3D;、&#x3D;&#x3D;分片功能&#x3D;&#x3D;、&#x3D;&#x3D;组包功能&#x3D;&#x3D;。</p><h4 id="计算及更新功能卸载"><a href="#计算及更新功能卸载" class="headerlink" title="计算及更新功能卸载"></a>计算及更新功能卸载</h4><h5 id="VLAN硬件卸载"><a href="#VLAN硬件卸载" class="headerlink" title="VLAN硬件卸载"></a>VLAN硬件卸载</h5><p>VLAN只有四个字节，可以实现以太网中逻辑网络隔离功能。<br>如果由软件完成VLAN Tag的插入将给CPU带来额外的负荷，设计一次额外的内存拷贝。VLAN Tag的插入和剥离由网卡硬件完成，可以减轻服务器CPU的负荷。<br><strong>收包时VLAN Tag的过滤</strong><br>VLAN定义了虚拟网络，只有属于相同VLAN的报文，才需要被进一步处理，不属于VLAN的报文会被直接丢弃，网卡最典型的卸载功能之一就是在接收侧针对VLAN进行包过滤。比较典型的实现实在网卡硬件端口设计VLAN过滤表，无法在过滤表中匹配的VLAN包会被丢弃。<br><strong>收包时VLAN Tag的剥离</strong><br>网卡硬件能够对接收到的包的VLAN Tag进行剥离。首先硬件能够对VLAN包进行识别，之后需要在网卡端口的队列上设置使能标志，将剥离特性打开，对应到软件，是驱动写配置入相应的寄存器。网卡硬件会从此寄存器中提取配置信息，用于判断是否对收到的以太网数据进行VLAN剥离。<br>网卡硬件将4字节的VLAN Tag从数据包中剥离，但是 VLAN Tag不能丢弃。DPDK中，驱动对每个接收的数据包进行检测，会依据硬件描述符信息，如果剥离动作发生需要将<code>rte_mbuf</code>中的<code>PKT_RX_VLAN_PKT</code>置位，并且将被剥离的VLAN Tag写入下列字段，供上层使用</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">rte_mbuf</span>&#123;</span></span><br><span class="line">    <span class="type">uint16_t</span> vlan_tci;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p><strong>发包时VLAN Tag的插入</strong><br>VLAN Tag由两部分组成：<code>TPID(Tag Protocol Identifier)</code>，也就是VLAN的<code>Ether type</code>,和<code>TCI(Tag Control Information)</code>。TPID是一个固定的值，作为一个全局范围内起作用的值，可以通过寄存器进行设置。TCI是每个包相关的，需要逐包设置，在DPDK中，在调用发送函数前，必须提前设置mbuf数据结构。</p><h4 id="分片功能卸载"><a href="#分片功能卸载" class="headerlink" title="分片功能卸载"></a>分片功能卸载</h4><p><strong>TSO</strong><br><code>TSO(TCP Segment Offload)</code>是TCP分片功能的硬件卸载，是发送方向的功能。对于从应用层获取的较大的数据，TCP需要根据下层网络的报文大小限制，将其切分成较小的分片发送。<br>硬件提供的TCP分片硬件卸载功能可以大幅减轻软件对TCP分片的负担。<br>在dpdk&#x2F;testpmd中提供了两条TSO相关的命令行：</p><ol><li>tso set 14000:用于设置tso分片大小</li><li>tso show 0：用于查看tso分片大小</li></ol><h4 id="组包功能卸载"><a href="#组包功能卸载" class="headerlink" title="组包功能卸载"></a>组包功能卸载</h4><p><strong>RSC</strong><br><code>RSC(Receive Side Coalescing，接收方聚合)</code>是TCP组包功能的硬件卸载。硬件组包功能实际上是硬件拆包功能的逆向功能。属于接收方向的功能，可以将拆分的TCP分片聚合成一个大的分片，从而减轻软件的处理。</p>]]></content:encoded>
+      
+      
+      <category domain="http://singlewang.top/categories/dpdk/">DPDK</category>
+      
+      <category domain="http://singlewang.top/categories/dpdk/dpdk-advanced/">DPDK进阶</category>
+      
+      
+      <category domain="http://singlewang.top/tags/dpdk/">dpdk</category>
+      
+      <category domain="http://singlewang.top/tags/%E7%A1%AC%E4%BB%B6%E5%8A%A0%E9%80%9F/">硬件加速</category>
+      
+      
+      <comments>http://singlewang.top/2022/06/09/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch9/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>VLAN基本知识</title>
@@ -25,7 +56,7 @@
       
       
       
-      <content:encoded><![CDATA[<h2 id="什么是VLAN"><a href="#什么是VLAN" class="headerlink" title="什么是VLAN"></a>什么是VLAN</h2><p><code>VLAN(Virtual Local Area Network)</code>即虚拟局域网，是将一个物理的LAN再逻辑上划分成多个广播域的通信技术。<br>每个VLAN是一个广播域，VLAN内的主机间可以直接通信，而VLAN间不能直接互通。这样广播报文就被限制在一个VLAN内。</p><h2 id="为什么需要VLAN"><a href="#为什么需要VLAN" class="headerlink" title="为什么需要VLAN"></a>为什么需要VLAN</h2><p>早期以太网是一种基于CSMA&#x2F;CD（Carrier Sense Multiple Access&#x2F;Collision Detection）的共享通讯介质的数据网络通讯技术。当主机数目较多时会导致冲突严重、广播泛滥、性能显著下降甚至造成网络不可用等问题。通过二层设备实现LAN互连虽然可以解决冲突严重的问题，但仍然不能隔离广播报文和提升网络质量。</p><p>在这种情况下出现了VLAN技术。这种技术可以把一个LAN划分成多个逻辑的VLAN，每个VLAN是一个广播域，VLAN内的主机间通信就和在一个LAN内一样，而VLAN间则不能直接互通，广播报文就被限制在一个VLAN内。</p><p>VLAN的优点：</p><ul><li><strong>限制广播域</strong>：广播域被限制在一个VLAN内，节省了带宽，提高了网络处理能力。</li><li><strong>增强局域网的安全性</strong>：不同VLAN内的报文在传输时相互隔离，即一个VLAN内的用户不能和其它VLAN内的用户直接通信。</li><li><strong>提高了网络的健壮性</strong>：故障被限制在一个VLAN内，本VLAN内的故障不会影响其他VLAN的正常工作。</li><li><strong>灵活构建虚拟工作组</strong>：用VLAN可以划分不同的用户到不同的工作组，同一工作组的用户也不必局限于某一固定的物理范围，网络构建和维护更方便灵活。</li></ul><h2 id="VLAN与子网"><a href="#VLAN与子网" class="headerlink" title="VLAN与子网"></a>VLAN与子网</h2><p><strong>区别</strong></p><ol><li>VLAN用于划分二层网络，子网用于划分三层网络</li><li>VLAN在配置VLANIF接口的基础上实现路由互通后，属于不同VLAN用户才能互访；子网只要通过路由实现网络互通，属于不同子网的用户就能互访</li><li>VLAN内的设备数量不受限制；子网划分的网段会影响各个子网内的设备最大数</li></ol><p><strong>联系</strong></p><ul><li>同一个VLAN内可以划分一个或多个网段，同一子网内，可以划分一个或多个VLAN。</li></ul>]]></content:encoded>
+      <content:encoded><![CDATA[<h2 id="什么是VLAN"><a href="#什么是VLAN" class="headerlink" title="什么是VLAN"></a>什么是VLAN</h2><p><code>VLAN(Virtual Local Area Network)</code>即虚拟局域网，是将一个物理的LAN再逻辑上划分成多个广播域的通信技术。<br>每个VLAN是一个广播域，VLAN内的主机间可以直接通信，而VLAN间不能直接互通。这样广播报文就被限制在一个VLAN内。</p><h2 id="为什么需要VLAN"><a href="#为什么需要VLAN" class="headerlink" title="为什么需要VLAN"></a>为什么需要VLAN</h2><p>早期以太网是一种基于CSMA&#x2F;CD（Carrier Sense Multiple Access&#x2F;Collision Detection）的共享通讯介质的数据网络通讯技术。当主机数目较多时会导致冲突严重、广播泛滥、性能显著下降甚至造成网络不可用等问题。通过二层设备实现LAN互连虽然可以解决冲突严重的问题，但仍然不能隔离广播报文和提升网络质量。</p><p>在这种情况下出现了VLAN技术。这种技术可以把一个LAN划分成多个逻辑的VLAN，每个VLAN是一个广播域，VLAN内的主机间通信就和在一个LAN内一样，而VLAN间则不能直接互通，广播报文就被限制在一个VLAN内。</p><p>VLAN的优点：</p><ul><li><strong>限制广播域</strong>：广播域被限制在一个VLAN内，节省了带宽，提高了网络处理能力。</li><li><strong>增强局域网的安全性</strong>：不同VLAN内的报文在传输时相互隔离，即一个VLAN内的用户不能和其它VLAN内的用户直接通信。</li><li><strong>提高了网络的健壮性</strong>：故障被限制在一个VLAN内，本VLAN内的故障不会影响其他VLAN的正常工作。</li><li><strong>灵活构建虚拟工作组</strong>：用VLAN可以划分不同的用户到不同的工作组，同一工作组的用户也不必局限于某一固定的物理范围，网络构建和维护更方便灵活。</li></ul><h2 id="VLAN与子网"><a href="#VLAN与子网" class="headerlink" title="VLAN与子网"></a>VLAN与子网</h2><p><strong>区别</strong></p><ol><li>VLAN用于划分二层网络，子网用于划分三层网络</li><li>VLAN在配置VLANIF接口的基础上实现路由互通后，属于不同VLAN用户才能互访；子网只要通过路由实现网络互通，属于不同子网的用户就能互访</li><li>VLAN内的设备数量不受限制；子网划分的网段会影响各个子网内的设备最大数</li></ol><p><strong>联系</strong></p><ul><li>同一个VLAN内可以划分一个或多个网段，同一子网内，可以划分一个或多个VLAN。</li></ul><h2 id="VLAN的基本概念"><a href="#VLAN的基本概念" class="headerlink" title="VLAN的基本概念"></a>VLAN的基本概念</h2><h3 id="VLAN-Tag"><a href="#VLAN-Tag" class="headerlink" title="VLAN Tag"></a>VLAN Tag</h3><p>为了使设备能够分辨不同VLAN的报文，需要在报文中添加VLAN信息的字段。802.11Q协议规定，在以太网数据帧的目的MAC地址和源MAC地址字段之后、协议类型字段之前加入四个字节的VLAN tag，用来标识VLAN信息。</p><h3 id="VLAN帧格式"><a href="#VLAN帧格式" class="headerlink" title="VLAN帧格式"></a>VLAN帧格式</h3><table><thead><tr><th align="center">Destination address</th><th align="center">Source address</th><th align="center">VLAN tag</th><th align="center">length&#x2F;type</th><th align="center">Data</th><th align="center">FCS</th></tr></thead><tbody><tr><td align="center">6Byte</td><td align="center">6Byte</td><td align="center">4Byte</td><td align="center">2Byte</td><td align="center">46-1500Byte</td><td align="center">4Byte</td></tr></tbody></table><p>VLAN tag包括TPID（数据帧类型）、PRI（数据帧的优先级，0~7，值越大优先级越高）、CFI（标准格式指示位）、VID（VLAN ID）</p><blockquote><p>设备利用VLAN标签中的VID来识别数据帧所属的VLAN,广播帧只在同一VLAN内转发，这就将广播域限制在一个VLAN内。VLAN ID取值范围使0<del>4095，有效范围使1</del>4094。</p></blockquote><h3 id="链路类型和接口类型"><a href="#链路类型和接口类型" class="headerlink" title="链路类型和接口类型"></a>链路类型和接口类型</h3><p>在一个VLAN交换网络中，以太网帧主要有以下两种格式：</p><ul><li><strong>有标记帧（Tagged帧）</strong>：加入了4字节VLAN标签的帧</li><li><strong>无标记帧（untagged帧）</strong>：原始的、未加入4字节VLAN标签的帧</li></ul><p>设备内部处理的数据帧一律都是Tagged帧。</p><p>为了适应不同的连接和组网，设备定义了<strong>Access</strong>接口、<strong>Trunk</strong>接口、<strong>Hybrid</strong>接口，以及<strong>接入链路（Access Link）</strong>和<strong>干道链路（Trunk Link）</strong>。</p><h4 id="链路类型"><a href="#链路类型" class="headerlink" title="链路类型"></a>链路类型</h4><p>根据链路中需要承载的VLAN数目的不同，以太网链路分为：</p><ul><li>接入链路<br>接入链路只可以承载1个VLAN的数据帧，用于连接设备和用户终端，用户终端并不需要知道自己属于哪个VLAN，也不能识别带有Tag的帧，所以在接入链路上传输的帧都是untagged帧</li><li>干道链路<br>干道链路可以承载多个不同VLAN的数据帧，用于设备间互联。因此需要给数据帧加VLAN Tag。</li></ul><h4 id="接口类型"><a href="#接口类型" class="headerlink" title="接口类型"></a>接口类型</h4><p>根据接口连接对象以及对收发数据帧处理的不同，以太网接口分别为：</p><ul><li>Access接口<br>Access接口一般用于和不能识别Tag的用户终端相连，或者不需要区分不同VLAN成员时使用，只能收发Untagged帧。</li><li>Trunk接口<br>Trunk接口一般用于连接交换机、路由器、AP以及可同时收发Tagged帧和Untagged帧的语音终端。它可以允许多个VLAN的帧带Tag通过，但只允许一个VLAN的帧从该类接口上发出时不带Tag。</li><li>Hybrid接口<br>Hybrid接口同时综合了以上两种接口的方式，且允许从该类接口发出的某些帧带Tag，某些帧不带Tag。</li></ul>]]></content:encoded>
       
       
       <category domain="http://singlewang.top/categories/mobile-communication/">移动通信</category>
@@ -60,6 +91,8 @@
       
       
       <category domain="http://singlewang.top/tags/dpdk/">dpdk</category>
+      
+      <category domain="http://singlewang.top/tags/%E6%B5%81%E5%88%86%E7%B1%BB/">流分类</category>
       
       
       <comments>http://singlewang.top/2022/05/31/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch8/#disqus_thread</comments>
@@ -273,39 +306,6 @@
       
       
       <comments>http://singlewang.top/2022/05/14/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch4/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>深入浅出dpdk-ch3并行计算</title>
-      <link>http://singlewang.top/2022/05/12/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch3/</link>
-      <guid>http://singlewang.top/2022/05/12/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch3/</guid>
-      <pubDate>Thu, 12 May 2022 12:00:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;h2 id=&quot;并行计算&quot;&gt;&lt;a href=&quot;#并行计算&quot; class=&quot;headerlink&quot; title=&quot;并行计算&quot;&gt;&lt;/a&gt;并行计算&lt;/h2&gt;&lt;p&gt;处理器性能提升主要有两个途径：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;提高IPC(每个时钟周期内可执行的指令条数)&lt;/li&gt;
-&lt;li&gt;提</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<h2 id="并行计算"><a href="#并行计算" class="headerlink" title="并行计算"></a>并行计算</h2><p>处理器性能提升主要有两个途径：</p><ol><li>提高IPC(每个时钟周期内可执行的指令条数)</li><li>提高处理器主频(一味提高会触及频率墙，处理器的功耗正比与主频的三次方)</li></ol><p>可以通过提高指令执行的并行度提高IPC，有两种方法：</p><ol><li>提高微架构的指令并行度</li><li>多核并发</li></ol><h3 id="多核性能和可扩展性"><a href="#多核性能和可扩展性" class="headerlink" title="多核性能和可扩展性"></a>多核性能和可扩展性</h3><h4 id="追求性能水平扩展"><a href="#追求性能水平扩展" class="headerlink" title="追求性能水平扩展"></a>追求性能水平扩展</h4><blockquote><p>Amdahl定律告诉我们，假设一个工作的任务量不变，多核并行计算理论时延加速上限取决于那些不能并行处理部分的比例。</p></blockquote><blockquote><p>Gustafson定律指出，多核并行计算额吞吐率随核数增加而线性扩展，可并行处理部分占整个任务的比例越高，增长的斜率越大。</p></blockquote><h4 id="多核处理器"><a href="#多核处理器" class="headerlink" title="多核处理器"></a>多核处理器</h4><p>CPU物理核中的基本组件可以简化为：CPU寄存器集合、中断逻辑、执行单元和Cache。<br>多核处理器就是指多颗单独封装的CPU通过外部总线连接构成统一的计算平台。</p><blockquote><p>一个物理封装的CPU(通过physical id区分)可以有多个核(通过core id区分)。每个核可以有多个逻辑CPU(通过processor区分判断)。</p></blockquote><h4 id="亲和性"><a href="#亲和性" class="headerlink" title="亲和性"></a>亲和性</h4><p>CPU亲和性指一个特定的任务要在某个给定的CPU上尽量长时间的运行而不被迁移到其他处理器上的倾向性。</p><p>线程迁移的频率小就意味着产生的负载小。</p><h5 id="Linux内核对亲和性的支持"><a href="#Linux内核对亲和性的支持" class="headerlink" title="Linux内核对亲和性的支持"></a>Linux内核对亲和性的支持</h5><p>在Linux内核中，所有的线程都有一个相关的数据结构，称为<code>mask_struct</code>。与亲和性相关度最高的是<code>cpus_allowed</code>位掩码。这个位掩码由n位组成，与系统中的n个逻辑核一一对应。如果针对某个线程设置了相关的位，那么这个线程就可以在相关的CPU上运行。</p><p>Linux相关API：</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sched_set_affinity() <span class="comment">//用来修改位掩码</span></span><br><span class="line">sched_get_affinity() <span class="comment">//用来查看当前的位掩码</span></span><br></pre></td></tr></table></figure><blockquote><p><code>cpu_affinity</code>会被传递给子线程，因此应该适当的调用<code>sched_set_affinity</code>。</p></blockquote><h5 id="为什么使用亲和性"><a href="#为什么使用亲和性" class="headerlink" title="为什么使用亲和性"></a>为什么使用亲和性</h5><p>将线程与CPU绑定，最直观的好处就是提高了Cache的命中率，减少内存方位损耗，提高程序的速度。<br>减少了线程来回迁移的性能消耗，线程之间干扰也会减少。</p><p>使用亲和性的三个原因：</p><ol><li>有大量计算要做</li><li>测试复杂的应用程序</li><li>运行时间敏感的、决定性的线程</li></ol><h5 id="线程独占"><a href="#线程独占" class="headerlink" title="线程独占"></a>线程独占</h5><p>DPDK通过把线程绑定到逻辑核的方法避免跨核任务中的切换开销，但对于绑定运行的当前逻辑核，仍然可能会有线程切换的发生。因此可以进一步采取把逻辑核从内核调度系统剥离的方法。</p><p>linux内核提供了启动参数<code>isolcpus</code>。对于有4个CPU的服务器，在启动的时候加入启动参数isolcpus&#x3D;2，3.那么系统启动后将不使用CPU3和CPU4;但是还是可以通过<code>taskset</code>指定哪些程序在这些核心中运行。</p><p>步骤如下：</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vim /boot/grub2.cfg <span class="comment">//在Linux kernel启动参数里面加入isolcpus参数，isolcpu=2， 3</span></span><br><span class="line"></span><br><span class="line">cat /proc/cmdline  <span class="comment">//等待系统重新启动之后查看启动参数BOOT_IMAGE=/boot/vmlinuz3.17.8-200.fc20.x86_64root=UUID=3ae47813-79ea-4805-a732-</span></span><br><span class="line"><span class="number">21b</span>edcbdb0b5ro LANG=en_US.UTF<span class="number">-8</span>isolcpus=<span class="number">2</span>，<span class="number">3</span>。</span><br></pre></td></tr></table></figure><h5 id="DPDK的多线程"><a href="#DPDK的多线程" class="headerlink" title="DPDK的多线程"></a>DPDK的多线程</h5><p>DPDK的线程基于<code>pthread</code>接口创建，属于抢占式线程模型，受内核调度支配。</p><ol><li>EAL中的lcore</li></ol><p>DPDK的lcore指的是EAL线程，本质是基于<code>pthread</code>(Linux&#x2F;FreeBSD)封装实现。<code>lcore</code>由<code>remote_launch</code>指定的任务创建并管理。在每个EAL pthread中， 有一个TLS（Thread Local Storage）称为_lcore_id。当使用DPDK的 EAL‘-c’参数指定coremask时，EAL pthread生成相应个数lcore并默 认是1：1亲和到coremask对应的CPU逻辑核，_lcore_id和CPU ID是一致的。</p><p><em><strong>DPDK中lcore的初始化及执行任务的注册</strong></em></p><ul><li>初始化<ul><li><code>rte_eal_cpu_init()</code>函数中，通过读取<code>/sys/devices/system/cpu/cpuX/</code>,确定当前系统有哪些CPU核，以及每个核属于哪个CPU Socket。</li><li><code>eal_parse_args()</code>函数，解析-c参数。</li><li>为每一个SLAVE核创建线程，并调用<code>eal_thread_set_affinity()</code>绑定CPU。线程的执行体是<code>eal_thread_loop()</code></li></ul></li><li>注册<br>不同的模块需要调用<code>rte_eal_mp_remote_launch()</code>,将自己的回调处理函数注册到lcore_config[]中。</li></ul>]]></content:encoded>
-      
-      
-      <category domain="http://singlewang.top/categories/dpdk/">DPDK</category>
-      
-      <category domain="http://singlewang.top/categories/dpdk/dpdk-advanced/">DPDK进阶</category>
-      
-      
-      <category domain="http://singlewang.top/tags/dpdk/">dpdk</category>
-      
-      <category domain="http://singlewang.top/tags/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/">并行计算</category>
-      
-      
-      <comments>http://singlewang.top/2022/05/12/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch3/#disqus_thread</comments>
       
     </item>
     
