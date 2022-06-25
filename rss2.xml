@@ -9,8 +9,36 @@
     <atom:link href="http://singlewang.top/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>智者不入爱河，愚者重蹈覆辙</description>
-    <pubDate>Sat, 25 Jun 2022 11:41:49 GMT</pubDate>
+    <pubDate>Sat, 25 Jun 2022 12:59:33 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>嵌入式系统开发-ch1</title>
+      <link>http://singlewang.top/2022/06/25/embedded/%E5%B5%8C%E5%85%A5%E5%BC%8F-ch1/</link>
+      <guid>http://singlewang.top/2022/06/25/embedded/%E5%B5%8C%E5%85%A5%E5%BC%8F-ch1/</guid>
+      <pubDate>Sat, 25 Jun 2022 12:20:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;嵌入式系统及其应用&quot;&gt;&lt;a href=&quot;#嵌入式系统及其应用&quot; class=&quot;headerlink&quot; title=&quot;嵌入式系统及其应用&quot;&gt;&lt;/a&gt;嵌入式系统及其应用&lt;/h2&gt;&lt;h3 id=&quot;嵌入式系统&quot;&gt;&lt;a href=&quot;#嵌入式系统&quot; class=&quot;header</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="嵌入式系统及其应用"><a href="#嵌入式系统及其应用" class="headerlink" title="嵌入式系统及其应用"></a>嵌入式系统及其应用</h2><h3 id="嵌入式系统"><a href="#嵌入式系统" class="headerlink" title="嵌入式系统"></a>嵌入式系统</h3><p><em>什么是嵌入式系统</em><br>嵌入式系统是嵌入式计算机系统的简称，是一种嵌入在设备（或系统）内部，为特定应用而设计开发的专用计算机系统。</p><p>&#x3D;&#x3D;特点&#x3D;&#x3D;</p><ol><li>专用性</li><li>隐蔽性</li><li>资源受限</li><li>高可靠性</li><li>实时性</li><li>软件固化</li></ol><p>广义：凡是带有微处理器的专用软硬件系统都可称为嵌入式系统<br>狭义：使用嵌入式微处理器构成的具有自己的操作系统和特定功能、用于特定场合的独立系统</p><h3 id="嵌入式系统的组成与分类"><a href="#嵌入式系统的组成与分类" class="headerlink" title="嵌入式系统的组成与分类"></a>嵌入式系统的组成与分类</h3><p><em>嵌入式系统的逻辑组成</em><br>嵌入式系统由硬件和软件两部分组成。<br>&#x3D;&#x3D;处理器&#x3D;&#x3D;<br>硬件的主体是中央处理器（Central Processing Uint,CPU）,主要负责运行系统软件和应用软件。<br>CPU的字长由4位、8位、16位、32位、64位之分，目前嵌入式系统中使用最多的是8位和16位的CPU，通用计算机的CPU则以64位为主。<br>嵌入式系统的性能很大取决于CPU,影响程序执行速度的因素包括：</p><ol><li>主频（CPU时钟频率），指CPU中门电路的工作频率，主频越高，执行指令的时间越短</li><li>指令系统</li><li>高速缓冲存储器的容量与结构</li><li>逻辑结构</li></ol><p>&#x3D;&#x3D;存储器&#x3D;&#x3D;<br>存储器：</p><ul><li>易失性存储器<ul><li>SRAM，电路复杂，集成度低，成本高，工作速度快</li><li>DRAM，电路简单，集成度高，成本低</li></ul></li><li>非易失性存储器<ul><li>EEPROM</li><li>Flash ROM</li><li>磁盘等</li></ul></li></ul><p>&#x3D;&#x3D;I&#x2F;O设备与I&#x2F;O接口&#x3D;&#x3D;<br>嵌入式常用的I&#x2F;O接口有：</p><ul><li>通用串行总线式接口：USB2.0,USB3.0,IEEE 1394,以太网接口</li><li>异步串行接口：RS-232-C,RS-485</li><li>视频信号接口：VGA,DVI,HDMI</li><li>工业总线接口：CAN,1553B,LIN接口</li><li>无线接口:蓝牙，wifi接口，zigbee接口</li></ul><p>&#x3D;&#x3D;总线&#x3D;&#x3D;<br>数据总线简称总线，是用来在嵌入式系统各组件间进行数据传输，又传输线和控制电路组成</p><p>&#x3D;&#x3D;软件&#x3D;&#x3D;<br>低端嵌入式系统软件很简单，只需配置一个监控程序，若干驱动程序和事件处理程序即可。<br>高端嵌入式系统比较复杂。通常由板级支持包、设备驱动程序、实时操作系统（核心）、中间件及嵌入式应用软件组成，以安卓软件为例，主要由4层组成。最底层是各种驱动程序和Linux内核。第二层是系统库和Android的运行环境。第三层是应用软件框架。第四层是应用程序</p><p><em>嵌入式处理芯片</em><br>嵌入式系统中的CPU一般具有4个特点</p><ol><li>支持实时处理</li><li>低功耗</li><li>结构可扩展</li><li>集成了测试电路</li></ol><p>目前嵌入式处理芯片有一下四种产品类型：</p><ol><li>微处理器</li><li>数字信号处理器</li><li>微控制器（单片机）</li><li>片上系统</li></ol><blockquote><p>第一个公认的现代嵌入式系统是20世纪60年代初美国麻省理工学院开发的阿波罗导航计算机。</p></blockquote><h3 id="SoC芯片"><a href="#SoC芯片" class="headerlink" title="SoC芯片"></a>SoC芯片</h3>]]></content:encoded>
+      
+      
+      <category domain="http://singlewang.top/categories/embeded/">embeded</category>
+      
+      
+      <category domain="http://singlewang.top/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/">嵌入式</category>
+      
+      <category domain="http://singlewang.top/tags/%E8%80%83%E8%AF%95/">考试</category>
+      
+      
+      <comments>http://singlewang.top/2022/06/25/embedded/%E5%B5%8C%E5%85%A5%E5%BC%8F-ch1/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>c++primer之语句</title>
@@ -264,36 +292,6 @@
       
       
       <comments>http://singlewang.top/2022/05/20/informal-essay/life/520%E9%9A%8F%E6%83%B3/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>深入浅出dpdk-ch7网卡性能优化</title>
-      <link>http://singlewang.top/2022/05/17/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch7/</link>
-      <guid>http://singlewang.top/2022/05/17/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch7/</guid>
-      <pubDate>Tue, 17 May 2022 12:49:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;h3 id=&quot;网卡性能优化&quot;&gt;&lt;a href=&quot;#网卡性能优化&quot; class=&quot;headerlink&quot; title=&quot;网卡性能优化&quot;&gt;&lt;/a&gt;网卡性能优化&lt;/h3&gt;&lt;h4 id=&quot;DPDK的轮询模式&quot;&gt;&lt;a href=&quot;#DPDK的轮询模式&quot; class=&quot;headerlink</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<h3 id="网卡性能优化"><a href="#网卡性能优化" class="headerlink" title="网卡性能优化"></a>网卡性能优化</h3><h4 id="DPDK的轮询模式"><a href="#DPDK的轮询模式" class="headerlink" title="DPDK的轮询模式"></a>DPDK的轮询模式</h4><p>DPDK采用了轮询或者轮询混杂中断的模式来进行收包和发包，此 前主流运行在操作系统内核态的网卡驱动程序基本都是基于异步中断处理模式。</p><h5 id="异步中断模式"><a href="#异步中断模式" class="headerlink" title="异步中断模式"></a>异步中断模式</h5><p>当有包进入网卡收包队列后，网卡会产生硬件中断，进而触发CPU中断，进入中断服务程序，在中断服务程序中完成收包的处理。<br>基于异步中断信号处理模式的收包，不断地在做中断处理，在CPU比I&#x2F;O速率高很多时，处理地负荷可以被忽略，但是如果是高速网卡且I&#x2F;O频繁，开销就会很大。中断是异步方式，因此CPU无需等待，有效利用率高。<br>当有包需要发送出去地时候，基于异步中断信号地驱动程序会准备奥需要发送地包，配置号发送队列地各个描述符。包被真正发送完成时，网卡同样会产生硬件中断信号，进而触发CPU中断，进入中断服务。</p><h5 id="轮询模式"><a href="#轮询模式" class="headerlink" title="轮询模式"></a>轮询模式</h5><p>DPDK最初地纯轮询模式指收发包完全不使用任何中断，集中所有运算资源用于报文处理，但这不是意味着DPDK部可以支持任何中断。</p><p>DPDK所有地收发包有关的中断在物理端口初始化的时候都会关闭，也就是说，CPU在任何时候都不会收到中断。</p><p>每一个收包队列，DPDK都会有一个对应的软件线程负责轮询里面的收包描述符的收包成功的标志。一旦发现某一个收包描述符的收包成功标志被硬件置位了，驱动程序会解析相应的收包描述符，提取各种有用的信息，然后填充对应的缓冲内存块头部。然后把收包缓冲内存块存放到收包函数提供的数组里面，同时分配好一个新的缓冲内存块给这个描述符，以便下一次收包。</p><p>每一个发包队列，DPDK都会有一个对应的软件线程负责设置需要发送出去的包，DPDK的驱动程序负责提取发包缓冲内存块的有效信息。DPDK的轮询驱动程序根据内存缓存块中的包的内容来负责初始化好每一个发包描述符，驱动程序会把每个包翻译成为一个或者多个发包描述符里能够理解的内容，然后写入发包描述符。最关键的有两个，一个是标识完整的包结束的标志<code>EOP(End Of Packet)</code>,另一个就是请求报告发送状态<code>RS(Report Status)</code>。EOP就是驱动程序用来通知网卡硬件一个完整的包结束的标志。RS是驱动程序告诉网卡什么时候需要报告发送结果的标志。</p><p>发包的轮询就是轮询发包结束的硬件标志位。</p><h5 id="混合中断轮询模式"><a href="#混合中断轮询模式" class="headerlink" title="混合中断轮询模式"></a>混合中断轮询模式</h5><p>由于实际网络应用中可能存在的潮汐效应，在某些时间段网络数据流量可能很低，甚至完全没有需要处理的包，这样就会出现在高速端口下低负荷运行的场景，而完全轮询的方式会让处理器一直全速运行，明显浪费处理能力和不节能。<br>因此DPDK引入了收包中断与轮询的混合模式的支持，用户可以根据实际应用场景来选择完全轮询模式，或者混合中断轮询模式。<br>PDK的混合中断轮询机制是基于UIO或VFIO来实现其收包中断通知与处理流程的。如果是基于VFIO的实现，该中断机制是可以支持队列级别的，即一个接收队列对应一个中断号，这是因为VFIO支持多MSI-X 中断号。但如果是基于UIO的实现，该中断机制就只支持一个中断号，所有的队列共享一个中断号。</p><h4 id="网卡I-x2F-O性能优化"><a href="#网卡I-x2F-O性能优化" class="headerlink" title="网卡I&#x2F;O性能优化"></a>网卡I&#x2F;O性能优化</h4><h5 id="Burst收发包的优点"><a href="#Burst收发包的优点" class="headerlink" title="Burst收发包的优点"></a>Burst收发包的优点</h5><p>Burst收发包是DPDK的优化模式，它把收发包复杂的处理过程进行分解，使之成为相对较小的处理阶段，把相邻的数据访问、相似的数据运算集中处理。</p><p>Burst可以理解为突发模式，是一次完成多个数据包的收发，由DPDK函数调用者来决定。</p><p>网卡的收发包描述符一般为16或32字节，而网卡对收包描述符的回写都会一次处理4个或者8个。处理器缓存的预取机制会每次存取相邻的多个缓存单位，Burst充分利用这种机制，明显提高收发包效率。</p><p>Burst收发包是DPDK普遍使用的软件接口，用户可以设定每次收发包函数调用所处理的包的个数，具体函数接口如下：</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">uint16_t</span> <span class="title function_">rte_eth_rx_burst</span><span class="params">(<span class="type">uint8_t</span> port_id,<span class="type">uint16_t</span> queue_id,<span class="keyword">struct</span> rte_mbuf  **rx_pkts,<span class="type">const</span> <span class="type">uint16_t</span> nb_pkts)</span>;</span><br><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">uint16_t</span> <span class="title function_">rte_eth_tx_burst</span><span class="params">(<span class="type">uint8_t</span> port_id,<span class="type">uint16_t</span> queue_id,<span class="keyword">struct</span> rte_mbuf  **tx_pkts,<span class="type">const</span> <span class="type">uint16_t</span> nb_pkts)</span>;</span><br></pre></td></tr></table></figure><h5 id="批处理和时延隐藏"><a href="#批处理和时延隐藏" class="headerlink" title="批处理和时延隐藏"></a>批处理和时延隐藏</h5><p><strong>时延</strong>：处理器核心执行单元完成一条指令所需要的时钟周期数<br><strong>吞吐</strong>：处理器指令发射端口再次允许接受相同指令所需等待的时钟周期数。<br>时延描述了前后两个关联操作的等待时间，吞吐则描述了指令的并发能力。</p><p>利用CPU指令乱序多发的能力，掩藏指令延迟的一个有效方法是批量处理无数据前后依赖关系的独立事务。对于重复事务执行，通常采用循环逐次操作。对于较复杂的事务，编译器很难大量地区乱序不同迭代序列下地指令。常用到的做法是在一个序列中铺开执行多个事务，以一个合理地步进迭代。</p><h4 id="队列长度及各种阈值地设置"><a href="#队列长度及各种阈值地设置" class="headerlink" title="队列长度及各种阈值地设置"></a>队列长度及各种阈值地设置</h4><h5 id="收包队列长度"><a href="#收包队列长度" class="headerlink" title="收包队列长度"></a>收包队列长度</h5><p>收包队列的长度就是每个收包队列分配的收包描述符的个数，每个收包描述符都会分配有对应的Mbuf缓存块。<br>网卡硬件本身限定了可以使用的最大的队列长度。DPDK的默认的收包队列长度是128，是一个适应大多数场景的经验值。但是在某些更高速率的网卡收包或者在某些场景下丢包比较容易地时候，需考虑使用更长地收包队列如512或1024。</p><h5 id="发包队列长度"><a href="#发包队列长度" class="headerlink" title="发包队列长度"></a>发包队列长度</h5><p>发包队列的长度就是每个发包队列分配的发包描述符的个数，每个发包描述符都会分配有对应的Mbuf缓存块。<br>DPDK实力中常用地发包队列长度是512。</p><h5 id="收包队列可释放描述符数量阈值（rx-free-thresh）"><a href="#收包队列可释放描述符数量阈值（rx-free-thresh）" class="headerlink" title="收包队列可释放描述符数量阈值（rx_free_thresh）"></a>收包队列可释放描述符数量阈值（rx_free_thresh）</h5><p>在DPDK驱动女程序收包过程中，每一次收包函数的调用都可能成功读取0、1或者多个包。每读出一个包，与之对应的收包描述符就可以释放。DPDK驱动程序并没有每次收包都更新收包队列尾部索引寄存器，而是在可释放的收包描述符数量达到一个阈值(<code>rx_free_thresh</code>)的时候才真正更新收包队列尾部索引寄存器。这个值一般是32。</p><h5 id="发包队列发送结果报告阈值（tx-rs-thresh）"><a href="#发包队列发送结果报告阈值（tx-rs-thresh）" class="headerlink" title="发包队列发送结果报告阈值（tx_rs_thresh）"></a>发包队列发送结果报告阈值（tx_rs_thresh）</h5><p>任何发包处理完成后，需要有网卡硬件通过一定机制通知软件发包动作已经完成，对应的发包描述符就可以再次使用，对应的Mbuf可以释放或者做其他用途。一般都是通过回写发包描述符特定的字段完成通知，但是每个包发完都回写效率很低，因此<code>tx_rs_thresh</code>出现辽，只有在有回写标记的发包描述符才会回写，而这个标记会每个这个阈值才会设置。<br>阈值太小，回写频繁，性能低；阈值太大占用发包描述符时间长，可能会造成丢包。</p><h5 id="发包描述符释放阈值（tx-free-thresh）"><a href="#发包描述符释放阈值（tx-free-thresh）" class="headerlink" title="发包描述符释放阈值（tx_free_thresh）"></a>发包描述符释放阈值（tx_free_thresh）</h5><p>当网卡硬件读取完发包描述符，并且DMA完成整个包的内容的传送后，硬件会根据发送结果回写标记来通知软件发包完成，可以释放。只有放可以用来重新配置的发包描述符数量少于阈值的时候才会启动描述符和Mbuf的释放动作。DPDK驱动程序中默认是32.</p>]]></content:encoded>
-      
-      
-      <category domain="http://singlewang.top/categories/dpdk/">DPDK</category>
-      
-      <category domain="http://singlewang.top/categories/dpdk/dpdk-advanced/">DPDK进阶</category>
-      
-      
-      <category domain="http://singlewang.top/tags/dpdk/">dpdk</category>
-      
-      <category domain="http://singlewang.top/tags/%E7%BD%91%E5%8D%A1%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">网卡性能优化</category>
-      
-      
-      <comments>http://singlewang.top/2022/05/17/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch7/#disqus_thread</comments>
       
     </item>
     
