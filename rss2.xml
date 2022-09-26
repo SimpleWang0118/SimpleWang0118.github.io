@@ -8,9 +8,95 @@
     
     <atom:link href="http://singlewang.top/rss2.xml" rel="self" type="application/rss+xml"/>
     
-    <description>从前，我一个人可以走得很快，但后来发现，两个人走好像更有趣</description>
-    <pubDate>Wed, 31 Aug 2022 13:00:16 GMT</pubDate>
+    <description>这一次，你彻彻底底的抛弃了我，但我不恨你，反而谢谢你，让我明白自己在你心中的位置，从此相逢是路人。</description>
+    <pubDate>Mon, 26 Sep 2022 13:45:43 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>套接字编程</title>
+      <link>http://singlewang.top/2022/09/26/UINX-envcoding/UINX-%E7%8E%AF%E5%A2%83%E7%BC%96%E7%A8%8B/</link>
+      <guid>http://singlewang.top/2022/09/26/UINX-envcoding/UINX-%E7%8E%AF%E5%A2%83%E7%BC%96%E7%A8%8B/</guid>
+      <pubDate>Mon, 26 Sep 2022 13:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h3 id=&quot;文件和目录&quot;&gt;&lt;a href=&quot;#文件和目录&quot; class=&quot;headerlink&quot; title=&quot;文件和目录&quot;&gt;&lt;/a&gt;文件和目录&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;文件系统&lt;br&gt;UINX所有东西的起点称为&lt;code&gt;root&lt;/code&gt;的目录，这个目录的名称是一个</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h3 id="文件和目录"><a href="#文件和目录" class="headerlink" title="文件和目录"></a>文件和目录</h3><ol><li>文件系统<br>UINX所有东西的起点称为<code>root</code>的目录，这个目录的名称是一个<code>/</code>字符。</li><li>文件名<br>目录中的各个名字称为文件名，只有<code>/</code>和空字符不能出现在文件名中。<br><code>.</code>指向当前目录，<code>..</code>指向父目录。</li><li>路径名<br>以斜线开头的路径称为<strong>绝对路径名</strong>，否则称为<strong>相对路径名</strong>。相对路径名指向相对于当前目录的文件。</li></ol><h3 id="输入和输出"><a href="#输入和输出" class="headerlink" title="输入和输出"></a>输入和输出</h3><ol><li>文件描述符</li></ol><p><strong>文件描述符</strong>通常是一个小的非负整数，内核用以标识一个特定进程正在访问的文件。当内核打开一个现有文件或创建一个新文件时，都会返回一个文件描述符<br>2. 不带缓冲的I&#x2F;O<br>函数<code>open、read、write、lseek、close</code>提供了不带缓冲的I&#x2F;O.</p><h3 id="程序和进程"><a href="#程序和进程" class="headerlink" title="程序和进程"></a>程序和进程</h3><ol><li>程序<br>程序指存储在某个目录中的可执行文件。</li><li>进程和进程ID<br>程序的执行实例被称为<strong>进程</strong>，UNIX确保每个进程都有一个唯一的数字标识符，称为<strong>进程ID</strong>。进程ID是一个非负整数。</li><li>进程控制<br>三个用于进程控制的主要函数：<code>fork、exec、waitpid</code>。<br>fork创建一个新进程。新进程时调用进程的一个副本，称调用进程为父进程，新创建的进程为子进程。fork对父进程返回新的子进程的进程ID,对子进程则返回0。</li></ol><p>wait返回子进程的终止状态，其参数为要等待的进程。<br>4. 线程和线程ID<br>通常一个进程只有一个控制线程。一个进程内的所有线程共享同一地址空间、文件描述符、栈以及与进程相关的属性。线程ID只在它所属的进程内起作用。</p><h3 id="出错处理"><a href="#出错处理" class="headerlink" title="出错处理"></a>出错处理</h3><p>UNIX系统函数出错时，通常会返回一个负值。<br>C标准定义了两个函数，用于打印出错信息</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="type">char</span> *<span class="title function_">strerror</span><span class="params">(<span class="type">int</span> errnum)</span>;</span><br></pre></td></tr></table></figure><p>strerror将errnum映射为一个出错消息字符串，返回此字符串的指针。</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">void</span> <span class="title function_">perror</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *msg)</span></span><br></pre></td></tr></table></figure><p>首先输出由msg指向的字符串，然后指对于errno的出错消息</p><h3 id="时间值"><a href="#时间值" class="headerlink" title="时间值"></a>时间值</h3><p><strong>进程时间</strong>用以度量进程使用的中央处理器资源。以时钟滴答计算。<br>用clock_t保存这种时间值。<br>当度量一个进程的执行时间时，UNIX为一个进程维护三个进程时间值：</p><ul><li>时钟时间</li><li>用户CPU时间</li><li>系统CPU时间</li></ul><p>时钟时间时进程运行的时间总量，其值与系统中同时运行的进程数有关。<br>用户CPU时间时钟执行用户指令所用的时间量。<br>系统CPU时间时为该进程执行内核程序所经历的时间。</p>]]></content:encoded>
+      
+      
+      <category domain="http://singlewang.top/categories/UNIX%E7%8E%AF%E5%A2%83%E7%BC%96%E7%A8%8B%EF%BC%8C%E7%AC%AC%E4%B8%80%E7%AB%A0%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">UNIX环境编程，第一章基础知识</category>
+      
+      
+      <category domain="http://singlewang.top/tags/UNIX/">UNIX</category>
+      
+      <category domain="http://singlewang.top/tags/%E9%AB%98%E7%BA%A7%E7%BC%96%E7%A8%8B/">高级编程</category>
+      
+      
+      <comments>http://singlewang.top/2022/09/26/UINX-envcoding/UINX-%E7%8E%AF%E5%A2%83%E7%BC%96%E7%A8%8B/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>套接字编程</title>
+      <link>http://singlewang.top/2022/09/26/UNIX-netcoding/UNIX-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/</link>
+      <guid>http://singlewang.top/2022/09/26/UNIX-netcoding/UNIX-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/</guid>
+      <pubDate>Mon, 26 Sep 2022 11:47:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;套接字编程&quot;&gt;&lt;a href=&quot;#套接字编程&quot; class=&quot;headerlink&quot; title=&quot;套接字编程&quot;&gt;&lt;/a&gt;套接字编程&lt;/h2&gt;&lt;h3 id=&quot;IPV4套接字地址结构&quot;&gt;&lt;a href=&quot;#IPV4套接字地址结构&quot; class=&quot;headerlink</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="套接字编程"><a href="#套接字编程" class="headerlink" title="套接字编程"></a>套接字编程</h2><h3 id="IPV4套接字地址结构"><a href="#IPV4套接字地址结构" class="headerlink" title="IPV4套接字地址结构"></a>IPV4套接字地址结构</h3><p>ipv4套接字地址结构通常也称为“网际套接字地址结构”，以<code>sockaddr_in</code>命名。</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">in_addr</span>&#123;</span></span><br><span class="line">    <span class="type">in_addr_t</span> s_addr;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span>&#123;</span></span><br><span class="line">    <span class="type">uint8_t</span> sin_len;</span><br><span class="line">    <span class="type">sa_family_t</span> sin_family;  <span class="comment">//无符号短整数</span></span><br><span class="line">    <span class="type">in_port_t</span> sin_port;  <span class="comment">//</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">in_addr</span> <span class="title">sin_addr</span>;</span></span><br><span class="line">    <span class="type">char</span> sin_zero[<span class="number">8</span>];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><h3 id="通用套接字地址结构"><a href="#通用套接字地址结构" class="headerlink" title="通用套接字地址结构"></a>通用套接字地址结构</h3><p>当作为一个参数传递进任何套接字函数时，套接字地址总是以引用形式来传递。</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sockaddr</span>&#123;</span></span><br><span class="line">    <span class="type">uint8_t</span> sa_len;</span><br><span class="line">    <span class="type">sa_family_t</span> sa_family;</span><br><span class="line">    <span class="type">char</span> sa_data[<span class="number">4</span>];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><blockquote><ul><li>从进程到内核传递套接字结构的函数有三个：<code>bind、connect、sendto</code>。</li><li>从内核到进程传递套接字地址结构的函数有4个：<code>accept、recvfrom、getsockname、getpeername</code>。</li></ul></blockquote><h3 id="字节排序函数"><a href="#字节排序函数" class="headerlink" title="字节排序函数"></a>字节排序函数</h3><p>内存中存储有两种方式:</p><ul><li>小端字节序，低序字节存储在低地址</li><li>大端字节序，高序字节存储在低地址<br>我们某个给定系统所用的字节称为<strong>主机字节序</strong>。</li></ul><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*输出主机字节序*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;udp.h&quot;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc,<span class="type">char</span> **argv)</span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">union</span> &#123;</span></span><br><span class="line">        <span class="type">short</span> s;</span><br><span class="line">        <span class="type">char</span>  c[<span class="keyword">sizeof</span>(<span class="type">short</span>)];</span><br><span class="line">    &#125;un;</span><br><span class="line">    un.s=<span class="number">0x0102</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%s:&quot;</span>,CPU_VENDOR_OS);<span class="comment">//CPU_VENDOR_OS标识了CPU类型、厂家、操作系统版本</span></span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">sizeof</span>(<span class="type">short</span>==<span class="number">2</span>))&#123;</span><br><span class="line">        <span class="keyword">if</span>(un.c[<span class="number">0</span>]==<span class="number">1</span>&amp;&amp;un.c[<span class="number">1</span>]==<span class="number">2</span>)</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;big-endian\n&quot;</span>);</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(un.c[<span class="number">0</span>]==<span class="number">2</span>&amp;&amp;un.c[<span class="number">1</span>]==<span class="number">1</span>)</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;little-endian\n&quot;</span>);</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;unknown&quot;</span>\n);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>网络协议也必须指定一个网络字节序，使用如下四个函数进行两个字节序之间的转换</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;netinet/in.h&gt;</span></span></span><br><span class="line"><span class="type">uint16_t</span> <span class="title function_">htons</span><span class="params">(<span class="type">uint16_t</span> host16bitvalue)</span>;</span><br><span class="line"><span class="type">uint32_t</span> <span class="title function_">htonl</span><span class="params">(<span class="type">uint32_t</span> host32bitvalue)</span>;</span><br><span class="line"><span class="type">uint16_t</span> <span class="title function_">ntohs</span><span class="params">(<span class="type">uint16_t</span> net16bitvalue)</span>;</span><br><span class="line"><span class="type">uint32_t</span> <span class="title function_">ntohl</span><span class="params">(<span class="type">uint32_t</span> net32bitvalue)</span>;</span><br></pre></td></tr></table></figure><h3 id="字节操纵函数"><a href="#字节操纵函数" class="headerlink" title="字节操纵函数"></a>字节操纵函数</h3><p>字节操纵函数不对数据做解释，也不假设数据是以空字符串结束的C字符串。</p><p>Berkely函数</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="type">void</span> <span class="title function_">bzero</span><span class="params">(<span class="type">void</span> *dest,<span class="type">size_t</span> nbytes)</span>;<span class="comment">//将目标字节串中指定数目的字节置为0</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">bcopy</span><span class="params">(<span class="type">const</span> <span class="type">void</span> *src,<span class="type">void</span> *dest,<span class="type">size_t</span> nbyte)</span>;<span class="comment">//将指定数目的字节从源字节串移到目标字节串</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">bcmp</span><span class="params">(<span class="type">const</span> <span class="type">void</span> *ptrl,<span class="type">const</span> <span class="type">void</span> *ptr2,<span class="type">size_t</span> nbyte)</span>;<span class="comment">//比较两个任意的字节串，相同返回0</span></span><br></pre></td></tr></table></figure><p>ANSI C 函数</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="type">void</span> *<span class="title function_">memset</span><span class="params">(<span class="type">void</span> *dest,<span class="type">int</span> c,<span class="type">size_t</span> len)</span>;<span class="comment">//将目标字节串中指定数目的字节置为c</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">memcpy</span><span class="params">(<span class="type">const</span> <span class="type">void</span> *dest,<span class="type">void</span> *src,<span class="type">size_t</span> nbyte)</span>;<span class="comment">//将指定数目的字节从源字节串移到目标字节串,与bcopy的源和目的相反。</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">memcmp</span><span class="params">(<span class="type">const</span> <span class="type">void</span> *ptrl,<span class="type">const</span> <span class="type">void</span> *ptr2,<span class="type">size_t</span> nbyte)</span>;<span class="comment">//比较两个任意的字节串，相同返回0，否则返回一个非0值，若ptrl字节串大于ptr2，则大于0，反之小于0</span></span><br></pre></td></tr></table></figure><p>看到3.7</p>]]></content:encoded>
+      
+      
+      <category domain="http://singlewang.top/categories/UNIX-netcoding/">UNIX网络编程</category>
+      
+      
+      <category domain="http://singlewang.top/tags/UNIX/">UNIX</category>
+      
+      <category domain="http://singlewang.top/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程</category>
+      
+      
+      <comments>http://singlewang.top/2022/09/26/UNIX-netcoding/UNIX-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>WIFI基本知识</title>
+      <link>http://singlewang.top/2022/09/26/mobile-communication/%E6%97%A0%E7%BA%BF%E9%80%9A%E4%BF%A1/</link>
+      <guid>http://singlewang.top/2022/09/26/mobile-communication/%E6%97%A0%E7%BA%BF%E9%80%9A%E4%BF%A1/</guid>
+      <pubDate>Mon, 26 Sep 2022 11:47:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h3 id=&quot;使用无线LAN时注意事项&quot;&gt;&lt;a href=&quot;#使用无线LAN时注意事项&quot; class=&quot;headerlink&quot; title=&quot;使用无线LAN时注意事项&quot;&gt;&lt;/a&gt;使用无线LAN时注意事项&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;防止盗听或篡改，可以通过对传输数据进行加密&lt;/l</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h3 id="使用无线LAN时注意事项"><a href="#使用无线LAN时注意事项" class="headerlink" title="使用无线LAN时注意事项"></a>使用无线LAN时注意事项</h3><ol><li>防止盗听或篡改，可以通过对传输数据进行加密</li><li>防止其他设备干扰</li></ol><h3 id="蓝牙"><a href="#蓝牙" class="headerlink" title="蓝牙"></a>蓝牙</h3><p>使用2.4GHz频率无线电波的一种标准。数据传输速率在V2中能达到3Mbps，通信终端最多允许8台设备。最远距离10m。</p>]]></content:encoded>
+      
+      
+      <category domain="http://singlewang.top/categories/mobile-communication/">移动通信</category>
+      
+      
+      <category domain="http://singlewang.top/tags/WIFI/">WIFI</category>
+      
+      <category domain="http://singlewang.top/tags/%E6%97%A0%E7%BA%BF%E9%80%9A%E4%BF%A1/">无线通信</category>
+      
+      
+      <comments>http://singlewang.top/2022/09/26/mobile-communication/%E6%97%A0%E7%BA%BF%E9%80%9A%E4%BF%A1/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>终于等到你，还好我没放弃</title>
@@ -202,96 +288,6 @@
       
       
       <comments>http://singlewang.top/2022/05/31/mobile-communication/VLAN/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>深入浅出dpdk-ch7多队列与流分类</title>
-      <link>http://singlewang.top/2022/05/31/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch8/</link>
-      <guid>http://singlewang.top/2022/05/31/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch8/</guid>
-      <pubDate>Tue, 31 May 2022 11:28:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;h3 id=&quot;流分类与多队列&quot;&gt;&lt;a href=&quot;#流分类与多队列&quot; class=&quot;headerlink&quot; title=&quot;流分类与多队列&quot;&gt;&lt;/a&gt;流分类与多队列&lt;/h3&gt;&lt;h4 id=&quot;多队列&quot;&gt;&lt;a href=&quot;#多队列&quot; class=&quot;headerlink&quot; title=</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<h3 id="流分类与多队列"><a href="#流分类与多队列" class="headerlink" title="流分类与多队列"></a>流分类与多队列</h3><h4 id="多队列"><a href="#多队列" class="headerlink" title="多队列"></a>多队列</h4><h5 id="网卡多队列的由来"><a href="#网卡多队列的由来" class="headerlink" title="网卡多队列的由来"></a>网卡多队列的由来</h5><p>网卡多队列技术是一个硬件手段，利用该技术，可以做到分而治之。比如视频数据强调实时性，对数据的准确性要求不高，这样我们可以为其队列设置更高的发送优先级，或者说使用更高优先级的队列，为了达到较好的实时性，我们可以减小队列对应的带宽。</p><h5 id="Linux内核对多队列的支持"><a href="#Linux内核对多队列的支持" class="headerlink" title="Linux内核对多队列的支持"></a>Linux内核对多队列的支持</h5><ol><li>多队列对应的结构<br>Linux的网卡由结构体<code>net_device</code>表示，一个该结构体 可对应多个可以调度的数据包发送队列，数据包的实体在内核中以结构体<code>sk_buff（skb）</code>表示。</li><li>接收端<br>网卡驱动程序为每个接收队列设定相应的中断号，通过中断的均衡处理，或者设置中断的亲和性（<code>SMP IRQ Affinity</code>）,从而实现队列绑定到不同的核。</li><li>发送端<br><code>dev_pick_tx</code>用于选取发送队列，可以是driver定制的策略，也可以根据队列优先级选取，按照hash来做均衡。也就是利用<code>XPS(Transmit Packet Steering)</code>机制，智能地选择多队列设备的队列来发送数据包。</li><li>收发队列一般会被绑在同一个中断上。如果从收队列1收上来的包从发队列1发出去，cache命中率高，效率也会高。</li></ol><h5 id="DPDK与多队列"><a href="#DPDK与多队列" class="headerlink" title="DPDK与多队列"></a>DPDK与多队列</h5><p>再某个核上运行的程序从指定的队列上接收，往指定的队列上发送，可以达到很高的cache命中率，效率就会更高。<br>以<code>run to completion</code>为例，可以从核、内存与网卡队列之间的关系来理解DPDK是如何利用网卡多队列技术带来性能的提升。</p><ul><li>将网卡的某个接收队列分配给某个核，从该队列中收到的所有报文都应当在该指定的核上处理结束。</li><li>从核对应的本地存储中分配内存池，接收报文和对应的报文描述符都位于该核和发送队列对应的本地内存池中。</li><li>为每个核分配一个单独的发送队列，发送报文核对应的报文描述符都位于该核和发送队列对应的本地内存池中。</li></ul><p>不同的核，操作的是不同的队列，从而避免了多个线程同时访问一个队列带来的锁的开销。但是如果逻辑核的数目大于每个接口上所含的发送队列的数目，那么就需要有机制将队列分配给这些核。</p><h5 id="队列分配"><a href="#队列分配" class="headerlink" title="队列分配"></a>队列分配</h5><p>包的接收从网卡侧来看分为以下几步：</p><ol><li>监听到线上的报文。</li><li>按照地址过滤报文。</li><li>DMA队列分配。</li><li>将报文暂存在接收数据的先进先出缓存中。</li><li>将报文转移到主存中的指定队列中。</li><li>更新接收描述符的状态。</li></ol><h4 id="流分类"><a href="#流分类" class="headerlink" title="流分类"></a>流分类</h4><h5 id="包的类型"><a href="#包的类型" class="headerlink" title="包的类型"></a>包的类型</h5><p>对于DPDK而言，Mbuf结构中含有相应的字段来表示网卡分析出的包的类型，<code>Packet_type</code>由二层，三层，四层以及tunnel的信息组成。<br>网卡设备同时可以根据报的类型确定其关键字，从而根据关键字确定其收包队列。</p><blockquote><p>不是所有网卡都支持这项功能，支持功能的复杂度也有差异</p></blockquote><h5 id="RSS"><a href="#RSS" class="headerlink" title="RSS"></a>RSS</h5><p>负载均衡就是将负载分摊到多个执行单元上执行，对于<code>Packet IO</code>而言，就是将数据包收发处理分摊到多个核上。<br><code>RSS（Receive-Side Scaling）</code>接收方扩展技术可以将流量分散到不同的队列中的技术。它和硬件相关联，必须要有网卡的硬件进行支持。RSS把数据包分配到不同的队列中。<br>简单的说RSS就是根据关键字通过哈希函数计算出哈希值，再由哈希值确定队列。网卡会根据不同的数据包类型选取出不同的关键字。<br>RSS是否能将数据包均匀散开再多个队列中，取决于真实环境中的数据包构成和哈希函数的选取。哈希函数一般选取微软的托普利兹算法。</p><h5 id="服务质量"><a href="#服务质量" class="headerlink" title="服务质量"></a>服务质量</h5><p>多队列应用于服务质量（Qos）流量类别：</p><ul><li>把发送队列分配给不同的流量类别，可以让网卡再发送侧做调度</li><li>把收包队列分配给不同的流量类别，可以做到基于流的限速</li></ul><h5 id="流过滤"><a href="#流过滤" class="headerlink" title="流过滤"></a>流过滤</h5><p>流的合法性验证的主要任务是决定哪些数据包是合法的、可被接收的。&#x3D;&#x3D;合法性检查主要包括对外部来的流和内部流的验证&#x3D;&#x3D;<br>可以被接收的数据包会被网卡送到主机或者网卡内置的管理控制器，其过滤主要集中再以太网的二层功能，包括VLAN及MAC过滤。<br>流的过滤可以分为以下几步：</p><ol><li>MAC地址的过滤（L2Filter）</li><li>VLAN标签的过滤</li><li>管理数据包的过滤</li></ol>]]></content:encoded>
-      
-      
-      <category domain="http://singlewang.top/categories/dpdk/">DPDK</category>
-      
-      <category domain="http://singlewang.top/categories/dpdk/dpdk-advanced/">DPDK进阶</category>
-      
-      
-      <category domain="http://singlewang.top/tags/dpdk/">dpdk</category>
-      
-      <category domain="http://singlewang.top/tags/%E6%B5%81%E5%88%86%E7%B1%BB/">流分类</category>
-      
-      
-      <comments>http://singlewang.top/2022/05/31/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch8/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>WIFI基本知识</title>
-      <link>http://singlewang.top/2022/05/30/mobile-communication/WIFI%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/</link>
-      <guid>http://singlewang.top/2022/05/30/mobile-communication/WIFI%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/</guid>
-      <pubDate>Mon, 30 May 2022 11:47:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;h2 id=&quot;WIFI的连接过程&quot;&gt;&lt;a href=&quot;#WIFI的连接过程&quot; class=&quot;headerlink&quot; title=&quot;WIFI的连接过程&quot;&gt;&lt;/a&gt;WIFI的连接过程&lt;/h2&gt;&lt;p&gt;一般如果STA要和AP建立连接，要经过三个阶段才能够接入：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<h2 id="WIFI的连接过程"><a href="#WIFI的连接过程" class="headerlink" title="WIFI的连接过程"></a>WIFI的连接过程</h2><p>一般如果STA要和AP建立连接，要经过三个阶段才能够接入：</p><ol><li>扫描阶段(SCAN)</li><li>认证关联(Authentication)</li><li>关联(Association)</li></ol><h3 id="WIFI扫描"><a href="#WIFI扫描" class="headerlink" title="WIFI扫描"></a>WIFI扫描</h3><p>STA在加入任何网络之前必须识别现有网络，这个过程称为扫描，扫描又分为 <strong>主动扫描</strong> 和 <strong>被动扫描</strong>。</p><ol><li>主动扫描：STA会在每个信道上发出<code>Probe request</code>,携带相关的SSID信息，寻找相同SSID的AP，若找不到，一直扫描下去，找到后等待接收<code>Probe response</code>。</li><li>被动扫描：STA会在各个信道之间不断切换，通过监听AP定期发送的<code>Beacon</code>帧来发现网络，<code>Beacon</code>帧标示了相关的BSS信息（可以理解为对应的路由器的信息就是BSS信息）</li></ol><p>选网原则：</p><ul><li>选择相同SSID的网络做认证</li><li>优先选择信号强度最强或最近使用的网络</li></ul><h3 id="WIFI认证"><a href="#WIFI认证" class="headerlink" title="WIFI认证"></a>WIFI认证</h3><blockquote><p>只有通过STA和AP之间的认证，才能进一步接入无线网络<br>认证可以通过MAC地址认证，或者用户名和密码口令认证</p></blockquote><p>认证的方式有两种：</p><ol><li>开放式认证：STA发送认证请求，AP直接通过认证请求，安全风险较高</li><li>共享密钥认证：STA向AP 发送认证请求，AP随机产生字符串，STA接收到字符串后进行密钥加密后发给AP，AP收到信息后用密钥解密得到随机字符串，如果AP判断字符串与原始发的字符串相同，则认证通过。</li></ol><h3 id="WIFI关联"><a href="#WIFI关联" class="headerlink" title="WIFI关联"></a>WIFI关联</h3><p>STA一旦完成身份认证，便可以发送<code>Association Request</code>,请求获得网络的完全访问权。关联能让AP记录每个STA的位置，以便将帧正确送达。</p><ul><li>STA与AP认证成功后，就可以向AP发送关联请求</li><li>AP将STA的信息添加到数据库，并向STA发出关联响应，则注册成功，完成关联</li><li>关联建立后，即可接入无线网络，实现数据通信</li><li>当STA需要接入新的网络时，需要去关联后，重新认证，和新AP再关联。</li><li>每个STA只能关联到一个AP，但是关联总是由STA发起。</li></ul><p><strong>去关联</strong>是一个单向的，无需确认的过程，可由STA发起也可以由AP发起。只需发送一个通知性质的<code>deauth</code>帧或者<code>disassoc</code>帧，因此容易造成状态不同步</p>]]></content:encoded>
-      
-      
-      <category domain="http://singlewang.top/categories/mobile-communication/">移动通信</category>
-      
-      
-      <category domain="http://singlewang.top/tags/WIFI/">WIFI</category>
-      
-      
-      <comments>http://singlewang.top/2022/05/30/mobile-communication/WIFI%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>Linux中断和定时器</title>
-      <link>http://singlewang.top/2022/05/24/linux/linux-kernal/linux-kernal-driver/Linux%E4%B8%AD%E6%96%AD%E5%92%8C%E5%AE%9A%E6%97%B6%E5%99%A8/</link>
-      <guid>http://singlewang.top/2022/05/24/linux/linux-kernal/linux-kernal-driver/Linux%E4%B8%AD%E6%96%AD%E5%92%8C%E5%AE%9A%E6%97%B6%E5%99%A8/</guid>
-      <pubDate>Tue, 24 May 2022 13:27:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;h3 id=&quot;中断与定时器&quot;&gt;&lt;a href=&quot;#中断与定时器&quot; class=&quot;headerlink&quot; title=&quot;中断与定时器&quot;&gt;&lt;/a&gt;中断与定时器&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;中断&lt;/strong&gt;：指CPU在指向程序的过程中，出现某些突发事件时，CPU必须暂停执行当</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<h3 id="中断与定时器"><a href="#中断与定时器" class="headerlink" title="中断与定时器"></a>中断与定时器</h3><p><strong>中断</strong>：指CPU在指向程序的过程中，出现某些突发事件时，CPU必须暂停执行当前的程序，转去处理突发事件，处理完毕后又返回原程序被中断的位置并继续执行。</p><ul><li>根据中断的来源可分为：</li></ul><ol><li>内部中断：中断源来自CPU内部，如软件中断指令、溢出等。</li><li>外部中断：中断源来自CPU外部，由外设请求</li></ol><ul><li>根据是否可以屏蔽分为：</li></ul><ol><li>可屏蔽中断：通过屏蔽字相应，屏蔽后，该中断不再得到相应</li><li>不屏蔽中断：不能被屏蔽</li></ol><ul><li>根据中断入口跳转方法不同，可分为：</li></ul><ol><li>向量中断：CPU通常为不同的中断分配不同的中断号。（硬件）</li><li>非向量中断：多个中断共享一个入口地址，进入该入口地址后再通过软件判断中断标志来识别具体哪个中断。（软件）</li></ol><h3 id="Linux中断编程"><a href="#Linux中断编程" class="headerlink" title="Linux中断编程"></a>Linux中断编程</h3><h4 id="申请和释放中断"><a href="#申请和释放中断" class="headerlink" title="申请和释放中断"></a>申请和释放中断</h4><ol><li>申请irq<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">request_irq</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> irq,</span></span><br><span class="line"><span class="params">                <span class="type">void</span> (*handler)(<span class="type">int</span> irq.<span class="type">void</span> *dev_id,<span class="keyword">struct</span> pt_regs *regs),</span></span><br><span class="line"><span class="params">                <span class="type">unsigned</span> <span class="type">long</span> irqflags,</span></span><br><span class="line"><span class="params">                <span class="type">const</span> <span class="type">char</span> * devname,</span></span><br><span class="line"><span class="params">                <span class="type">void</span> *dev_id)</span>;</span><br></pre></td></tr></table></figure>irq是要申请的硬件中断号。<br>handler是向系统等级的中断处理函数，是一个回调函数。<br>irqflags是中断处理的属性<blockquote><p>SA_INTERRUPT 表示中断处理程序是快速处理程序<br>SA_SHIRQ 表示多个设备共享中断<br>request_irq()返回0表示成功，返回-INVAL表示中断号无效或函数指针为NULL，返回-EBUSY表示中断已经被占用。</p></blockquote></li></ol><p>2.释放IRQ</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">free_irq</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> irq,<span class="type">void</span> *dev_id)</span>;</span><br></pre></td></tr></table></figure><h4 id="使能和屏蔽中断"><a href="#使能和屏蔽中断" class="headerlink" title="使能和屏蔽中断"></a>使能和屏蔽中断</h4><p>以下三个函数用于屏蔽一个中断源</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">disable_irq</span><span class="params">(<span class="type">int</span> irq)</span>; <span class="comment">//立即返回</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">disable_irq_nosync</span><span class="params">(<span class="type">int</span> irq)</span>; <span class="comment">//等待目前的中断处理完成</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">enable_irq</span><span class="params">(<span class="type">int</span> irq)</span>; <span class="comment">//作用与可编程中断控制器，对系统内的所有CPU都生效。</span></span><br></pre></td></tr></table></figure><p>以下两个函数将屏蔽本CPU内的所有中断</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">local_irq_save</span><span class="params">(<span class="type">unsigned</span> <span class="type">long</span> falgs)</span>;<span class="comment">//将目前的中断状态保留在flags中。</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">local_irq_diasble</span><span class="params">(<span class="type">void</span>)</span>; <span class="comment">//直接禁止中断</span></span><br></pre></td></tr></table></figure><p>恢复中断：</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">local_irq_restore</span><span class="params">(<span class="type">unsigned</span> <span class="type">long</span> flags)</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">local_irq_enable</span><span class="params">(<span class="type">void</span>)</span>;</span><br></pre></td></tr></table></figure><p>硬中断、软中断、信号的区别：</p><ol><li>硬中断是外部设备对&#x3D;&#x3D;CPU&#x3D;&#x3D;的中断</li><li>软中断通常是硬中断服务程序对&#x3D;&#x3D;内核&#x3D;&#x3D;的中断</li><li>信号则是由内核对某个&#x3D;&#x3D;进程&#x3D;&#x3D;的中断</li></ol><h3 id="内核定时器"><a href="#内核定时器" class="headerlink" title="内核定时器"></a>内核定时器</h3><h4 id="内核定时器编程"><a href="#内核定时器编程" class="headerlink" title="内核定时器编程"></a>内核定时器编程</h4><p>软件意义上的定时器最终依赖硬件定时器来实现，内核在时钟中断发生后检测各定时器是否到期，到期后的定时器处理函数将作为软中断在底半部执行。</p><p>linux内核所提供的用于操作定时器的数据结构和函数如下：</p><ol><li>timer_list</li></ol><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">timer_list</span>&#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> <span class="title">entry</span>;</span> <span class="comment">//定时器列表</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">long</span> expires; <span class="comment">//定时器到期时间</span></span><br><span class="line">    <span class="type">void</span> (*function)(<span class="type">unsigned</span> <span class="type">long</span>); <span class="comment">//定时器处理函数</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">long</span> data;  <span class="comment">//作为参数被传入</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">timer_base_s</span> *<span class="title">base</span>;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><p>eg:</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">timer_list</span> <span class="title">my_timer</span>;</span></span><br></pre></td></tr></table></figure><ol start="2"><li>初始化定时器<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">init_timer</span><span class="params">(<span class="keyword">struct</span> timer_list *timer)</span>;</span><br></pre></td></tr></table></figure></li></ol><p><code>TIMER_INITIALIZER(_function,_expires,_data)</code>宏用于赋值定时结构体的function、expires、data、base成员。</p><ol start="3"><li><p>增加定时器</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">add_timer</span><span class="params">(<span class="keyword">struct</span> timer_list *timer)</span>; <span class="comment">//注册内核定时器，将定时器加入到内核动态定时器链表中。</span></span><br></pre></td></tr></table></figure></li><li><p>删除定时器</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">del_timer</span><span class="params">(sturct timer_list * timer)</span>;</span><br></pre></td></tr></table></figure></li></ol><h3 id="内核延时"><a href="#内核延时" class="headerlink" title="内核延时"></a>内核延时</h3><h4 id="短延时"><a href="#短延时" class="headerlink" title="短延时"></a>短延时</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">ndelay</span><span class="params">(<span class="type">unsigned</span> <span class="type">long</span> nsecs)</span>; <span class="comment">//纳秒</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">udelay</span><span class="params">(<span class="type">unsigned</span> <span class="type">long</span> usecs)</span>; <span class="comment">//微秒</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">mdelay</span><span class="params">(<span class="type">unsigned</span> <span class="type">long</span> msecs)</span>; <span class="comment">//毫秒</span></span><br></pre></td></tr></table></figure><p>在内核中，最好不要直接使用毫秒级别的延时，这将无所谓地耗费CPU资源。对于毫秒级以上地时延，内核提供了下述函数：</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">msleep</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> millisecs)</span>; <span class="comment">//不能被打断</span></span><br><span class="line"><span class="type">unsigned</span> <span class="type">long</span> <span class="title function_">msleep_interruptible</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> millisecs)</span>; <span class="comment">//可以被打断</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">ssleep</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> seconds)</span>; <span class="comment">//不能被打断</span></span><br></pre></td></tr></table></figure><h4 id="长延时"><a href="#长延时" class="headerlink" title="长延时"></a>长延时</h4><p>内核中进行延时地很直观地方法时比较当前地jiffies和目标jiffies，知道未来地jiffies达到目标jiffies。</p><h4 id="睡着延时"><a href="#睡着延时" class="headerlink" title="睡着延时"></a>睡着延时</h4><p>睡着延时比忙等待更好，随着延迟在等待地时间到来之间进程处于睡眠状态，CPU资源被其他进程使用。<code>schedule_timeout()</code>可以使当前任务睡眠指定地jiffies之后重新被调度执行。<br>实际上<code>schedule_timeout()</code>地实现原理时向系统添加一个定时器，在定时器处理函数中唤醒参数对应地进程。</p>]]></content:encoded>
-      
-      
-      <category domain="http://singlewang.top/categories/linux/">Linux</category>
-      
-      <category domain="http://singlewang.top/categories/linux/linux-kernal/">Linux内核</category>
-      
-      <category domain="http://singlewang.top/categories/linux/linux-kernal/linux-kernal-driver/">Linux内核驱动</category>
-      
-      
-      <category domain="http://singlewang.top/tags/Linux%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87/">Linux网络设备</category>
-      
-      <category domain="http://singlewang.top/tags/Linux%E5%86%85%E6%A0%B8%E9%A9%B1%E5%8A%A8/">Linux内核驱动</category>
-      
-      
-      <comments>http://singlewang.top/2022/05/24/linux/linux-kernal/linux-kernal-driver/Linux%E4%B8%AD%E6%96%AD%E5%92%8C%E5%AE%9A%E6%97%B6%E5%99%A8/#disqus_thread</comments>
       
     </item>
     

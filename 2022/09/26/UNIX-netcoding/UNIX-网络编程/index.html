@@ -1,0 +1,598 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="Single Wang's Blog" href="http://singlewang.top/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="Single Wang's Blog" href="http://singlewang.top/atom.xml" />
+<link rel="alternate" type="application/json" title="Single Wang's Blog" href="http://singlewang.top/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/css/app.css?v=0.2.5">
+
+  
+  <meta name="keywords" content="UNIX,网络编程" />
+
+
+<link rel="canonical" href="http://singlewang.top/2022/09/26/UNIX-netcoding/UNIX-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">
+
+
+
+  <title>
+套接字编程 - UNIX网络编程 |
+桃花不必开了，我等的人已经来了 = Single Wang's Blog = 智者不入爱河</title>
+<meta name="generator" content="Hexo 6.1.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">套接字编程
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="创建时间：2022-09-26 19:47:00">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="dateCreated datePublished" datetime="2022-09-26T19:47:00+08:00">2022-09-26</time>
+  </span>
+  <span class="item" title="本文字数">
+    <span class="icon">
+      <i class="ic i-pen"></i>
+    </span>
+    <span class="text">本文字数</span>
+    <span>1.8k</span>
+    <span class="text">字</span>
+  </span>
+  <span class="item" title="阅读时长">
+    <span class="icon">
+      <i class="ic i-clock"></i>
+    </span>
+    <span class="text">阅读时长</span>
+    <span>2 分钟</span>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/" rel="start">桃花不必开了，我等的人已经来了</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1giciub8ja1j20zk0m81ky.jpg"></li>
+          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gipex2cdtbj20zk0m8x6p.jpg"></li>
+          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gipetlbztpj20zk0m84qp.jpg"></li>
+          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1giclg5ms2rj20zk0m8u0x.jpg"></li>
+          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1giclgrvbd6j20zk0m8qv5.jpg"></li>
+          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1giclfb3vzhj20zk0m8wny.jpg"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/">首页</a></span><i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/categories/UNIX-netcoding/" itemprop="item" rel="index" title="分类于 UNIX网络编程"><span itemprop="name">UNIX网络编程</span></a>
+<meta itemprop="position" content="1" /></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+  <link itemprop="mainEntityOfPage" href="http://singlewang.top/2022/09/26/UNIX-netcoding/UNIX-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/images/taizaizhi.jpg">
+    <meta itemprop="name" content="Single Wang">
+    <meta itemprop="description" content="智者不入爱河, 这一次，你彻彻底底的抛弃了我，但我不恨你，反而谢谢你，让我明白自己在你心中的位置，从此相逢是路人。">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Single Wang's Blog">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <h2 id="套接字编程"><a href="#套接字编程" class="headerlink" title="套接字编程"></a>套接字编程</h2><h3 id="IPV4套接字地址结构"><a href="#IPV4套接字地址结构" class="headerlink" title="IPV4套接字地址结构"></a>IPV4套接字地址结构</h3><p>ipv4套接字地址结构通常也称为“网际套接字地址结构”，以<code>sockaddr_in</code>命名。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">in_addr</span>&#123;</span></span><br><span class="line">    <span class="type">in_addr_t</span> s_addr;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span>&#123;</span></span><br><span class="line">    <span class="type">uint8_t</span> sin_len;</span><br><span class="line">    <span class="type">sa_family_t</span> sin_family;  <span class="comment">//无符号短整数</span></span><br><span class="line">    <span class="type">in_port_t</span> sin_port;  <span class="comment">//</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">in_addr</span> <span class="title">sin_addr</span>;</span></span><br><span class="line">    <span class="type">char</span> sin_zero[<span class="number">8</span>];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="通用套接字地址结构"><a href="#通用套接字地址结构" class="headerlink" title="通用套接字地址结构"></a>通用套接字地址结构</h3><p>当作为一个参数传递进任何套接字函数时，套接字地址总是以引用形式来传递。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sockaddr</span>&#123;</span></span><br><span class="line">    <span class="type">uint8_t</span> sa_len;</span><br><span class="line">    <span class="type">sa_family_t</span> sa_family;</span><br><span class="line">    <span class="type">char</span> sa_data[<span class="number">4</span>];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ul>
+<li>从进程到内核传递套接字结构的函数有三个：<code>bind、connect、sendto</code>。</li>
+<li>从内核到进程传递套接字地址结构的函数有4个：<code>accept、recvfrom、getsockname、getpeername</code>。</li>
+</ul>
+</blockquote>
+<h3 id="字节排序函数"><a href="#字节排序函数" class="headerlink" title="字节排序函数"></a>字节排序函数</h3><p>内存中存储有两种方式:</p>
+<ul>
+<li>小端字节序，低序字节存储在低地址</li>
+<li>大端字节序，高序字节存储在低地址<br>我们某个给定系统所用的字节称为<strong>主机字节序</strong>。</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*输出主机字节序*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;udp.h&quot;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc,<span class="type">char</span> **argv)</span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">union</span> &#123;</span></span><br><span class="line">        <span class="type">short</span> s;</span><br><span class="line">        <span class="type">char</span>  c[<span class="keyword">sizeof</span>(<span class="type">short</span>)];</span><br><span class="line">    &#125;un;</span><br><span class="line">    un.s=<span class="number">0x0102</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%s:&quot;</span>,CPU_VENDOR_OS);<span class="comment">//CPU_VENDOR_OS标识了CPU类型、厂家、操作系统版本</span></span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">sizeof</span>(<span class="type">short</span>==<span class="number">2</span>))&#123;</span><br><span class="line">        <span class="keyword">if</span>(un.c[<span class="number">0</span>]==<span class="number">1</span>&amp;&amp;un.c[<span class="number">1</span>]==<span class="number">2</span>)</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;big-endian\n&quot;</span>);</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(un.c[<span class="number">0</span>]==<span class="number">2</span>&amp;&amp;un.c[<span class="number">1</span>]==<span class="number">1</span>)</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;little-endian\n&quot;</span>);</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;unknown&quot;</span>\n);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>网络协议也必须指定一个网络字节序，使用如下四个函数进行两个字节序之间的转换</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;netinet/in.h&gt;</span></span></span><br><span class="line"><span class="type">uint16_t</span> <span class="title function_">htons</span><span class="params">(<span class="type">uint16_t</span> host16bitvalue)</span>;</span><br><span class="line"><span class="type">uint32_t</span> <span class="title function_">htonl</span><span class="params">(<span class="type">uint32_t</span> host32bitvalue)</span>;</span><br><span class="line"><span class="type">uint16_t</span> <span class="title function_">ntohs</span><span class="params">(<span class="type">uint16_t</span> net16bitvalue)</span>;</span><br><span class="line"><span class="type">uint32_t</span> <span class="title function_">ntohl</span><span class="params">(<span class="type">uint32_t</span> net32bitvalue)</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="字节操纵函数"><a href="#字节操纵函数" class="headerlink" title="字节操纵函数"></a>字节操纵函数</h3><p>字节操纵函数不对数据做解释，也不假设数据是以空字符串结束的C字符串。</p>
+<p>Berkely函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="type">void</span> <span class="title function_">bzero</span><span class="params">(<span class="type">void</span> *dest,<span class="type">size_t</span> nbytes)</span>;<span class="comment">//将目标字节串中指定数目的字节置为0</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">bcopy</span><span class="params">(<span class="type">const</span> <span class="type">void</span> *src,<span class="type">void</span> *dest,<span class="type">size_t</span> nbyte)</span>;<span class="comment">//将指定数目的字节从源字节串移到目标字节串</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">bcmp</span><span class="params">(<span class="type">const</span> <span class="type">void</span> *ptrl,<span class="type">const</span> <span class="type">void</span> *ptr2,<span class="type">size_t</span> nbyte)</span>;<span class="comment">//比较两个任意的字节串，相同返回0</span></span><br></pre></td></tr></table></figure>
+
+<p>ANSI C 函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="type">void</span> *<span class="title function_">memset</span><span class="params">(<span class="type">void</span> *dest,<span class="type">int</span> c,<span class="type">size_t</span> len)</span>;<span class="comment">//将目标字节串中指定数目的字节置为c</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">memcpy</span><span class="params">(<span class="type">const</span> <span class="type">void</span> *dest,<span class="type">void</span> *src,<span class="type">size_t</span> nbyte)</span>;<span class="comment">//将指定数目的字节从源字节串移到目标字节串,与bcopy的源和目的相反。</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">memcmp</span><span class="params">(<span class="type">const</span> <span class="type">void</span> *ptrl,<span class="type">const</span> <span class="type">void</span> *ptr2,<span class="type">size_t</span> nbyte)</span>;<span class="comment">//比较两个任意的字节串，相同返回0，否则返回一个非0值，若ptrl字节串大于ptr2，则大于0，反之小于0</span></span><br></pre></td></tr></table></figure>
+
+<p>看到3.7</p>
+
+      <div class="tags">
+          <a href="/tags/UNIX/" rel="tag"><i class="ic i-tag"></i> UNIX</a>
+          <a href="/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" rel="tag"><i class="ic i-tag"></i> 网络编程</a>
+      </div>
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新于</span>
+    <time title="修改时间：2022-09-26 21:10:35" itemprop="dateModified" datetime="2022-09-26T21:10:35+08:00">2022-09-26</time>
+  </span>
+  <span id="2022/09/26/UNIX-netcoding/UNIX-网络编程/" class="item leancloud_visitors" data-flag-title="套接字编程" title="阅读次数">
+      <span class="icon">
+        <i class="ic i-eye"></i>
+      </span>
+      <span class="text">阅读次数</span>
+      <span class="leancloud-visitors-count"></span>
+      <span class="text">次</span>
+  </span>
+</div>
+
+      
+<div class="reward">
+  <button><i class="ic i-heartbeat"></i> 赞赏</button>
+  <p>听我说，谢谢你</p>
+  <div id="qr">
+      
+      <div>
+        <img data-src="/images/wepay.jpg" alt="Single Wang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div>
+        <img data-src="/images/zhipay.jpg" alt="Single Wang 支付宝">
+        <p>支付宝</p>
+      </div>
+  </div>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>本文作者： </strong>Single Wang <i class="ic i-at"><em>@</em></i>Single Wang's Blog
+  </li>
+  <li class="link">
+    <strong>本文链接：</strong>
+    <a href="http://singlewang.top/2022/09/26/UNIX-netcoding/UNIX-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" title="套接字编程">http://singlewang.top/2022/09/26/UNIX-netcoding/UNIX-网络编程/</a>
+  </li>
+  <li class="license">
+    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/2022/09/26/mobile-communication/%E6%97%A0%E7%BA%BF%E9%80%9A%E4%BF%A1/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva1.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1gipevgoki5j20zk0m84qp.jpg" title="WIFI基本知识">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> 移动通信</span>
+  <h3>WIFI基本知识</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/2022/09/26/UINX-envcoding/UINX-%E7%8E%AF%E5%A2%83%E7%BC%96%E7%A8%8B/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;tva1.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1gipeuibk9fj20zk0m8ay2.jpg" title="套接字编程">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> UNIX环境编程，第一章基础知识</span>
+  <h3>套接字编程</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A5%97%E6%8E%A5%E5%AD%97%E7%BC%96%E7%A8%8B"><span class="toc-number">1.</span> <span class="toc-text">套接字编程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#IPV4%E5%A5%97%E6%8E%A5%E5%AD%97%E5%9C%B0%E5%9D%80%E7%BB%93%E6%9E%84"><span class="toc-number">1.1.</span> <span class="toc-text">IPV4套接字地址结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E7%94%A8%E5%A5%97%E6%8E%A5%E5%AD%97%E5%9C%B0%E5%9D%80%E7%BB%93%E6%9E%84"><span class="toc-number">1.2.</span> <span class="toc-text">通用套接字地址结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E8%8A%82%E6%8E%92%E5%BA%8F%E5%87%BD%E6%95%B0"><span class="toc-number">1.3.</span> <span class="toc-text">字节排序函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E8%8A%82%E6%93%8D%E7%BA%B5%E5%87%BD%E6%95%B0"><span class="toc-number">1.4.</span> <span class="toc-text">字节操纵函数</span></a></li></ol></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li class="active"><a href="/2022/09/26/UNIX-netcoding/UNIX-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" rel="bookmark" title="套接字编程">套接字编程</a></li>
+        </ul>
+      </div>
+      <div class="overview panel" data-title="站点概览">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="Single Wang"
+      data-src="/images/taizaizhi.jpg">
+  <p class="name" itemprop="name">Single Wang</p>
+  <div class="description" itemprop="description">这一次，你彻彻底底的抛弃了我，但我不恨你，反而谢谢你，让我明白自己在你心中的位置，从此相逢是路人。</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/archives/">
+        <span class="count">35</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+    <div class="item categories">
+      <a href="/categories/">
+        <span class="count">19</span>
+        <span class="name">分类</span>
+      </a>
+    </div>
+    <div class="item tags">
+      <a href="/tags/">
+        <span class="count">41</span>
+        <span class="name">标签</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+      <span class="exturl item github" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbXBsZVdhbmcwMTE4" title="https:&#x2F;&#x2F;github.com&#x2F;SimpleWang0118"><i class="ic i-github"></i></span>
+      <a href="/931346283@qq.com" title="931346283@qq.com" class="item email"><i class="ic i-envelope"></i></a>
+      <a href="/931346283@qq.com" title="931346283@qq.com" class="item QQ"><i class="ic i-qq"></i></a>
+      <a href="/WLH931346283" title="WLH931346283" class="item WeChat"><i class="ic i-weixin"></i></a>
+      <span class="exturl item music" data-url="aHR0cHM6Ly9tdXNpYy4xNjMuY29tLyMvdXNlci9ob21lP2lkPTEyODkyMjAwMjc=" title="https:&#x2F;&#x2F;music.163.com&#x2F;#&#x2F;user&#x2F;home?id&#x3D;1289220027"><i class="ic i-cloud-music"></i></span>
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/" rel="section"><i class="ic i-home"></i>首页</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/archives/" rel="section"><i class="ic i-list-alt"></i>归档</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/categories/" rel="section"><i class="ic i-th"></i>分类</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/tags/" rel="section"><i class="ic i-tags"></i>标签</a>
+  </li>
+
+  </ul>
+    
+  <li class="item">
+    <a href="/about/" rel="section"><i class="ic i-user"></i>关于</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/2022/09/26/mobile-communication/%E6%97%A0%E7%BA%BF%E9%80%9A%E4%BF%A1/" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/2022/09/26/UINX-envcoding/UINX-%E7%8E%AF%E5%A2%83%E7%BC%96%E7%A8%8B/" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>随机文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/dpdk/dpdk-base/" title="分类于 DPDK基础">DPDK基础</a>
+</div>
+
+    <span><a href="/2022/04/29/dpdk/dpdk-base/dpdk/" title="DPDK基础">DPDK基础</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2022/05/03/git%E5%AD%A6%E4%B9%A0/" title="git学习">git学习</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/informal-essay/" title="分类于 随笔">随笔</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/informal-essay/life/" title="分类于 生活感悟">生活感悟</a>
+</div>
+
+    <span><a href="/2022/08/14/informal-essay/life/%E7%BB%88%E4%BA%8E%E7%AD%89%E5%88%B0%E4%BD%A0/" title="终于等到你，还好我没放弃">终于等到你，还好我没放弃</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/linux/" title="分类于 Linux">Linux</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/linux/linux-kernal/" title="分类于 Linux内核">Linux内核</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/linux/linux-kernal/linx-kernal-proto/" title="分类于 Linux内核协议栈">Linux内核协议栈</a>
+</div>
+
+    <span><a href="/2022/05/03/linux/linux-kernal/linx-kernal-proto/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp2/" title="Linux内核协议栈-cp2">Linux内核协议栈-cp2</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/mobile-communication/" title="分类于 移动通信">移动通信</a>
+</div>
+
+    <span><a href="/2022/05/30/mobile-communication/WIFI%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/" title="WIFI基本知识">WIFI基本知识</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/CPP/" title="分类于 CPP">CPP</a>
+</div>
+
+    <span><a href="/2022/05/05/cpp/cpp%E5%A4%9A%E6%80%81/" title="cpp之虚函数与多态">cpp之虚函数与多态</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/linux/" title="分类于 Linux">Linux</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/linux/linux-kernal/" title="分类于 Linux内核">Linux内核</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/linux/linux-kernal/linux-kernal-driver/" title="分类于 Linux内核驱动">Linux内核驱动</a>
+</div>
+
+    <span><a href="/2022/05/09/linux/linux-kernal/linux-kernal-driver/linux%E9%94%81/" title="Linux驱动中的并发控制">Linux驱动中的并发控制</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/mobile-communication/" title="分类于 移动通信">移动通信</a>
+</div>
+
+    <span><a href="/2022/09/26/mobile-communication/%E6%97%A0%E7%BA%BF%E9%80%9A%E4%BF%A1/" title="WIFI基本知识">WIFI基本知识</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/dpdk/dpdk-advanced/" title="分类于 DPDK进阶">DPDK进阶</a>
+</div>
+
+    <span><a href="/2022/05/14/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch4/" title="深入浅出dpdk-ch4同步互斥机制">深入浅出dpdk-ch4同步互斥机制</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/linux/" title="分类于 Linux">Linux</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/linux/linux-command/" title="分类于 Linux命令">Linux命令</a>
+</div>
+
+    <span><a href="/2022/05/03/linux/linux-command/linux%E5%91%BD%E4%BB%A4/" title="Linux命令">Linux命令</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新评论</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2022-04 – 
+    <span itemprop="copyrightYear">2022</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Single Wang @ 桃花不必开了，我等的人已经来了</span>
+  </div>
+  <div class="count">
+    <span class="post-meta-item-icon">
+      <i class="ic i-chart-area"></i>
+    </span>
+    <span title="站点总字数">84k 字</span>
+
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="ic i-coffee"></i>
+    </span>
+    <span title="站点阅读时长">1:16</span>
+  </div>
+  <div class="powered-by">
+    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: '2022/09/26/UNIX-netcoding/UNIX-网络编程/',
+    favicon: {
+      show: "（●´3｀●）やれやれだぜ",
+      hide: "(´Д｀)大変だ！"
+    },
+    search : {
+      placeholder: "文章搜索",
+      empty: "关于 「 ${query} 」，什么也没搜到",
+      stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    valine: true,fancybox: true,
+    copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/js/app.js?v=0.2.5"></script>
+
+
+
+
+</body>
+</html>
