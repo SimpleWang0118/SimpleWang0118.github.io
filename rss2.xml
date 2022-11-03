@@ -35,10 +35,10 @@
     </item>
     
     <item>
-      <title></title>
+      <title>netfilter多核绑定</title>
       <link>http://singlewang.top/2022/11/03/netfilter%E5%A4%9A%E6%A0%B8%E7%BB%91%E5%AE%9A/</link>
       <guid>http://singlewang.top/2022/11/03/netfilter%E5%A4%9A%E6%A0%B8%E7%BB%91%E5%AE%9A/</guid>
-      <pubDate>Thu, 03 Nov 2022 12:59:20 GMT</pubDate>
+      <pubDate>Thu, 03 Nov 2022 12:34:00 GMT</pubDate>
       
         
         
@@ -53,6 +53,10 @@
       <content:encoded><![CDATA[<blockquote><p>以下内容参考来源与一篇论文《一种基于X86架构的多核绑定技术》</p></blockquote><h2 id="netfilter多核绑定"><a href="#netfilter多核绑定" class="headerlink" title="netfilter多核绑定"></a>netfilter多核绑定</h2><p>当数据堆被分配完成后，内核调用<code>ip_rcv()</code>函数对所有的数据包进行检测后进入<code>Netfilter</code>数据包检测流程。</p><p>多核绑定的技术主要是将某个线程绑定到指定的CPU上核上，确认绑定后，该进程的执行过程都在一个指定的一个或多个CPU上进行调度。</p><p><code>ip_rcv</code>函数是<code>netfilter</code>的起始调用函数，是内核协议栈函数。只需要将该函数多线程化，然后将每个线程绑定到单独的核上。</p><p>通过<code>kthread_create(int)(*threadfn)(void *data),void *data,const char *namefmt,···)</code>创建内核线程，线程创建后需要将kthread_create()返回的<code>task_struct</code>指针传给<code>wake_up_process</code>，然后通过此函数运行线程。<code>kbind()</code>绑定内核线程到指定的核，绑定成功后会在n个绑定的核上执行独立的netfilter，</p><blockquote><p>在处理netfilter连接跟踪时，保证所有核上执行的netfilter使用的都是同一个连接跟踪结构，不会破坏数据包连接跟踪的一致性。</p></blockquote><p>基于多核绑定技术架构图：</p><p><img data-src="C:\Users\SimpleWang\AppData\Roaming\Typora\typora-user-images\image-20221103202234404.png" alt="image-20221103202234404"></p><h2 id="DMA队列映射"><a href="#DMA队列映射" class="headerlink" title="DMA队列映射"></a>DMA队列映射</h2><p>Linux2.6.11版本内核中网卡接收数据的流程：</p><ol><li>数据到达网卡</li><li>网卡立刻产生一个中断指令发送给CPU</li><li>CPU执行I&#x2F;O指令，从网卡I&#x2F;O区域中去读取数据。</li></ol><p>但是这种网卡驱动存在两个性能问题：</p><ul><li><p>针对大流量数据的接收，网卡会产生大量的中断，CPU在中断上下文中频繁操作，会浪费大量的系统资源来处理中断本身。可以使用<em><strong>轮询技术NAPI</strong></em>。该技术有两个重要步骤：</p><ol><li><p>内核屏蔽网卡中断</p></li><li><p>内核设定一定时间自动访问网卡</p></li></ol></li><li><p>传统网卡驱动每次访问I&#x2F;O区域的数据时都需要CPU去存取。该操作会消耗大量CPU资源。可以采取的一种方法是<em><strong>在内存中建立一个环形缓冲队列，使用DMA控制器建立队列与网卡的映射关系，进而是网卡数据的存取工作完全由DMA控制器接管</strong></em>，具体步骤如下：</p><ol><li>内核在主内存中为收发数据建立一个环形的缓冲队列（通常叫<strong>DMA环形缓冲区</strong>），用<strong>SKB</strong>来描述一个数据缓冲，建立多个SKB,然后将他们组织成一个环形双向链表。</li><li>内核调用函数<code>dma_map_single</code>,将这个双向链表<code>DMA Buffer</code>缓冲队列与网卡映射。</li><li>网卡收到数据，就直接放进这个环形缓冲区，也就是主内存，然后向系统产生一个<strong>中断</strong>。</li><li>内核收到数据，取消DMA映射，接下来内核就可以直接从主内存中读取数据。</li></ol></li></ul>]]></content:encoded>
       
       
+      
+      <category domain="http://singlewang.top/tags/netfilter/">netfilter</category>
+      
+      <category domain="http://singlewang.top/tags/%E7%BB%91%E5%AE%9A/">绑定</category>
       
       
       <comments>http://singlewang.top/2022/11/03/netfilter%E5%A4%9A%E6%A0%B8%E7%BB%91%E5%AE%9A/#disqus_thread</comments>
