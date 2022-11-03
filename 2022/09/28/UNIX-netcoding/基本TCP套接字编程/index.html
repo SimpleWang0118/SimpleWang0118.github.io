@@ -33,7 +33,7 @@
 
   <title>
 套接字编程简介 - UNIX网络编程 |
-桃花不必开了，我等的人已经来了 = Single Wang's Blog = 智者不入爱河</title>
+不畏将来，不念过往 = Single Wang's Blog = 智者不入爱河</title>
 <meta name="generator" content="Hexo 6.1.0"></head>
 <body itemscope itemtype="http://schema.org/WebPage">
   <div id="loading">
@@ -76,7 +76,7 @@
       <i class="ic i-pen"></i>
     </span>
     <span class="text">本文字数</span>
-    <span>1.2k</span>
+    <span>2k</span>
     <span class="text">字</span>
   </span>
   <span class="item" title="阅读时长">
@@ -84,7 +84,7 @@
       <i class="ic i-clock"></i>
     </span>
     <span class="text">阅读时长</span>
-    <span>1 分钟</span>
+    <span>2 分钟</span>
   </span>
 </div>
 
@@ -101,7 +101,7 @@
       </div>
     </div>
     <ul class="menu">
-      <li class="item title"><a href="/" rel="start">桃花不必开了，我等的人已经来了</a></li>
+      <li class="item title"><a href="/" rel="start">不畏将来，不念过往</a></li>
     </ul>
     <ul class="right">
       <li class="item theme">
@@ -117,12 +117,12 @@
       </div>
       <div id="imgs" class="pjax">
         <ul>
-          <li class="item" data-background-image="https://tva3.sinaimg.cn/large/6833939bly1gicit31ffoj20zk0m8naf.jpg"></li>
-          <li class="item" data-background-image="https://tva3.sinaimg.cn/large/6833939bly1gicm0n457cj20zk0m8e81.jpg"></li>
-          <li class="item" data-background-image="https://tva3.sinaimg.cn/large/6833939bly1gicm07ih54j20zk0m84qp.jpg"></li>
-          <li class="item" data-background-image="https://tva3.sinaimg.cn/large/6833939bly1giclhfehz7j20zk0m8u0x.jpg"></li>
-          <li class="item" data-background-image="https://tva3.sinaimg.cn/large/6833939bly1gipeyhsblkj20zk0m81kx.jpg"></li>
-          <li class="item" data-background-image="https://tva3.sinaimg.cn/large/6833939bly1giclhpw3lwj20zk0m8gvw.jpg"></li>
+          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gicm0fdw5cj20zk0m8hdt.jpg"></li>
+          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1giclhtuo6nj20zk0m8ttm.jpg"></li>
+          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gipev1x5e4j20zk0m8b29.jpg"></li>
+          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gicivghyooj20zk0m8dir.jpg"></li>
+          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1giclfw2t96j20zk0m8x6p.jpg"></li>
+          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1giclimtf7dj20zk0m8qav.jpg"></li>
         </ul>
       </div>
     </header>
@@ -201,6 +201,26 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">bind</span><span class="params">(<span class="type">int</span> sockfd,<span class="type">const</span> <span class="keyword">struct</span> sockaddr *myaddr,<span class="type">socklen_t</span> addrlen)</span>;<span class="comment">//成功返回0，出错返回-1；</span></span><br></pre></td></tr></table></figure>
 <p>第二个参数指向特定于协议的地址结构的指针，第三个参数是该地址结构的长度。对于TCP,bind函数可以指定一个端口号，或指定一个IP地址，也可以二者都指定或都不指定。</p>
 <p>假如不指定端口时，内核会给它一个临时端口。为了得到这个临时端口值，必须调用函数<code>getsockname</code>返回协议地址。</p>
+<h3 id="listen函数"><a href="#listen函数" class="headerlink" title="listen函数"></a>listen函数</h3><p>listen函数仅由TCP服务器调用，主要有两个作用：</p>
+<ol>
+<li>linsten函数把一个未连接的套接字转换成为一个被动套接字。调用listen导致套接字从CLOSED状态转换到LISTEN状态。</li>
+<li>本函数的第二个参数规定了内核应该为相应套接字排队的最大连接个数。<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">listen</span><span class="params">(<span class="type">int</span> sockfd,<span class="type">int</span> backlog)</span>;<span class="comment">//成功返回0，出错返回-1.</span></span><br></pre></td></tr></table></figure>
+本函数通常应该在调用socket和bind函数之后，在accept之前。</li>
+</ol>
+<h3 id="accept函数"><a href="#accept函数" class="headerlink" title="accept函数"></a>accept函数</h3><p>accept函数由TCP服务器调用，用于完成连接队列头返回下一个已完成连接。如果已完成连接队列为空，那么进程被投入睡眠。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">accept</span><span class="params">(<span class="type">int</span> sockfd,<span class="keyword">struct</span> sockaddr *cliaddr,<span class="type">socklen_t</span> *addrlen)</span>;<span class="comment">//成功返回非负描述符，出错返回-1.</span></span><br></pre></td></tr></table></figure>
+
+<p>cliaddr和addrlen用来返回已连接的客户端进程的协议地址。</p>
+<h3 id="fork和exec函数"><a href="#fork和exec函数" class="headerlink" title="fork和exec函数"></a>fork和exec函数</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unisted.h&gt;</span></span></span><br><span class="line"><span class="type">pid_t</span> <span class="title function_">fork</span><span class="params">(<span class="type">void</span>)</span>;<span class="comment">//在子进程中为0，在父进程中为子进程ID,出错返回-1.</span></span><br></pre></td></tr></table></figure>
+
+<p>fork函数用来派生新进程。<br>调用一次，返回两次。在父进程中返回一次，返回值时子进程的进程ID号，在子进程返回一次，返回值是0。子进程可以通过调用<code>getppid</code>获取父进程的进程ID.</p>
+<p>fork有两个典型用法</p>
+<ol>
+<li>一个进程创建一个自身的副本，每个副本都可以在另一个副本执行其他任务的同时处理各自的某个操作。</li>
+<li>一个进程想要执行另一个程序。</li>
+</ol>
+<p>exec函数把当前进程映像替换成新的程序文件，而且该新进程通常从main函数开始执行。进程ID并不改变。称调用exec的进程为<em>调用进程</em>。</p>
+<h3 id="close函数"><a href="#close函数" class="headerlink" title="close函数"></a>close函数</h3><p>通常用close函数关闭套接字，并终止TCP连接。</p>
 
       <div class="tags">
           <a href="/tags/UNIX/" rel="tag"><i class="ic i-tag"></i> UNIX</a>
@@ -216,7 +236,7 @@
       <i class="ic i-calendar-check"></i>
     </span>
     <span class="text">更新于</span>
-    <time title="修改时间：2022-09-28 20:14:11" itemprop="dateModified" datetime="2022-09-28T20:14:11+08:00">2022-09-28</time>
+    <time title="修改时间：2022-09-29 21:11:01" itemprop="dateModified" datetime="2022-09-29T21:11:01+08:00">2022-09-29</time>
   </span>
   <span id="2022/09/28/UNIX-netcoding/基本TCP套接字编程/" class="item leancloud_visitors" data-flag-title="套接字编程简介" title="阅读次数">
       <span class="icon">
@@ -274,7 +294,7 @@
     <div class="item left">
       
 
-  <a href="/2022/09/26/UINX-envcoding/UINX-%E7%8E%AF%E5%A2%83%E7%BC%96%E7%A8%8B/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva3.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giclxp31goj20zk0m8qv5.jpg" title="套接字编程">
+  <a href="/2022/09/26/UINX-envcoding/UINX-%E7%8E%AF%E5%A2%83%E7%BC%96%E7%A8%8B/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva1.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giclh5u05ej20zk0m87df.jpg" title="套接字编程">
   <span class="type">上一篇</span>
   <span class="category"><i class="ic i-flag"></i> UNIX环境编程，第一章基础知识</span>
   <h3>套接字编程</h3>
@@ -284,7 +304,7 @@
     <div class="item right">
       
 
-  <a href="/2022/09/28/mobile-communication/IP%E7%9B%B8%E5%85%B3/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;tva3.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giclh5u05ej20zk0m87df.jpg" title="IP协议">
+  <a href="/2022/09/28/mobile-communication/IP%E7%9B%B8%E5%85%B3/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;tva1.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giclfw2t96j20zk0m8x6p.jpg" title="IP协议">
   <span class="type">下一篇</span>
   <span class="category"><i class="ic i-flag"></i> 移动通信</span>
   <h3>IP协议</h3>
@@ -306,7 +326,7 @@
   <div class="panels">
     <div class="inner">
       <div class="contents panel pjax" data-title="文章目录">
-          <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#socket%E5%87%BD%E6%95%B0"><span class="toc-number">1.</span> <span class="toc-text">socket函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#connect%E5%87%BD%E6%95%B0"><span class="toc-number">2.</span> <span class="toc-text">connect函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bind%E5%87%BD%E6%95%B0"><span class="toc-number">3.</span> <span class="toc-text">bind函数</span></a></li></ol>
+          <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#socket%E5%87%BD%E6%95%B0"><span class="toc-number">1.</span> <span class="toc-text">socket函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#connect%E5%87%BD%E6%95%B0"><span class="toc-number">2.</span> <span class="toc-text">connect函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bind%E5%87%BD%E6%95%B0"><span class="toc-number">3.</span> <span class="toc-text">bind函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#listen%E5%87%BD%E6%95%B0"><span class="toc-number">4.</span> <span class="toc-text">listen函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#accept%E5%87%BD%E6%95%B0"><span class="toc-number">5.</span> <span class="toc-text">accept函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#fork%E5%92%8Cexec%E5%87%BD%E6%95%B0"><span class="toc-number">6.</span> <span class="toc-text">fork和exec函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#close%E5%87%BD%E6%95%B0"><span class="toc-number">7.</span> <span class="toc-text">close函数</span></a></li></ol>
       </div>
       <div class="related panel pjax" data-title="系列文章">
         <ul>
@@ -324,13 +344,13 @@
 <nav class="state">
     <div class="item posts">
       <a href="/archives/">
-        <span class="count">36</span>
+        <span class="count">39</span>
         <span class="name">文章</span>
       </a>
     </div>
     <div class="item categories">
       <a href="/categories/">
-        <span class="count">19</span>
+        <span class="count">20</span>
         <span class="name">分类</span>
       </a>
     </div>
@@ -414,6 +434,76 @@
   <li class="item">
     
 <div class="breadcrumb">
+<a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/dpdk/dpdk-advanced/" title="分类于 DPDK进阶">DPDK进阶</a>
+</div>
+
+    <span><a href="/2022/05/15/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch5/" title="深入浅出dpdk-ch5报文转发">深入浅出dpdk-ch5报文转发</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/CPP/" title="分类于 CPP">CPP</a>
+</div>
+
+    <span><a href="/2022/06/24/cpp/cpp_primer_ch3/" title="c++primer之字符串、向量、数组">c++primer之字符串、向量、数组</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/dpdk/dpdk-advanced/" title="分类于 DPDK进阶">DPDK进阶</a>
+</div>
+
+    <span><a href="/2022/05/14/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch4/" title="深入浅出dpdk-ch4同步互斥机制">深入浅出dpdk-ch4同步互斥机制</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/CPP/" title="分类于 CPP">CPP</a>
+</div>
+
+    <span><a href="/2022/06/25/cpp/cpp_primer_ch5/" title="c++primer之语句">c++primer之语句</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/linux/" title="分类于 Linux">Linux</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/linux/linux-kernal/" title="分类于 Linux内核">Linux内核</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/linux/linux-kernal/linx-kernal-proto/" title="分类于 Linux内核协议栈">Linux内核协议栈</a>
+</div>
+
+    <span><a href="/2022/05/03/linux/linux-kernal/linx-kernal-proto/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp1/" title="Linux内核协议栈-cp1">Linux内核协议栈-cp1</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/dpdk/" title="分类于 DPDK">DPDK</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/dpdk/dpdk-advanced/" title="分类于 DPDK进阶">DPDK进阶</a>
+</div>
+
+    <span><a href="/2022/05/16/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch6/" title="深入浅出dpdk-ch6PCIe与包处理">深入浅出dpdk-ch6PCIe与包处理</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
 <a href="/categories/UNIX-netcoding/" title="分类于 UNIX网络编程">UNIX网络编程</a>
 </div>
 
@@ -429,7 +519,16 @@
 <a href="/categories/dpdk/dpdk-advanced/" title="分类于 DPDK进阶">DPDK进阶</a>
 </div>
 
-    <span><a href="/2022/05/31/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch8/" title="深入浅出dpdk-ch7多队列与流分类">深入浅出dpdk-ch7多队列与流分类</a></span>
+    <span><a href="/2022/06/09/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch9/" title="深入浅出dpdk-ch9硬件加速与功能卸载">深入浅出dpdk-ch9硬件加速与功能卸载</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2022/11/03/netfilter%E5%A4%9A%E6%A0%B8%E7%BB%91%E5%AE%9A/" title="未命名">未命名</a></span>
   </li>
 
       
@@ -441,84 +540,7 @@
 <a href="/categories/dpdk/dpdk-advanced/" title="分类于 DPDK进阶">DPDK进阶</a>
 </div>
 
-    <span><a href="/2022/05/15/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch5/" title="深入浅出dpdk-ch5报文转发">深入浅出dpdk-ch5报文转发</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/informal-essay/" title="分类于 随笔">随笔</a>
-<i class="ic i-angle-right"></i>
-<a href="/categories/informal-essay/life/" title="分类于 生活感悟">生活感悟</a>
-</div>
-
-    <span><a href="/2022/08/14/informal-essay/life/%E7%BB%88%E4%BA%8E%E7%AD%89%E5%88%B0%E4%BD%A0/" title="终于等到你，还好我没放弃">终于等到你，还好我没放弃</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/embeded/" title="分类于 embeded">embeded</a>
-</div>
-
-    <span><a href="/2022/06/25/embedded/%E5%B5%8C%E5%85%A5%E5%BC%8F-ch1/" title="嵌入式系统开发-ch1">嵌入式系统开发-ch1</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/CPP/" title="分类于 CPP">CPP</a>
-</div>
-
-    <span><a href="/2022/05/05/cpp/cpp%E5%A4%9A%E6%80%81/" title="cpp之虚函数与多态">cpp之虚函数与多态</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/linux/" title="分类于 Linux">Linux</a>
-<i class="ic i-angle-right"></i>
-<a href="/categories/linux/linux-kernal/" title="分类于 Linux内核">Linux内核</a>
-<i class="ic i-angle-right"></i>
-<a href="/categories/linux/linux-kernal/linx-kernal-proto/" title="分类于 Linux内核协议栈">Linux内核协议栈</a>
-</div>
-
-    <span><a href="/2022/05/03/linux/linux-kernal/linx-kernal-proto/linux%E5%86%85%E6%A0%B8%E5%8D%8F%E8%AE%AE%E6%A0%88-cp2/" title="Linux内核协议栈-cp2">Linux内核协议栈-cp2</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-</div>
-
-    <span><a href="/2022/05/03/git%E5%AD%A6%E4%B9%A0/" title="git学习">git学习</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/linux/" title="分类于 Linux">Linux</a>
-<i class="ic i-angle-right"></i>
-<a href="/categories/linux/linux-command/" title="分类于 Linux命令">Linux命令</a>
-</div>
-
-    <span><a href="/2022/05/03/linux/linux-command/linux%E5%91%BD%E4%BB%A4/" title="Linux命令">Linux命令</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/mobile-communication/" title="分类于 移动通信">移动通信</a>
-</div>
-
-    <span><a href="/2022/09/28/mobile-communication/IP%E7%9B%B8%E5%85%B3/" title="IP协议">IP协议</a></span>
+    <span><a href="/2022/05/31/dpdk/dpdk-advanced/dpdk%E8%BF%9B%E9%98%B6-ch8/" title="深入浅出dpdk-ch7多队列与流分类">深入浅出dpdk-ch7多队列与流分类</a></span>
   </li>
 
   </ul>
@@ -537,19 +559,19 @@
     <span class="with-love">
       <i class="ic i-sakura rotate"></i>
     </span>
-    <span class="author" itemprop="copyrightHolder">Single Wang @ 桃花不必开了，我等的人已经来了</span>
+    <span class="author" itemprop="copyrightHolder">Single Wang @ 不畏将来，不念过往</span>
   </div>
   <div class="count">
     <span class="post-meta-item-icon">
       <i class="ic i-chart-area"></i>
     </span>
-    <span title="站点总字数">87k 字</span>
+    <span title="站点总字数">92k 字</span>
 
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="ic i-coffee"></i>
     </span>
-    <span title="站点阅读时长">1:19</span>
+    <span title="站点阅读时长">1:24</span>
   </div>
   <div class="powered-by">
     基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
